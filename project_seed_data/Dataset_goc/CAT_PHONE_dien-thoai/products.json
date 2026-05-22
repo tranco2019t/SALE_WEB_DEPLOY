@@ -9,8 +9,8 @@
     "unit_price": "15990000.00",
     "discount_percent": 10,
     "stock_quantity": 34,
-    "rating_avg": "4.60",
-    "total_reviews": 312
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT002",
@@ -22,8 +22,8 @@
     "unit_price": "21990000.00",
     "discount_percent": 12,
     "stock_quantity": 22,
-    "rating_avg": "4.74",
-    "total_reviews": 428
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT003",
@@ -35,8 +35,8 @@
     "unit_price": "13490000.00",
     "discount_percent": 8,
     "stock_quantity": 41,
-    "rating_avg": "4.48",
-    "total_reviews": 265
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT004",
@@ -48,8 +48,8 @@
     "unit_price": "18790000.00",
     "discount_percent": 15,
     "stock_quantity": 19,
-    "rating_avg": "4.57",
-    "total_reviews": 301
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT005",
@@ -61,8 +61,8 @@
     "unit_price": "9990000.00",
     "discount_percent": 7,
     "stock_quantity": 57,
-    "rating_avg": "4.35",
-    "total_reviews": 187
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT006",
@@ -74,8 +74,8 @@
     "unit_price": "11490000.00",
     "discount_percent": 9,
     "stock_quantity": 44,
-    "rating_avg": "4.41",
-    "total_reviews": 213
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT007",
@@ -87,8 +87,8 @@
     "unit_price": "24990000.00",
     "discount_percent": 18,
     "stock_quantity": 12,
-    "rating_avg": "4.66",
-    "total_reviews": 149
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT008",
@@ -100,8 +100,8 @@
     "unit_price": "27990000.00",
     "discount_percent": 20,
     "stock_quantity": 8,
-    "rating_avg": "4.71",
-    "total_reviews": 98
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT009",
@@ -113,8 +113,8 @@
     "unit_price": "7990000.00",
     "discount_percent": 5,
     "stock_quantity": 68,
-    "rating_avg": "4.22",
-    "total_reviews": 136
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DT010",
@@ -126,7 +126,7 @@
     "unit_price": "10990000.00",
     "discount_percent": 11,
     "stock_quantity": 53,
-    "rating_avg": "4.37",
-    "total_reviews": 204
+    "rating_avg": "0.00",
+    "total_reviews": 0
   }
 ]

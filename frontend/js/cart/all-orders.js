@@ -1,8 +1,17 @@
 ﻿(function () {
-  var ordersData = window.TamTaiOrdersData;
-  if (!ordersData) {
-    return;
-  }
+  var ordersData = window.TamTaiOrdersData || {
+    orders: [],
+    statusMeta: {
+      pending: { label: "Chờ xác nhận", className: "pending" },
+      shipping: { label: "Đang giao", className: "shipping" },
+      delivered: { label: "Đã giao", className: "delivered" },
+      cancelled: { label: "Đã hủy", className: "cancelled" }
+    },
+    defaultPageSize: 10,
+    formatCurrency: function (value) {
+      return Number(value || 0).toLocaleString("vi-VN") + "đ";
+    }
+  };
 
   var filtersWrap = document.getElementById("ordersFilters");
   var filterButtons = filtersWrap ? filtersWrap.querySelectorAll("button[data-status]") : [];
@@ -127,7 +136,8 @@
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
     if (!token || role !== "user") {
-      return;
+      ordersData.orders = [];
+      return false;
     }
 
     try {
@@ -139,14 +149,17 @@
       });
 
       if (!response.ok) {
-        return;
+        ordersData.orders = [];
+        return false;
       }
 
       var payload = await response.json();
       var rows = Array.isArray(payload) ? payload : [];
       ordersData.orders = rows.map(toFrontendOrder);
+      return true;
     } catch (error) {
-      // Keep fallback data from orders-data.js when backend is unavailable.
+      ordersData.orders = [];
+      return false;
     }
   }
 

@@ -1,5 +1,11 @@
-﻿(function () {
+(function () {
   var DEFAULT_IMAGE = (window.TamTai && TamTai.DEFAULT_PRODUCT_IMAGE) || "../../images/acer-refurbished-laptop-500x500.webp";
+  var checkoutState = {
+    customerId: "",
+    profile: null,
+    addresses: [],
+    selectedAddressId: ""
+  };
 
   function escapeHtml(value) {
     return String(value || "")
@@ -27,10 +33,12 @@
     if (!checked) {
       return 0;
     }
+
     var wrapper = checked.closest(".method-item");
     if (!wrapper) {
       return 0;
     }
+
     var amountEl = wrapper.querySelector("strong");
     return amountEl ? TamTai.parseCurrency(amountEl.textContent) : 0;
   }
@@ -40,6 +48,7 @@
     if (!checked) {
       return "";
     }
+
     var wrapper = checked.closest(".method-item");
     var text = wrapper ? wrapper.querySelector("span") : null;
     return text ? String(text.textContent || "").trim() : "";
@@ -50,6 +59,7 @@
     if (!checked) {
       return "";
     }
+
     var wrapper = checked.closest(".method-item");
     var text = wrapper ? wrapper.querySelector("span") : null;
     return text ? String(text.textContent || "").trim() : "";
@@ -68,6 +78,7 @@
 
     listWrap = document.createElement("div");
     listWrap.id = "checkoutSummaryItems";
+
     var firstSummaryItem = orderSummary.querySelector(".summary-item");
     if (firstSummaryItem) {
       orderSummary.querySelectorAll(".summary-item").forEach(function (item) {
@@ -75,6 +86,7 @@
       });
       orderSummary.insertBefore(listWrap, orderSummary.querySelector(".price-line"));
     }
+
     return listWrap;
   }
 
@@ -84,12 +96,12 @@
       return DEFAULT_IMAGE;
     }
 
-    if (/^https?:\/\//i.test(raw) || raw.startsWith("data:")) {
+    if (/^https?:\/\//i.test(raw) || raw.indexOf("data:") === 0) {
       return raw;
     }
 
     if (window.TamTai && typeof TamTai.buildApiUrl === "function") {
-      if (raw.startsWith("/")) {
+      if (raw.charAt(0) === "/") {
         return TamTai.buildApiUrl(raw);
       }
       return TamTai.buildApiUrl("/" + raw);
@@ -106,11 +118,11 @@
     }
 
     if (!cart.length) {
-      listWrap.innerHTML = '<p class="empty-cart-note">Gi\u1ecf h\u00e0ng \u0111ang tr\u1ed1ng.</p>';
+      listWrap.innerHTML = '<p class="empty-cart-note">Giỏ hàng đang trống.</p>';
     } else {
       listWrap.innerHTML = cart.map(function (item) {
         var image = toImageSrc(item.image);
-        var name = String(item.name || "S\u1ea3n ph\u1ea9m");
+        var name = String(item.name || "Sản phẩm");
         var qty = Math.max(1, Number(item.qty || 1));
         var price = Number(item.price || 0);
 
@@ -131,60 +143,67 @@
       return sum + Number(item.price || 0) * Math.max(1, Number(item.qty || 1));
     }, 0);
     var shippingFee = getShippingFee();
-    var total = subtotal + shippingFee;
+    var discountAmount = window._checkoutDiscountAmount || 0;
+    var total = subtotal + shippingFee - discountAmount;
+    if (total < 0) {
+      total = 0;
+    }
 
-    var lines = document.querySelectorAll(".order-summary .price-line");
-    if (lines[0]) {
-      lines[0].querySelector("strong").textContent = TamTai.formatCurrency(subtotal);
-    }
-    if (lines[1]) {
-      lines[1].querySelector("strong").textContent = TamTai.formatCurrency(shippingFee);
-    }
-    if (lines[2]) {
-      lines[2].querySelector("strong").textContent = TamTai.formatCurrency(total);
-    }
+    var subtotalEl = document.getElementById("checkoutSubtotal");
+    var discountLine = document.getElementById("discountPriceLine");
+    var discountEl = document.getElementById("checkoutDiscount");
+    var shippingEl = document.getElementById("checkoutShipping");
+    var totalEl = document.getElementById("checkoutTotal");
+
+    if (subtotalEl) subtotalEl.textContent = TamTai.formatCurrency(subtotal);
+    if (discountLine) discountLine.style.display = discountAmount > 0 ? "" : "none";
+    if (discountEl) discountEl.textContent = "-" + TamTai.formatCurrency(discountAmount);
+    if (shippingEl) shippingEl.textContent = TamTai.formatCurrency(shippingFee);
+    if (totalEl) totalEl.textContent = TamTai.formatCurrency(total);
 
     return { subtotal: subtotal, total: total };
   }
 
+  function getCheckoutElements() {
+    return {
+      form: document.getElementById("checkoutShippingForm"),
+      fullName: document.getElementById("checkoutFullName"),
+      phone: document.getElementById("checkoutPhone"),
+      email: document.getElementById("checkoutEmail"),
+      city: document.getElementById("checkoutCity"),
+      detailAddress: document.getElementById("checkoutDetailAddress"),
+      note: document.getElementById("checkoutNote"),
+      savedAddressesSection: document.getElementById("savedAddressesSection"),
+      savedAddressesList: document.getElementById("savedAddressesList"),
+      citySuggestions: document.getElementById("checkoutCitySuggestions")
+    };
+  }
+
   function getCheckoutFields() {
-    var checkoutForm = document.querySelector(".checkout-form");
-    var textInputs = checkoutForm ? checkoutForm.querySelectorAll('input[type="text"]') : [];
-
-    var fullNameInput = textInputs.length > 0 ? textInputs[0] : null;
-    var detailAddressInput = textInputs.length > 1 ? textInputs[textInputs.length - 1] : null;
-    var phoneInput = checkoutForm ? checkoutForm.querySelector('input[type="tel"]') : null;
-    var emailInput = checkoutForm ? checkoutForm.querySelector('input[type="email"]') : null;
-    var citySelect = checkoutForm ? checkoutForm.querySelector("select") : null;
-    var noteTextarea = checkoutForm ? checkoutForm.querySelector("textarea") : null;
-
-    var cityValue = citySelect ? String(citySelect.value || "").trim() : "";
-    if (normalizeText(cityValue).indexOf("chon tinh") !== -1) {
-      cityValue = "";
-    }
+    var elements = getCheckoutElements();
 
     return {
-      fullName: fullNameInput ? String(fullNameInput.value || "").trim() : "",
-      phone: phoneInput ? String(phoneInput.value || "").trim() : "",
-      email: emailInput ? String(emailInput.value || "").trim() : "",
-      city: cityValue,
-      detailAddress: detailAddressInput ? String(detailAddressInput.value || "").trim() : "",
-      note: noteTextarea ? String(noteTextarea.value || "").trim() : ""
+      fullName: elements.fullName ? String(elements.fullName.value || "").trim() : "",
+      phone: elements.phone ? String(elements.phone.value || "").trim() : "",
+      email: elements.email ? String(elements.email.value || "").trim() : "",
+      city: elements.city ? String(elements.city.value || "").trim() : "",
+      detailAddress: elements.detailAddress ? String(elements.detailAddress.value || "").trim() : "",
+      note: elements.note ? String(elements.note.value || "").trim() : ""
     };
   }
 
   function validateCheckoutFields(fields) {
     if (!fields.fullName || !fields.phone || !fields.email || !fields.city || !fields.detailAddress) {
-      return { ok: false, message: "Vui l\u00f2ng \u0111i\u1ec1n \u0111\u1ea7y \u0111\u1ee7 th\u00f4ng tin giao h\u00e0ng." };
+      return { ok: false, message: "Vui lòng điền đầy đủ thông tin giao hàng." };
     }
 
     if (fields.email.indexOf("@") === -1) {
-      return { ok: false, message: "Email kh\u00f4ng h\u1ee3p l\u1ec7." };
+      return { ok: false, message: "Email không hợp lệ." };
     }
 
     var paymentChecked = document.querySelector('input[name="payment"]:checked');
     if (!paymentChecked) {
-      return { ok: false, message: "Vui l\u00f2ng ch\u1ecdn ph\u01b0\u01a1ng th\u1ee9c thanh to\u00e1n." };
+      return { ok: false, message: "Vui lòng chọn phương thức thanh toán." };
     }
 
     return { ok: true };
@@ -211,9 +230,166 @@
     return parts.join(" | ");
   }
 
+  function setInputValue(input, value, force) {
+    if (!input) {
+      return;
+    }
+
+    if (!force && String(input.value || "").trim()) {
+      return;
+    }
+
+    input.value = value || "";
+  }
+
+  function getProfileSnapshot() {
+    return checkoutState.profile || TamTai.getProfile() || {};
+  }
+
+  function fillProfileFields(profile, force) {
+    var elements = getCheckoutElements();
+    var source = profile || {};
+
+    setInputValue(elements.fullName, source.fullName || source.customer_name || "", force);
+    setInputValue(elements.phone, source.phone || source.phone_number || "", force);
+    setInputValue(elements.email, source.email || source.customer_email || "", force);
+  }
+
+  function formatSavedAddressLine(address) {
+    var parts = [
+      address && address.street,
+      address && address.district,
+      address && address.city,
+      address && address.zipcode
+    ].map(function (item) {
+      return String(item || "").trim();
+    }).filter(Boolean);
+
+    return parts.join(", ");
+  }
+
+  function buildCheckoutAddressValue(address) {
+    if (!address) {
+      return "";
+    }
+
+    var parts = [
+      address.street,
+      address.district,
+      address.zipcode
+    ].map(function (item) {
+      return String(item || "").trim();
+    }).filter(Boolean);
+
+    return parts.join(", ");
+  }
+
+  function setActiveSavedAddress(addressId) {
+    checkoutState.selectedAddressId = String(addressId || "").trim();
+
+    var list = document.getElementById("savedAddressesList");
+    if (!list) {
+      return;
+    }
+
+    list.querySelectorAll(".saved-address-card").forEach(function (button) {
+      var isActive = button.getAttribute("data-address-id") === checkoutState.selectedAddressId;
+      button.classList.toggle("is-active", isActive);
+    });
+  }
+
+  function applySavedAddress(addressId) {
+    var id = String(addressId || "").trim();
+    if (!id) {
+      return;
+    }
+
+    var address = checkoutState.addresses.find(function (entry) {
+      return String(entry.address_id || "") === id;
+    });
+    if (!address) {
+      return;
+    }
+
+    var elements = getCheckoutElements();
+    var profile = getProfileSnapshot();
+
+    fillProfileFields(profile, true);
+    setInputValue(elements.city, String(address.city || "").trim(), true);
+    setInputValue(elements.detailAddress, buildCheckoutAddressValue(address), true);
+    setActiveSavedAddress(id);
+  }
+
+  function renderCitySuggestions(addresses) {
+    var citySuggestions = document.getElementById("checkoutCitySuggestions");
+    if (!citySuggestions) {
+      return;
+    }
+
+    var seen = {};
+    var cities = [];
+
+    (addresses || []).forEach(function (address) {
+      var city = String((address && address.city) || "").trim();
+      if (!city) {
+        return;
+      }
+
+      var key = normalizeText(city);
+      if (seen[key]) {
+        return;
+      }
+
+      seen[key] = true;
+      cities.push(city);
+    });
+
+    citySuggestions.innerHTML = cities.map(function (city) {
+      return '<option value="' + escapeHtml(city) + '"></option>';
+    }).join("");
+  }
+
+  function renderSavedAddresses(addresses) {
+    var elements = getCheckoutElements();
+    if (!elements.savedAddressesSection || !elements.savedAddressesList) {
+      return;
+    }
+
+    if (!Array.isArray(addresses) || !addresses.length) {
+      elements.savedAddressesSection.style.display = "none";
+      elements.savedAddressesList.innerHTML = "";
+      return;
+    }
+
+    elements.savedAddressesSection.style.display = "";
+    elements.savedAddressesList.innerHTML = addresses.map(function (address, index) {
+      var isDefault = Number(address.is_default || 0) === 1;
+      var title = isDefault ? "Địa chỉ mặc định" : ("Địa chỉ " + (index + 1));
+      var profile = getProfileSnapshot();
+      var fullName = profile.fullName || profile.customer_name || "";
+      var phone = profile.phone || profile.phone_number || "";
+
+      return [
+        '<button type="button" class="saved-address-card" data-address-id="' + escapeHtml(address.address_id) + '">',
+        '  <div class="saved-address-top">',
+        '    <span class="saved-address-name">' + escapeHtml(title) + '</span>',
+        isDefault ? '    <span class="saved-address-badge">Mặc định</span>' : "",
+        "  </div>",
+        '  <p class="saved-address-phone">' + escapeHtml(String(fullName || "").trim() + (phone ? " | " + phone : "")) + "</p>",
+        '  <p class="saved-address-line">' + escapeHtml(formatSavedAddressLine(address)) + "</p>",
+        "</button>"
+      ].join("");
+    }).join("");
+  }
+
   async function resolveCurrentCustomerId(token) {
+    if (checkoutState.customerId) {
+      return checkoutState.customerId;
+    }
+
     var fromStorage = String(localStorage.getItem("tamtai_customer_id") || "").trim();
     if (fromStorage) {
+      checkoutState.customerId = fromStorage;
       return fromStorage;
     }
 
@@ -225,6 +401,7 @@
           var profileId = String(profile.customer_id).trim();
           if (profileId) {
             localStorage.setItem("tamtai_customer_id", profileId);
+            checkoutState.customerId = profileId;
             return profileId;
           }
         }
@@ -242,11 +419,69 @@
 
     var customerId = String((me && me.customer_id) || "").trim();
     if (!customerId) {
-      throw new Error("Kh\u00f4ng x\u00e1c \u0111\u1ecbnh \u0111\u01b0\u1ee3c t\u00e0i kho\u1ea3n \u0111ang nh\u1eadp.");
+      throw new Error("Khong xac dinh duoc tai khoan dang nhap.");
     }
 
     localStorage.setItem("tamtai_customer_id", customerId);
+    checkoutState.customerId = customerId;
     return customerId;
+  }
+
+  async function hydrateCheckoutAddressBook() {
+    fillProfileFields(TamTai.getProfile(), false);
+
+    var token = localStorage.getItem("access_token");
+    if (!token || TamTai.getRole() !== "user") {
+      return;
+    }
+
+    try {
+      var me = await TamTai.fetchJson("/customers/me", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+      checkoutState.customerId = String((me && me.customer_id) || "").trim();
+      checkoutState.profile = {
+        fullName: me.customer_name || "",
+        email: me.customer_email || "",
+        phone: me.phone_number || "",
+        address: me.address || "",
+        customer_id: checkoutState.customerId
+      };
+
+      localStorage.setItem("tamtai_customer_id", checkoutState.customerId);
+      localStorage.setItem("tamtai_customer_profile", JSON.stringify(me));
+      TamTai.saveProfile(checkoutState.profile);
+      fillProfileFields(checkoutState.profile, true);
+
+      var addresses = await TamTai.fetchJson("/addresses/customer/" + encodeURIComponent(checkoutState.customerId), {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+      checkoutState.addresses = Array.isArray(addresses) ? addresses.slice() : [];
+      checkoutState.addresses.sort(function (a, b) {
+        return Number(b.is_default || 0) - Number(a.is_default || 0);
+      });
+
+      renderSavedAddresses(checkoutState.addresses);
+      renderCitySuggestions(checkoutState.addresses);
+
+      var defaultAddress = checkoutState.addresses.find(function (address) {
+        return Number(address.is_default || 0) === 1;
+      }) || checkoutState.addresses[0];
+
+      if (defaultAddress) {
+        applySavedAddress(defaultAddress.address_id);
+      }
+    } catch (error) {
+      renderSavedAddresses([]);
+    }
   }
 
   function pickPaymentMethod(methods, selectedLabel) {
@@ -324,7 +559,7 @@
 
     var cart = TamTai.getCart();
     if (!Array.isArray(cart) || !cart.length) {
-      alert("Gi\u1ecf h\u00e0ng \u0111ang tr\u1ed1ng, kh\u00f4ng th\u1ec3 x\u00e1c nh\u1eadn thanh to\u00e1n.");
+      alert("Gio hang dang trong, khong the xac nhan thanh toan.");
       return;
     }
 
@@ -347,20 +582,22 @@
       var selectedPayment = pickPaymentMethod(paymentMethods, paymentLabel);
 
       if (!selectedPayment || !selectedPayment.payment_method_id) {
-        throw new Error("Ch\u01b0a c\u00f3 ph\u01b0\u01a1ng th\u1ee9c thanh to\u00e1n trong h\u1ec7 th\u1ed1ng.");
+        throw new Error("Chua co phuong thuc thanh toan trong he thong.");
       }
 
       var orderItems = buildOrderItemsFromCart(cart);
       if (!orderItems.length) {
-        throw new Error("Kh\u00f4ng c\u00f3 s\u1ea3n ph\u1ea9m h\u1ee3p l\u1ec7 \u0111\u1ec3 t\u1ea1o \u0111\u01a1n h\u00e0ng.");
+        throw new Error("Khong co san pham hop le de tao don hang.");
       }
 
+      var discountCode = (document.getElementById("discountCodeInput") || {}).value || "";
       var payload = {
         customer_id: customerId,
         payment_method_id: String(selectedPayment.payment_method_id),
         shipping_address: composeShippingAddress(fields),
         shipping_fee: getShippingFee(),
-        discount_amount: 0,
+        discount_amount: window._checkoutDiscountAmount || 0,
+        discount_code: discountCode.trim() || null,
         items: orderItems
       };
 
@@ -389,14 +626,105 @@
     }
   }
 
+  function bindSavedAddressSelection() {
+    var savedAddressesList = document.getElementById("savedAddressesList");
+    if (!savedAddressesList) {
+      return;
+    }
+
+    savedAddressesList.addEventListener("click", function (event) {
+      var button = event.target.closest("button[data-address-id]");
+      if (!button) {
+        return;
+      }
+
+      applySavedAddress(button.getAttribute("data-address-id"));
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
 
+    var elements = getCheckoutElements();
+    if (elements.form) {
+      elements.form.addEventListener("submit", function (event) {
+        event.preventDefault();
+      });
+    }
+
     renderSummaryItems();
+    bindSavedAddressSelection();
+
+    hydrateCheckoutAddressBook().catch(function () {});
 
     document.querySelectorAll('input[name="shipping"]').forEach(function (radio) {
       radio.addEventListener("change", renderSummaryItems);
     });
+
+    var applyBtn = document.getElementById("applyDiscountBtn");
+    var discountInput = document.getElementById("discountCodeInput");
+    var discountMsg = document.getElementById("discountMessage");
+
+    if (applyBtn && discountInput) {
+      applyBtn.addEventListener("click", function () {
+        var code = discountInput.value.trim();
+        if (!code) {
+          discountMsg.textContent = "Vui lòng nhập mã giảm giá.";
+          discountMsg.className = "discount-msg is-error";
+          return;
+        }
+
+        applyBtn.disabled = true;
+        applyBtn.textContent = "Đang kiểm tra...";
+        window._checkoutDiscountAmount = 0;
+
+        var token = localStorage.getItem("access_token");
+        if (!token) {
+          discountMsg.textContent = "Vui lòng đăng nhập để sử dụng mã giảm giá.";
+          discountMsg.className = "discount-msg is-error";
+          applyBtn.disabled = false;
+          applyBtn.textContent = "Áp dụng";
+          return;
+        }
+
+        var cart = TamTai.getCart();
+        var subtotal = cart.reduce(function (sum, item) {
+          return sum + Number(item.price || 0) * Math.max(1, Number(item.qty || 1));
+        }, 0);
+        var productIds = cart.map(function (item) {
+          return String(item.productId || item.id || "").trim();
+        }).filter(Boolean);
+
+        TamTai.fetchJson("/discount-codes/validate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({ code: code, subtotal: subtotal, product_ids: productIds })
+        }).then(function (data) {
+          var discountAmount = Number(data && data.discount_amount);
+          if (data && data.valid === true && Number.isFinite(discountAmount) && discountAmount >= 0) {
+            window._checkoutDiscountAmount = discountAmount;
+            discountMsg.textContent = "Áp dụng mã thành công! Giảm " + TamTai.formatCurrency(discountAmount) + " (" + data.discount_percent + "%)";
+            discountMsg.className = "discount-msg is-success";
+            renderSummaryItems();
+          } else {
+            discountMsg.textContent = "Mã giảm giá không áp dụng cho giỏ hàng hiện tại.";
+            discountMsg.className = "discount-msg is-error";
+            renderSummaryItems();
+          }
+        }).catch(function (err) {
+          var msg = (err && err.message) || "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
+          discountMsg.textContent = msg;
+          discountMsg.className = "discount-msg is-error";
+          renderSummaryItems();
+        }).finally(function () {
+          applyBtn.disabled = false;
+          applyBtn.textContent = "Áp dụng";
+        });
+      });
+    }
 
     var confirmBtn = document.querySelector(".confirm-btn");
     if (confirmBtn) {

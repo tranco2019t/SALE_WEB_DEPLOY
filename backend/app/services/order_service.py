@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, selectinload
 
 from app.models.customer import Customer
+from app.models.discount_code import DiscountCode
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.payment_method import PaymentMethod
@@ -119,6 +120,39 @@ def get_orders_by_customer(db: Session, customer_id: str, skip: int = 0, limit: 
     return [serialize_order(order) for order in orders]
 
 
+def _validate_discount_code(
+    db: Session,
+    code: str,
+    customer_id: str,
+    subtotal: Decimal,
+    product_ids: set[str] | None = None,
+) -> Decimal:
+    from datetime import datetime
+    normalized = code.strip().upper()
+    normalized_product_ids = {str(product_id or "").strip() for product_id in (product_ids or set()) if str(product_id or "").strip()}
+    discount_code = db.query(DiscountCode).filter(DiscountCode.code == normalized).first()
+    if not discount_code:
+        raise BusinessLogicException("Mã giảm giá không tồn tại.")
+    if not discount_code.is_active:
+        raise BusinessLogicException("Mã giảm giá đã bị vô hiệu hóa.")
+    if discount_code.customer_id and discount_code.customer_id != customer_id:
+        raise BusinessLogicException("Mã giảm giá không dành cho tài khoản của bạn.")
+    if discount_code.product_id and discount_code.product_id not in normalized_product_ids:
+        raise BusinessLogicException("Mã giảm giá không áp dụng cho sản phẩm trong giỏ hàng.")
+    now = datetime.utcnow()
+    if discount_code.starts_at and now < discount_code.starts_at:
+        raise BusinessLogicException("Mã giảm giá chưa đến hạn sử dụng.")
+    if discount_code.expires_at and now > discount_code.expires_at:
+        raise BusinessLogicException("Mã giảm giá đã hết hạn.")
+    if discount_code.used_count >= discount_code.usage_limit:
+        raise BusinessLogicException("Mã giảm giá đã được sử dụng hết.")
+    discount_percent = int(discount_code.discount_percent or 0)
+    discount_amount = subtotal * Decimal(str(discount_percent)) / Decimal("100")
+    discount_code.used_count = discount_code.used_count + 1
+    db.flush()
+    return discount_amount
+
+
 def create_order(db: Session, payload):
     """Tao order moi - payload la OrderCreate schema"""
     customer_id = payload.customer_id
@@ -126,6 +160,7 @@ def create_order(db: Session, payload):
     shipping_address = getattr(payload, "shipping_address", None)
     shipping_fee = _to_decimal(getattr(payload, "shipping_fee", Decimal("0")))
     discount_amount = _to_decimal(getattr(payload, "discount_amount", Decimal("0")))
+    discount_code = getattr(payload, "discount_code", None)
     items = [item.model_dump() for item in payload.items]
 
     customer = db.query(Customer).filter(Customer.customer_id == customer_id).first()
@@ -140,6 +175,21 @@ def create_order(db: Session, payload):
 
     if not items:
         raise BusinessLogicException("Order must contain at least one item")
+
+    subtotal = Decimal("0")
+    product_ids: set[str] = set()
+    for item in items:
+        product_check = db.query(Product).filter(Product.product_id == item["product_id"]).first()
+        if not product_check:
+            raise NotFoundException(f"Product {item['product_id']}")
+        qty_check = int(item.get("quantity") or 0)
+        if qty_check <= 0:
+            raise BusinessLogicException("Quantity must be greater than 0")
+        product_ids.add(str(product_check.product_id or "").strip())
+        subtotal += _to_decimal(product_check.unit_price) * qty_check
+
+    if discount_code:
+        discount_amount = _validate_discount_code(db, discount_code, customer_id, subtotal, product_ids)
 
     try:
         new_order = Order(

@@ -9,8 +9,8 @@
     "unit_price": "389000.00",
     "discount_percent": 8,
     "stock_quantity": 48,
-    "rating_avg": "3.20",
-    "total_reviews": 345
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME002",
@@ -22,8 +22,8 @@
     "unit_price": "1690000.00",
     "discount_percent": 15,
     "stock_quantity": 89,
-    "rating_avg": "4.60",
-    "total_reviews": 231
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME003",
@@ -35,8 +35,8 @@
     "unit_price": "2890000.00",
     "discount_percent": 17,
     "stock_quantity": 96,
-    "rating_avg": "4.90",
-    "total_reviews": 154
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME004",
@@ -48,8 +48,8 @@
     "unit_price": "3385000.00",
     "discount_percent": 25,
     "stock_quantity": 74,
-    "rating_avg": "4.00",
-    "total_reviews": 123
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME005",
@@ -61,8 +61,8 @@
     "unit_price": "199000.00",
     "discount_percent": 10,
     "stock_quantity": 32,
-    "rating_avg": "2.30",
-    "total_reviews": 12
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME006",
@@ -74,8 +74,8 @@
     "unit_price": "105000.00",
     "discount_percent": 4,
     "stock_quantity": 98,
-    "rating_avg": "3.50",
-    "total_reviews": 159
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME007",
@@ -87,8 +87,8 @@
     "unit_price": "699000.00",
     "discount_percent": 21,
     "stock_quantity": 67,
-    "rating_avg": "3.70",
-    "total_reviews": 12
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME008",
@@ -100,8 +100,8 @@
     "unit_price": "1659000.00",
     "discount_percent": 17,
     "stock_quantity": 89,
-    "rating_avg": "4.50",
-    "total_reviews": 321
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME009",
@@ -113,8 +113,8 @@
     "unit_price": "3780000.00",
     "discount_percent": 18,
     "stock_quantity": 76,
-    "rating_avg": "4.90",
-    "total_reviews": 365
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "ME010",
@@ -126,7 +126,7 @@
     "unit_price": "675000.00",
     "discount_percent": 24,
     "stock_quantity": 56,
-    "rating_avg": "2.90",
-    "total_reviews": 43
+    "rating_avg": "0.00",
+    "total_reviews": 0
   }
 ]

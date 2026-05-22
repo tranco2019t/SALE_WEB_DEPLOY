@@ -145,6 +145,34 @@
     }
   }
 
+  async function updateCustomerProfile(fullName, phone) {
+    var payload = {};
+    if (fullName) {
+      payload.customer_name = fullName;
+    }
+    if (phone) {
+      payload.phone_number = phone;
+    }
+
+    if (!Object.keys(payload).length) {
+      return true;
+    }
+
+    try {
+      var response = await fetch(TamTai.API_BASE_URL + "/customers/" + encodeURIComponent(state.customerId), {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + state.token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  }
+
   async function createAddress() {
     var form = document.querySelector(".address-form");
     if (!form) {
@@ -195,6 +223,7 @@
       }
 
       if (fullName || phone) {
+        await updateCustomerProfile(fullName, phone);
         TamTai.saveProfile({
           fullName: fullName || TamTai.getProfile().fullName || "",
           email: TamTai.getProfile().email || "",

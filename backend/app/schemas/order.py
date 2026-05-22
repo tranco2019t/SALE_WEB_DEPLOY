@@ -39,6 +39,7 @@ class OrderCreate(BaseModel):
     shipping_address: Optional[str] = Field(default=None, max_length=500)
     shipping_fee: Decimal = Field(default=Decimal("0"), ge=0)
     discount_amount: Decimal = Field(default=Decimal("0"), ge=0)
+    discount_code: Optional[str] = Field(default=None, max_length=50)
     items: List[OrderItemInput]
 
 

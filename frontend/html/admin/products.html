@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sản phẩm quản trị - TAM TAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/admin/base.css?v=20260522f">
+  <link rel="stylesheet" href="../../css/admin/products.css?v=20260522g">
+  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
+        <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
+      </a>
+      <label class="topbar-search" aria-label="Tìm kiếm sản phẩm trong quản trị">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="adminGlobalSearch" type="search" placeholder="Tìm sản phẩm theo mã, tên hoặc mô tả...">
+      </label>
+      <div class="topbar-actions">
+        <a class="topbar-link" href="../core/landing.html">
+          <i class="fa-solid fa-store"></i>
+          <span>Xem shop</span>
+        </a>
+        <div class="admin-user-chip">
+          <div class="admin-avatar">A</div>
+          <div class="admin-user-meta">
+            <strong class="admin-user-name">Admin</strong>
+            <span class="admin-user-role">Quản trị viên</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div>
+          <p class="sidebar-title">Quản trị</p>
+          <nav class="sidebar-nav">
+            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tổng quan</span></a>
+            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>Đơn hàng</span></a>
+            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>Người dùng</span></a>
+            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>Mã giảm giá</span></a>
+          </nav>
+        </div>
+
+        <div class="sidebar-footer">
+          <button type="button" class="btn btn-danger" data-logout data-redirect="../auth/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Đăng xuất</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <section class="page-header">
+          <div>
+            <p class="page-eyebrow">Sản phẩm</p>
+            <h1 class="page-title">Danh sách sản phẩm</h1>
+            <p class="page-subtitle">
+              Quản lý catalog, cập nhật giá bán và theo dõi số lượng tồn kho theo một bộ cục để quan sát.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <button id="refreshProductsBtn" type="button" class="btn btn-secondary">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>Làm mới</span>
+            </button>
+            <button id="createProductBtn" type="button" class="btn btn-primary" data-open-form="#productForm" data-form-title="Thêm sản phẩm mới">
+              <i class="fa-solid fa-plus"></i>
+              <span>Tạo mới</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="stats-strip" aria-label="Thống kê nhanh">
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-box-open"></i></span>
+              <div>
+                <p class="stat-label">Tổng sản phẩm</p>
+                <strong id="statProducts" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tất cả sản phẩm</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
+              <div>
+                <p class="stat-label">Tổng người dùng</p>
+                <strong id="statCustomers" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Đang hoạt động</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+              <div>
+                <p class="stat-label">Đơn hàng</p>
+                <strong id="statOrders" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tổng số đơn</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-wallet"></i></span>
+              <div>
+                <p class="stat-label">Doanh thu</p>
+                <strong id="statRevenue" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tổng doanh thu</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-ticket"></i></span>
+              <div>
+                <p class="stat-label">Mã giảm giá</p>
+                <strong id="statDiscountCodes" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Đang hoạt động</p>
+          </article>
+        </section>
+
+        <div id="pageMessage" class="page-message" aria-live="polite"></div>
+
+        <section class="products-layout">
+          <article class="page-panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Bảng sản phẩm</h2>
+                <p class="panel-subtext">Sắp xếp theo mã, tên, danh mục, giá, tồn kho và đã bán.</p>
+              </div>
+              <div class="panel-tools">
+                <div class="toolbar-field">
+                  <select id="productCategoryFilter" class="admin-select">
+                    <option value="">Tất cả danh mục</option>
+                  </select>
+                </div>
+                <span id="productsCount" class="count-chip">0 sản phẩm</span>
+              </div>
+            </div>
+
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="product_id"><span>Mã</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="product_name"><span>Sản phẩm</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="category_name"><span>Danh mục</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="unit_price"><span>Giá</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="stock_quantity"><span>Tồn kho</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="sold_quantity"><span>Đã bán</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><span>Thao tác</span></th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-footer">
+              <p id="productsPageSummary" class="table-summary">Không có dữ liệu để hiển thị.</p>
+              <div id="productsPagination" class="pagination"></div>
+            </div>
+          </article>
+
+          <aside class="editor-card">
+            <div class="editor-card-head">
+              <div>
+                <h2 id="productFormTitle" class="panel-title">Thêm sản phẩm mới</h2>
+                <p class="section-note">Khung này dùng để tạo mới hoặc cập nhật thông tin của từng sản phẩm.</p>
+              </div>
+              <button id="resetProductFormBtn" type="button" class="btn btn-soft" data-open-form="#productForm" data-form-title="Thêm sản phẩm mới">Tạo mới</button>
+            </div>
+
+            <form id="productForm" class="form-grid">
+              <input id="productFormId" type="hidden">
+
+              <div class="field-group">
+                <label for="productName">Tên sản phẩm</label>
+                <input id="productName" class="admin-input" type="text" placeholder="Nhập tên sản phẩm" required>
+              </div>
+
+              <div class="field-group">
+                <label for="productCategory">Danh mục</label>
+                <select id="productCategory" class="admin-select" required>
+                  <option value="">Chọn danh mục</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="productImageUrl">Ảnh sản phẩm</label>
+                <input id="productImageUrl" class="admin-input" type="url" placeholder="https://...">
+              </div>
+
+              <div class="form-row">
+                <div class="field-group">
+                  <label for="productPrice">Giá bán</label>
+                  <input id="productPrice" class="admin-input" type="number" min="0" step="1000" placeholder="Nhập giá bán" required>
+                </div>
+                <div class="field-group">
+                  <label for="productDiscount">Giảm giá (%)</label>
+                  <input id="productDiscount" class="admin-input" type="number" min="0" max="100" step="1" placeholder="Nhập % giảm giá">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field-group">
+                  <label for="productStock">Tồn kho</label>
+                  <input id="productStock" class="admin-input" type="number" min="0" step="1" placeholder="Nhập số lượng" required>
+                </div>
+                <div class="field-group">
+                  <label for="productReviews">Tổng đánh giá</label>
+                  <input id="productReviews" class="admin-input" type="number" min="0" step="1" placeholder="Nhập tổng đánh giá">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="productRating">Điểm đánh giá</label>
+                <input id="productRating" class="admin-input" type="number" min="0" max="5" step="0.1" placeholder="Nhập điểm đánh giá">
+              </div>
+
+              <div class="field-group">
+                <label for="productDescription">Mô tả sản phẩm</label>
+                <textarea id="productDescription" class="admin-textarea" placeholder="Nhập mô tả sản phẩm"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button id="productSubmitBtn" type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                <button id="productCancelBtn" type="button" class="btn btn-secondary">Hủy</button>
+              </div>
+            </form>
+          </aside>
+        </section>
+
+        <footer class="admin-footer">
+          <span>&copy; 2025 TAM TAI. All rights reserved.</span>
+          <span>Phiên bản 1.0.0</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/core/common.js?v=20260522f"></script>
+  <script src="../../js/admin/core.js?v=20260522e"></script>
+  <script src="../../js/admin/products.js?v=20260522e"></script>
+  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
+
+  <!-- Generic modal used to host forms for add/edit actions -->
+  <div id="entityFormModal" class="modal-shell" hidden>
+    <button type="button" class="modal-backdrop" data-close-modal aria-label="Đóng"></button>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityFormModalTitle">
+      <div class="modal-head">
+        <div>
+          <p class="modal-eyebrow">Form</p>
+          <h2 id="entityFormModalTitle">Form</h2>
+        </div>
+        <button type="button" class="modal-close" data-close-modal aria-label="Đóng">×</button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -21,3 +21,4 @@ class Customer(Base):
     addresses = relationship("Address", back_populates="customer", cascade="all, delete")
     wishlist_items = relationship("Wishlist", back_populates="customer", cascade="all, delete")
     discount_codes = relationship("DiscountCode", back_populates="customer")
+    notifications = relationship("Notification", back_populates="customer", cascade="all, delete")

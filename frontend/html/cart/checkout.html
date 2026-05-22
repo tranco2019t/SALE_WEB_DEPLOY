@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/cart/checkout.css">
+  <link rel="stylesheet" href="../../css/cart/checkout.css?v=20260523a">
+  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
   <header class="site-header">
@@ -45,39 +46,44 @@
     <section class="checkout-layout">
       <article class="checkout-form">
         <h2>Thông tin giao hàng</h2>
-        <form>
-                    <div class="form-grid">
+
+        <div class="saved-addresses" id="savedAddressesSection" style="display:none;">
+          <div class="saved-addresses-head">
+            <h3>Địa chỉ đã lưu</h3>
+            <p>Chọn nhanh một địa chỉ để tự điền thông tin giao hàng.</p>
+          </div>
+          <div class="saved-addresses-list" id="savedAddressesList"></div>
+        </div>
+
+        <form id="checkoutShippingForm">
+          <div class="form-grid">
             <label>
               Họ và tên
-              <input type="text" placeholder="Nhập họ tên người nhận">
+              <input id="checkoutFullName" type="text" placeholder="Nhập họ tên người nhận">
             </label>
             <label>
               Số điện thoại
-              <input type="tel" placeholder="Nhập số điện thoại">
+              <input id="checkoutPhone" type="tel" placeholder="Nhập số điện thoại">
             </label>
             <label>
               Email
-              <input type="email" placeholder="Nhập email">
+              <input id="checkoutEmail" type="email" placeholder="Nhập email">
             </label>
             <label>
               Tỉnh/Thành phố
-              <select>
-                <option>Chọn tỉnh/thành phố</option>
-                <option>TP.HCM</option>
-                <option>Hà Nội</option>
-                <option>Đà Nẵng</option>
-              </select>
+              <input id="checkoutCity" type="text" placeholder="Nhập tỉnh/thành phố" list="checkoutCitySuggestions">
+              <datalist id="checkoutCitySuggestions"></datalist>
             </label>
           </div>
 
           <label>
             Địa chỉ chi tiết
-            <input type="text" placeholder="Số nhà, tên đường, phường/xã">
+            <input id="checkoutDetailAddress" type="text" placeholder="Số nhà, tên đường, phường/xã">
           </label>
 
           <label>
             Ghi chú đơn hàng
-            <textarea rows="3" placeholder="Ghi chú thêm cho đơn hàng (không bắt buộc)"></textarea>
+            <textarea id="checkoutNote" rows="3" placeholder="Ghi chú thêm cho đơn hàng (không bắt buộc)"></textarea>
           </label>
         </form>
 
@@ -133,17 +139,29 @@
           <strong>2.500.000đ</strong>
         </div>
 
+        <div class="discount-section">
+          <div class="discount-input-row">
+            <input type="text" id="discountCodeInput" placeholder="Nhập mã giảm giá" maxlength="50">
+            <button type="button" id="applyDiscountBtn">Áp dụng</button>
+          </div>
+          <p id="discountMessage" class="discount-msg"></p>
+        </div>
+
         <div class="price-line">
           <span>Tạm tính</span>
-          <strong>18.400.000đ</strong>
+          <strong id="checkoutSubtotal">18.400.000đ</strong>
+        </div>
+        <div class="price-line" id="discountPriceLine" style="display:none;">
+          <span>Giảm giá</span>
+          <strong id="checkoutDiscount">-0đ</strong>
         </div>
         <div class="price-line">
           <span>Phí vận chuyển</span>
-          <strong>30.000đ</strong>
+          <strong id="checkoutShipping">30.000đ</strong>
         </div>
         <div class="price-line total">
           <span>Tổng thanh toán</span>
-          <strong>18.430.000đ</strong>
+          <strong id="checkoutTotal">18.430.000đ</strong>
         </div>
 
         <button class="confirm-btn">Xác nhận thanh toán</button>
@@ -155,29 +173,28 @@
   <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>
-      <a href="#">Dành ở đây</a>
-      <a href="#">Dành ở đây</a>
+      <a href="../info/privacy-policy.html">Chính sách bảo mật</a>
+      <a href="../info/operating-regulations.html">Quy chế hoạt động</a>
     </div>
     <div class="footer-col">
       <h3>Liên kết</h3>
-      <a href="#">Dành ở đây</a>
-      <a href="#">Dành ở đây</a>
+      <a href="../info/promotions.html">Khuyến mãi hôm nay</a>
+      <a href="../core/landing.html#featured-categories">Danh mục nổi bật</a>
     </div>
     <div class="footer-col">
       <h3>Hỗ trợ</h3>
-      <a href="#">Dành ở đây</a>
-      <a href="#">Dành ở đây</a>
+      <a href="../info/help-center.html">Trung tâm trợ giúp</a>
+      <a href="../info/faq.html">Câu hỏi thường gặp</a>
     </div>
     <div class="footer-col">
       <h3>Theo dõi</h3>
-      <a href="#">Dành ở đây</a>
-      <a href="#">Dành ở đây</a>
+      <a href="https://www.facebook.com/tran.co.cow/" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href="https://www.tiktok.com/@ctran771?lang=en" target="_blank" rel="noopener noreferrer">TikTok</a>
     </div>
   </footer>
 
-  <script src="../../js/core/common.js?v=20260408"></script>
-  <script src="../../js/cart/checkout.js?v=20260408e"></script>
+  <script src="../../js/core/common.js?v=20260522f"></script>
+  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
+  <script src="../../js/cart/checkout.js?v=20260523b"></script>
 </body>
 </html>
-
-

@@ -9,8 +9,8 @@
     "unit_price": "730000.00",
     "discount_percent": 57,
     "stock_quantity": 203,
-    "rating_avg": "3.80",
-    "total_reviews": 143
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB002",
@@ -22,8 +22,8 @@
     "unit_price": "2390000.00",
     "discount_percent": 20,
     "stock_quantity": 78,
-    "rating_avg": "3.40",
-    "total_reviews": 200
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB003",
@@ -35,8 +35,8 @@
     "unit_price": "4300000.00",
     "discount_percent": 19,
     "stock_quantity": 123,
-    "rating_avg": "4.10",
-    "total_reviews": 111
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB004",
@@ -48,8 +48,8 @@
     "unit_price": "730000.00",
     "discount_percent": 57,
     "stock_quantity": 89,
-    "rating_avg": "3.40",
-    "total_reviews": 154
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB005",
@@ -61,8 +61,8 @@
     "unit_price": "4099000.00",
     "discount_percent": 13,
     "stock_quantity": 43,
-    "rating_avg": "4.60",
-    "total_reviews": 23
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB006",
@@ -74,8 +74,8 @@
     "unit_price": "1249000.00",
     "discount_percent": 17,
     "stock_quantity": 78,
-    "rating_avg": "3.80",
-    "total_reviews": 78
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB007",
@@ -87,8 +87,8 @@
     "unit_price": "329000.00",
     "discount_percent": 0,
     "stock_quantity": 23,
-    "rating_avg": "2.10",
-    "total_reviews": 300
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB008",
@@ -100,8 +100,8 @@
     "unit_price": "2699000.00",
     "discount_percent": 0,
     "stock_quantity": 67,
-    "rating_avg": "3.20",
-    "total_reviews": 125
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB009",
@@ -113,8 +113,8 @@
     "unit_price": "80000.00",
     "discount_percent": 12,
     "stock_quantity": 45,
-    "rating_avg": "4.10",
-    "total_reviews": 87
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "KB010",
@@ -126,7 +126,7 @@
     "unit_price": "2699000.00",
     "discount_percent": 17,
     "stock_quantity": 32,
-    "rating_avg": "4.70",
-    "total_reviews": 175
+    "rating_avg": "0.00",
+    "total_reviews": 0
   }
 ]

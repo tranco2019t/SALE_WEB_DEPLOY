@@ -184,6 +184,17 @@ def update_customer(db: Session, customer_id: str, data: CustomerUpdate):
 
     update_data = data.model_dump(exclude_unset=True)
 
+    email = update_data.get("customer_email")
+    if email is not None:
+        normalized_email = str(email).strip().lower()
+        existing = db.query(Customer).filter(
+            func.lower(Customer.customer_email) == normalized_email,
+            Customer.customer_id != customer_id
+        ).first()
+        if existing:
+            raise AlreadyExistsException("Email")
+        update_data["customer_email"] = normalized_email
+
     for field, value in update_data.items():
         setattr(customer, field, value)
 

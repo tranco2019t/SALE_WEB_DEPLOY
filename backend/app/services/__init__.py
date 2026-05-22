@@ -7,4 +7,5 @@ from app.services import (
     review_service,
     address_service,
     wishlist_service,
+    notification_service,
 )

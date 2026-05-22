@@ -9,8 +9,8 @@
     "unit_price": "990000.00",
     "discount_percent": 10,
     "stock_quantity": 120,
-    "rating_avg": "4.33",
-    "total_reviews": 512
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN002",
@@ -22,8 +22,8 @@
     "unit_price": "1890000.00",
     "discount_percent": 15,
     "stock_quantity": 95,
-    "rating_avg": "4.49",
-    "total_reviews": 684
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN003",
@@ -35,8 +35,8 @@
     "unit_price": "890000.00",
     "discount_percent": 8,
     "stock_quantity": 140,
-    "rating_avg": "4.21",
-    "total_reviews": 273
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN004",
@@ -48,8 +48,8 @@
     "unit_price": "2490000.00",
     "discount_percent": 12,
     "stock_quantity": 74,
-    "rating_avg": "4.46",
-    "total_reviews": 329
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN005",
@@ -61,8 +61,8 @@
     "unit_price": "3490000.00",
     "discount_percent": 14,
     "stock_quantity": 58,
-    "rating_avg": "4.57",
-    "total_reviews": 241
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN006",
@@ -74,8 +74,8 @@
     "unit_price": "1590000.00",
     "discount_percent": 9,
     "stock_quantity": 86,
-    "rating_avg": "4.38",
-    "total_reviews": 415
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN007",
@@ -87,8 +87,8 @@
     "unit_price": "690000.00",
     "discount_percent": 6,
     "stock_quantity": 160,
-    "rating_avg": "4.08",
-    "total_reviews": 298
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN008",
@@ -100,8 +100,8 @@
     "unit_price": "990000.00",
     "discount_percent": 7,
     "stock_quantity": 145,
-    "rating_avg": "4.19",
-    "total_reviews": 354
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN009",
@@ -113,8 +113,8 @@
     "unit_price": "5490000.00",
     "discount_percent": 20,
     "stock_quantity": 37,
-    "rating_avg": "4.72",
-    "total_reviews": 176
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "TN010",
@@ -126,7 +126,7 @@
     "unit_price": "6990000.00",
     "discount_percent": 22,
     "stock_quantity": 26,
-    "rating_avg": "4.81",
-    "total_reviews": 121
+    "rating_avg": "0.00",
+    "total_reviews": 0
   }
 ]

@@ -8,3 +8,4 @@ from .review import Review
 from .address import Address
 from .wishlist import Wishlist
 from .discount_code import DiscountCode
+from .notification import Notification

@@ -1,11 +1,14 @@
 import logging
+import sys
 import time
 import uuid
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 from sqlalchemy import text
 
@@ -20,9 +23,17 @@ from app.routers import (
     payment_router,
     review_router,
     address_router,
-    wishlist_router
+    wishlist_router,
+    notification_router,
+    discount_router,
 )
 from Admin import admin_router
+
+_chatbot_path = Path(__file__).resolve().parents[2] / "CHAT BOT" / "backend"
+if str(_chatbot_path) not in sys.path:
+    sys.path.insert(0, str(_chatbot_path))
+
+from chatbot_router import router as chatbot_router
 
 
 configure_json_logging(service_name="sale_web_backend")
@@ -45,6 +56,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+_chatbot_frontend_path = Path(__file__).resolve().parents[2] / "CHAT BOT" / "frontend"
+_uploads_path = Path(__file__).resolve().parents[2] / "backend" / "uploads"
+_uploads_path.mkdir(parents=True, exist_ok=True)
+app.mount("/chatbot-assets", StaticFiles(directory=_chatbot_frontend_path), name="chatbot-assets")
+app.mount("/uploads", StaticFiles(directory=_uploads_path), name="uploads")
 app.include_router(customer_router.router)
 app.include_router(product_router.router)
 app.include_router(order_router.router)
@@ -53,6 +69,9 @@ app.include_router(payment_router.router)
 app.include_router(review_router.router)
 app.include_router(address_router.router)
 app.include_router(wishlist_router.router)
+app.include_router(notification_router.router)
+app.include_router(discount_router.router)
+app.include_router(chatbot_router)
 app.include_router(admin_router.router)
 
 

@@ -25,6 +25,7 @@ class CustomerLogin(BaseModel):
 # Update
 class CustomerUpdate(BaseModel):
     customer_name: Optional[str] = None
+    customer_email: Optional[EmailStr] = None
     phone_number: Optional[str] = None
     address: Optional[str] = None
 

@@ -1,0 +1,45 @@
+.customers-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.customers-layout .admin-table th:nth-child(1),
+.customers-layout .admin-table td:nth-child(1) {
+  width: 88px;
+}
+
+.customers-layout .admin-table th:nth-child(3),
+.customers-layout .admin-table td:nth-child(3) {
+  width: 220px;
+}
+
+.customers-layout .admin-table th:nth-child(4),
+.customers-layout .admin-table td:nth-child(4),
+.customers-layout .admin-table th:nth-child(5),
+.customers-layout .admin-table td:nth-child(5),
+.customers-layout .admin-table th:nth-child(6),
+.customers-layout .admin-table td:nth-child(6) {
+  width: 110px;
+}
+
+.customers-layout .admin-table th:nth-child(7),
+.customers-layout .admin-table td:nth-child(7) {
+  width: 128px;
+}
+
+.detail-trigger {
+  color: var(--admin-blue);
+  font-weight: 700;
+}
+
+@media (max-width: 1180px) {
+  .customers-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hide inline editor card when using modal-only workflow */
+.editor-card {
+  display: none !important;
+}

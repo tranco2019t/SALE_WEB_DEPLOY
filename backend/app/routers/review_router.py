@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -14,13 +14,24 @@ router = APIRouter(
 
 @router.post("/", response_model=ReviewResponse, status_code=status.HTTP_201_CREATED)
 def create_review(
-    payload: ReviewCreate,
+    product_id: str = Form(...),
+    customer_id: str = Form(...),
+    rating: int = Form(...),
+    comment: str | None = Form(default=None),
+    images: List[UploadFile] | None = File(default=None),
     db: Session = Depends(get_db),
     current_customer=Depends(get_current_customer),
 ):
-    if payload.customer_id != current_customer.customer_id:
+    if customer_id != current_customer.customer_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
-    return review_service.create_review(db, payload)
+    payload = ReviewCreate(
+        product_id=product_id,
+        customer_id=customer_id,
+        rating=rating,
+        comment=comment,
+        image_urls=[],
+    )
+    return review_service.create_review(db, payload, images=images or [])
 
 @router.get("/product/{product_id}", response_model=List[ReviewResponse])
 def reviews_by_product(product_id: str, db: Session = Depends(get_db)):

@@ -1,0 +1,91 @@
+.discounts-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.discounts-layout .admin-table th:nth-child(2),
+.discounts-layout .admin-table td:nth-child(2),
+.discounts-layout .admin-table th:nth-child(5),
+.discounts-layout .admin-table td:nth-child(5),
+.discounts-layout .admin-table th:nth-child(6),
+.discounts-layout .admin-table td:nth-child(6) {
+  width: 110px;
+}
+
+.discounts-layout .admin-table th:nth-child(7),
+.discounts-layout .admin-table td:nth-child(7) {
+  width: 132px;
+}
+
+/* Compact date fields in discount form */
+#discountForm > .form-row:last-of-type {
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+#discountForm > .form-row:last-of-type .field-group {
+  gap: 4px;
+}
+
+#discountForm > .form-row:last-of-type .field-group label {
+  font-size: 11px;
+  padding: 0 2px;
+}
+
+#discountForm > .form-row:last-of-type .admin-input {
+  padding: 8px 10px;
+  font-size: 13px;
+  height: 38px;
+}
+
+/* Enhanced datetime-local styling */
+input[type="datetime-local"].admin-input {
+  color: #1f2d21;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 14px;
+}
+
+input[type="datetime-local"].admin-input::placeholder {
+  color: #9caca0;
+}
+
+/* Form card improvements */
+.editor-card {
+  background: #fefffe;
+  border: 1px solid #e8eee6;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.editor-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.editor-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edf2ec;
+}
+
+.form-grid {
+  display: grid;
+  gap: 14px;
+}
+
+@media (max-width: 1180px) {
+  .discounts-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hide inline editor card when using modal-only workflow */
+.editor-card {
+  display: none !important;
+}

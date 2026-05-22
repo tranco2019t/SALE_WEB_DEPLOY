@@ -247,7 +247,7 @@
       addCartBtn.addEventListener("click", function (event) {
         event.preventDefault();
         TamTai.addToCart(toCartItem(product), getQty());
-        window.location.href = "../cart/cart.html";
+        TamTai.flyToCart(addCartBtn, product.image);
       });
     }
 

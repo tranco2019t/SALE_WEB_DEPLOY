@@ -1,12 +1,17 @@
 (function () {
+  var REVIEW_PAGE_SIZE = 10;
+  var MAX_REVIEW_IMAGES = 5;
+  var MAX_REVIEW_IMAGE_SIZE = 5 * 1024 * 1024;
+  var DEFAULT_IMAGE = "../../images/acer-refurbished-laptop-500x500.webp";
+
   var state = {
     token: "",
     customerId: "",
     products: [],
-    reviewsByProduct: {}
+    pendingProducts: [],
+    reviewsByProduct: {},
+    page: 1
   };
-
-  var DEFAULT_IMAGE = "../../images/acer-refurbished-laptop-500x500.webp";
 
   function displayValue(value) {
     var text = (value || "").toString().trim();
@@ -26,20 +31,40 @@
     if (!dateValue) {
       return "chưa có";
     }
+
     var date = new Date(dateValue);
     if (Number.isNaN(date.getTime())) {
       return "chưa có";
     }
+
     var dd = String(date.getDate()).padStart(2, "0");
     var mm = String(date.getMonth() + 1).padStart(2, "0");
     var yyyy = date.getFullYear();
     return dd + "/" + mm + "/" + yyyy;
   }
 
+  function resolveAssetUrl(url) {
+    var text = String(url || "").trim();
+    if (!text) {
+      return DEFAULT_IMAGE;
+    }
+
+    if (/^(https?:)?\/\//i.test(text) || text.indexOf("data:") === 0) {
+      return text;
+    }
+
+    if (text.charAt(0) === "/" && window.TamTai && typeof TamTai.buildApiUrl === "function") {
+      return TamTai.buildApiUrl(text);
+    }
+
+    return text;
+  }
+
   function applySidebarProfile(profileInput) {
     var profile = profileInput || TamTai.getProfile();
     var heading = document.querySelector(".profile-head h2");
     var emailText = document.querySelector(".profile-head p");
+
     if (heading) {
       heading.textContent = displayValue(profile.fullName);
     }
@@ -50,9 +75,19 @@
 
   function renderEmpty(message) {
     var list = document.getElementById("reviewList");
+    var summary = document.getElementById("reviewSummary");
+    var pagination = document.getElementById("reviewPagination");
+
+    if (summary) {
+      summary.textContent = "";
+    }
+    if (pagination) {
+      pagination.innerHTML = "";
+    }
     if (!list) {
       return;
     }
+
     list.innerHTML = '<p class="review-empty">' + escapeHtml(message || "chưa có dữ liệu") + "</p>";
   }
 
@@ -98,16 +133,51 @@
     }
   }
 
-  async function fetchProducts() {
+  async function fetchPurchasedProducts() {
+    if (!state.token) {
+      return [];
+    }
+
     try {
-      var response = await fetch(TamTai.API_BASE_URL + "/products?skip=0&limit=100", {
-        method: "GET"
+      var response = await fetch(TamTai.API_BASE_URL + "/orders?skip=0&limit=100", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + state.token
+        }
       });
       if (!response.ok) {
         return [];
       }
+
       var data = await response.json();
-      return Array.isArray(data) ? data : [];
+      var rows = Array.isArray(data) ? data : [];
+      var productMap = {};
+      var orderedIds = [];
+
+      rows.forEach(function (order) {
+        var items = Array.isArray(order.items)
+          ? order.items
+          : (Array.isArray(order.order_items) ? order.order_items : []);
+
+        items.forEach(function (item) {
+          var productId = String(item.product_id || "").trim();
+          if (!productId || productMap[productId]) {
+            return;
+          }
+
+          productMap[productId] = {
+            product_id: productId,
+            product_name: item.product_name || ("Sản phẩm " + productId),
+            description: item.description || "",
+            image_url: resolveAssetUrl(item.image_url || DEFAULT_IMAGE)
+          };
+          orderedIds.push(productId);
+        });
+      });
+
+      return orderedIds.map(function (productId) {
+        return productMap[productId];
+      });
     } catch (error) {
       return [];
     }
@@ -144,6 +214,9 @@
         if (!productId) {
           return;
         }
+
+        review.image_urls = Array.isArray(review.image_urls) ? review.image_urls : [];
+
         var existing = map[productId];
         if (!existing) {
           map[productId] = review;
@@ -163,36 +236,10 @@
     }
   }
 
-  function buildReviewProductList(products, reviewsByProduct) {
-    var byId = {};
-    products.forEach(function (product) {
-      byId[product.product_id] = product;
+  function buildPendingReviewProducts(products, reviewsByProduct) {
+    return (products || []).filter(function (product) {
+      return !reviewsByProduct[product.product_id];
     });
-
-    var result = [];
-    Object.keys(reviewsByProduct).forEach(function (productId) {
-      if (byId[productId]) {
-        result.push(byId[productId]);
-      } else {
-        result.push({
-          product_id: productId,
-          product_name: "Sản phẩm " + productId,
-          description: null,
-          image_url: null
-        });
-      }
-    });
-
-    products.forEach(function (product) {
-      if (result.length >= 10) {
-        return;
-      }
-      if (!reviewsByProduct[product.product_id]) {
-        result.push(product);
-      }
-    });
-
-    return result.slice(0, 10);
   }
 
   function createStarsHtml(selectedRating) {
@@ -205,12 +252,7 @@
   }
 
   function createReviewCard(product) {
-    var review = state.reviewsByProduct[product.product_id] || null;
-    var rating = review ? Number(review.rating || 0) : 0;
-    var ratingText = rating > 0 ? ("Bạn đã chọn " + rating + " sao") : "Chưa chọn sao";
-    var buttonText = review ? "Cập nhật đánh giá" : "Gửi đánh giá";
-    var reviewedAt = review ? formatDate(review.created_at) : "chưa có";
-    var image = product.image_url || DEFAULT_IMAGE;
+    var image = resolveAssetUrl(product.image_url || DEFAULT_IMAGE);
 
     return [
       '<article class="review-item" data-product-id="' + escapeHtml(product.product_id) + '">',
@@ -218,7 +260,7 @@
       '    <img src="' + escapeHtml(image) + '" alt="Sản phẩm">',
       "    <div>",
       "      <h3>" + escapeHtml(displayValue(product.product_name)) + "</h3>",
-      "      <p>Mã sản phẩm: " + escapeHtml(displayValue(product.product_id)) + " | Đã đánh giá: " + escapeHtml(reviewedAt) + "</p>",
+      "      <p>Mã sản phẩm: " + escapeHtml(displayValue(product.product_id)) + " | Chưa đánh giá</p>",
       '      <p class="review-meta">' + escapeHtml(displayValue(product.description)) + "</p>",
       "    </div>",
       "  </div>",
@@ -228,67 +270,173 @@
       '  <form class="review-form">',
       "    <label>Đánh giá sao</label>",
       '    <div class="star-picker">',
-      createStarsHtml(rating),
-      '      <span class="rating-text">' + escapeHtml(ratingText) + "</span>",
+      createStarsHtml(0),
+      '      <span class="rating-text">Chưa chọn sao</span>',
       "    </div>",
-      '    <input class="rating-value" type="hidden" value="' + String(rating || 0) + '">',
+      '    <input class="rating-value" type="hidden" value="0">',
       "    <label>Nhận xét của bạn</label>",
-      '    <textarea class="review-comment" rows="4" placeholder="Chia sẻ trải nghiệm sử dụng sản phẩm...">' + escapeHtml(review ? (review.comment || "") : "") + "</textarea>",
+      '    <textarea class="review-comment" rows="4" placeholder="Chia sẻ trải nghiệm sử dụng sản phẩm..."></textarea>',
       "    <label>Hình ảnh sản phẩm</label>",
-      '    <input class="review-images" type="file" accept="image/*" multiple>',
-      '    <p class="image-count">Chưa chọn hình ảnh</p>',
-      '    <button type="submit" class="submit-review-btn">' + buttonText + "</button>",
+      '    <input class="review-image-input" type="file" accept="image/*" multiple>',
+      '    <p class="review-image-hint">Chọn tối đa 5 ảnh, mỗi ảnh dưới 5MB.</p>',
+      '    <div class="review-image-preview"></div>',
+      '    <p class="image-count">Chưa chọn ảnh.</p>',
+      '    <button type="submit" class="submit-review-btn">Gửi đánh giá</button>',
       "  </form>",
       "</article>"
     ].join("");
   }
 
-  function renderReviewList(products) {
+  function renderSummary(totalItems, currentPage, pageSize) {
+    var summary = document.getElementById("reviewSummary");
+    if (!summary) {
+      return;
+    }
+
+    if (!totalItems) {
+      summary.textContent = "";
+      return;
+    }
+
+    var start = (currentPage - 1) * pageSize + 1;
+    var end = Math.min(currentPage * pageSize, totalItems);
+    summary.textContent = "Hiển thị " + start + " - " + end + " / " + totalItems + " sản phẩm chưa đánh giá";
+  }
+
+  function renderPagination(totalItems, currentPage, pageSize) {
+    var pagination = document.getElementById("reviewPagination");
+    if (!pagination) {
+      return;
+    }
+
+    pagination.innerHTML = "";
+
+    var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    if (totalItems <= pageSize) {
+      return;
+    }
+
+    var html = [];
+    html.push('<button type="button" class="review-page-btn" data-page="' + (currentPage - 1) + '"' + (currentPage === 1 ? " disabled" : "") + ">Trước</button>");
+    for (var i = 1; i <= totalPages; i += 1) {
+      html.push('<button type="button" class="review-page-btn' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + "</button>");
+    }
+    html.push('<button type="button" class="review-page-btn" data-page="' + (currentPage + 1) + '"' + (currentPage === totalPages ? " disabled" : "") + ">Sau</button>");
+    pagination.innerHTML = html.join("");
+  }
+
+  function renderReviewPage() {
     var list = document.getElementById("reviewList");
     if (!list) {
       return;
     }
 
-    if (!products.length) {
-      renderEmpty("chưa có sản phẩm để đánh giá");
+    var totalItems = state.pendingProducts.length;
+    if (!totalItems) {
+      renderEmpty("Bạn đã đánh giá hết sản phẩm đã mua.");
       return;
     }
 
-    list.innerHTML = products.map(createReviewCard).join("");
+    var totalPages = Math.max(1, Math.ceil(totalItems / REVIEW_PAGE_SIZE));
+    if (state.page > totalPages) {
+      state.page = totalPages;
+    }
+    if (state.page < 1) {
+      state.page = 1;
+    }
+
+    var startIndex = (state.page - 1) * REVIEW_PAGE_SIZE;
+    var pageItems = state.pendingProducts.slice(startIndex, startIndex + REVIEW_PAGE_SIZE);
+
+    list.innerHTML = pageItems.map(createReviewCard).join("");
+    renderSummary(totalItems, state.page, REVIEW_PAGE_SIZE);
+    renderPagination(totalItems, state.page, REVIEW_PAGE_SIZE);
     bindReviewItems();
   }
 
   function updateStarsVisual(item, rating) {
     var stars = item.querySelectorAll(".star-btn");
     var ratingText = item.querySelector(".rating-text");
+
     stars.forEach(function (star) {
-      var starValue = Number(star.getAttribute("data-value"));
+      var starValue = Number(star.getAttribute("data-value") || 0);
       star.classList.toggle("active", starValue <= rating);
     });
+
     if (ratingText) {
       ratingText.textContent = rating > 0 ? ("Bạn đã chọn " + rating + " sao") : "Chưa chọn sao";
     }
   }
 
-  async function submitReview(productId, rating, comment) {
+  function validateImageFiles(files) {
+    if (files.length > MAX_REVIEW_IMAGES) {
+      return "Bạn chỉ có thể chọn tối đa " + MAX_REVIEW_IMAGES + " ảnh.";
+    }
+
+    for (var i = 0; i < files.length; i += 1) {
+      var file = files[i];
+      if (!file.type || file.type.indexOf("image/") !== 0) {
+        return "Chỉ hỗ trợ tệp hình ảnh.";
+      }
+      if (file.size > MAX_REVIEW_IMAGE_SIZE) {
+        return "Mỗi ảnh đánh giá phải nhỏ hơn 5MB.";
+      }
+    }
+
+    return "";
+  }
+
+  function renderSelectedImages(item, files) {
+    var preview = item.querySelector(".review-image-preview");
+    var count = item.querySelector(".image-count");
+
+    if (!preview || !count) {
+      return;
+    }
+
+    if (!files.length) {
+      preview.innerHTML = "";
+      count.textContent = "Chưa chọn ảnh.";
+      return;
+    }
+
+    preview.innerHTML = files.map(function (file) {
+      return '<img class="review-thumb" src="' + escapeHtml(URL.createObjectURL(file)) + '" alt="' + escapeHtml(file.name || "Ảnh đánh giá") + '">';
+    }).join("");
+
+    count.textContent = "Đã chọn " + files.length + " ảnh.";
+  }
+
+  async function submitReview(productId, rating, comment, files) {
+    var formData = new FormData();
+    formData.append("product_id", productId);
+    formData.append("customer_id", state.customerId);
+    formData.append("rating", String(rating));
+    formData.append("comment", comment || "");
+
+    files.forEach(function (file) {
+      formData.append("images", file, file.name);
+    });
+
     var response = await fetch(TamTai.API_BASE_URL + "/reviews/", {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + state.token,
-        "Content-Type": "application/json"
+        Authorization: "Bearer " + state.token
       },
-      body: JSON.stringify({
-        product_id: productId,
-        customer_id: state.customerId,
-        rating: rating,
-        comment: comment || null
-      })
+      body: formData
     });
 
-    var data = await response.json();
+    var data = null;
+    try {
+      data = await response.json();
+    } catch (error) {
+      data = null;
+    }
+
     if (!response.ok) {
       throw new Error((data && data.detail) || "Không gửi được đánh giá.");
     }
+
     return data;
   }
 
@@ -298,9 +446,8 @@
     reviewItems.forEach(function (item) {
       var stars = item.querySelectorAll(".star-btn");
       var ratingValue = item.querySelector(".rating-value");
-      var fileInput = item.querySelector(".review-images");
-      var imageCount = item.querySelector(".image-count");
       var form = item.querySelector(".review-form");
+      var imageInput = item.querySelector(".review-image-input");
 
       stars.forEach(function (star) {
         star.addEventListener("click", function () {
@@ -312,10 +459,19 @@
         });
       });
 
-      if (fileInput && imageCount) {
-        fileInput.addEventListener("change", function () {
-          var count = fileInput.files ? fileInput.files.length : 0;
-          imageCount.textContent = count > 0 ? ("Đã chọn " + count + " hình ảnh") : "Chưa chọn hình ảnh";
+      if (imageInput) {
+        imageInput.addEventListener("change", function () {
+          var files = Array.prototype.slice.call(imageInput.files || []);
+          var validationError = validateImageFiles(files);
+
+          if (validationError) {
+            imageInput.value = "";
+            renderSelectedImages(item, []);
+            alert(validationError);
+            return;
+          }
+
+          renderSelectedImages(item, files);
         });
       }
 
@@ -331,6 +487,7 @@
         var commentInput = form.querySelector(".review-comment");
         var comment = commentInput ? commentInput.value.trim() : "";
         var submitBtn = form.querySelector(".submit-review-btn");
+        var files = Array.prototype.slice.call((imageInput && imageInput.files) || []);
 
         if (!productId) {
           alert("Không tìm thấy mã sản phẩm.");
@@ -347,17 +504,23 @@
           return;
         }
 
+        var validationError = validateImageFiles(files);
+        if (validationError) {
+          alert(validationError);
+          return;
+        }
+
         if (submitBtn) {
           submitBtn.disabled = true;
         }
 
         try {
-          var saved = await submitReview(productId, rating, comment);
+          var saved = await submitReview(productId, rating, comment, files);
           state.reviewsByProduct[productId] = saved;
-          updateStarsVisual(item, rating);
-          if (submitBtn) {
-            submitBtn.textContent = "Cập nhật đánh giá";
-          }
+          state.pendingProducts = state.pendingProducts.filter(function (product) {
+            return product.product_id !== productId;
+          });
+          renderReviewPage();
           alert("Đã lưu đánh giá vào hệ thống.");
         } catch (error) {
           alert(error.message || "Không gửi được đánh giá.");
@@ -370,24 +533,48 @@
     });
   }
 
+  function bindPagination() {
+    var pagination = document.getElementById("reviewPagination");
+    if (!pagination) {
+      return;
+    }
+
+    pagination.addEventListener("click", function (event) {
+      var button = event.target.closest("button[data-page]");
+      if (!button || button.disabled) {
+        return;
+      }
+
+      var page = Number(button.getAttribute("data-page") || 1);
+      if (!Number.isFinite(page) || page < 1 || page === state.page) {
+        return;
+      }
+
+      state.page = page;
+      renderReviewPage();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", async function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
     TamTai.showAdminMenuLink(document);
     applySidebarProfile();
+    bindPagination();
 
     var canUse = await ensureCustomerContext();
     if (!canUse) {
-      renderEmpty("bạn cần đăng nhập để xem và gửi đánh giá");
+      renderEmpty("Bạn cần đăng nhập để xem và gửi đánh giá.");
       return;
     }
 
-    var products = await fetchProducts();
+    var products = await fetchPurchasedProducts();
     var reviewsMap = await fetchMyReviews();
 
     state.products = products;
     state.reviewsByProduct = reviewsMap;
+    state.pendingProducts = buildPendingReviewProducts(products, reviewsMap);
+    state.page = 1;
 
-    var reviewProducts = buildReviewProductList(products, reviewsMap);
-    renderReviewList(reviewProducts);
+    renderReviewPage();
   });
 })();

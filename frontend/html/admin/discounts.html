@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mã giảm giá quản trị - TAM TAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/admin/base.css?v=20260522f">
+  <link rel="stylesheet" href="../../css/admin/discounts.css?v=20260522g">
+  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
+        <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
+      </a>
+      <label class="topbar-search" aria-label="Tìm kiếm mã giảm giá trong quản trị">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="adminGlobalSearch" type="search" placeholder="Tìm mã giảm giá, sản phẩm hoặc người dùng...">
+      </label>
+      <div class="topbar-actions">
+        <a class="topbar-link" href="../core/landing.html">
+          <i class="fa-solid fa-store"></i>
+          <span>Xem shop</span>
+        </a>
+        <div class="admin-user-chip">
+          <div class="admin-avatar">A</div>
+          <div class="admin-user-meta">
+            <strong class="admin-user-name">Admin</strong>
+            <span class="admin-user-role">Quản trị viên</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div>
+          <p class="sidebar-title">Quản trị</p>
+          <nav class="sidebar-nav">
+            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tổng quan</span></a>
+            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>Đơn hàng</span></a>
+            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>Người dùng</span></a>
+            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>Mã giảm giá</span></a>
+          </nav>
+        </div>
+
+        <div class="sidebar-footer">
+          <button type="button" class="btn btn-danger" data-logout data-redirect="../auth/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Đăng xuất</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <section class="page-header">
+          <div>
+            <p class="page-eyebrow">Mã giảm giá</p>
+            <h1 class="page-title">Quản lý ưu đãi</h1>
+            <p class="page-subtitle">
+              Tạo, cập nhật và bật tắt các mã giảm giá theo sản phẩm hoặc theo từng khách hàng cụ thể.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <button id="refreshDiscountsBtn" type="button" class="btn btn-secondary">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>Làm mới</span>
+            </button>
+            <button id="createDiscountBtn" type="button" class="btn btn-primary" data-open-form="#discountForm" data-form-title="Thêm mã giảm giá">
+              <i class="fa-solid fa-plus"></i>
+              <span>Tạo mới</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="stats-strip" aria-label="Thống kê nhanh">
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-box-open"></i></span>
+              <div>
+                <p class="stat-label">Tổng sản phẩm</p>
+                <strong id="statProducts" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tất cả sản phẩm</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
+              <div>
+                <p class="stat-label">Tổng người dùng</p>
+                <strong id="statCustomers" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Đang hoạt động</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+              <div>
+                <p class="stat-label">Đơn hàng</p>
+                <strong id="statOrders" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tổng số đơn</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-wallet"></i></span>
+              <div>
+                <p class="stat-label">Doanh thu</p>
+                <strong id="statRevenue" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tổng doanh thu</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-ticket"></i></span>
+              <div>
+                <p class="stat-label">Mã giảm giá</p>
+                <strong id="statDiscountCodes" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Đang hoạt động</p>
+          </article>
+        </section>
+
+        <div id="pageMessage" class="page-message" aria-live="polite"></div>
+
+        <section class="discounts-layout">
+          <article class="page-panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Danh sách mã giảm giá</h2>
+                <p class="panel-subtext">Quan sát tỷ lệ giảm, đối tượng áp dụng và lượt sử dụng trên cùng một bảng.
+              </div>
+              <div class="panel-tools">
+                <span id="discountsCount" class="count-chip">0 mã</span>
+              </div>
+            </div>
+
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="code"><span>Mã</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="discount_percent"><span>Giảm</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="product_name"><span>Sản phẩm</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="customer_name"><span>Khách hàng</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="usage_limit"><span>Lượt dùng</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="is_active"><span>Trạng thái</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><span>Thao tác</span></th>
+                  </tr>
+                </thead>
+                <tbody id="discountsTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-footer">
+              <p id="discountsPageSummary" class="table-summary">Không có dữ liệu để hiển thị.</p>
+              <div id="discountsPagination" class="pagination"></div>
+            </div>
+          </article>
+
+          <aside class="editor-card">
+            <div class="editor-card-head">
+              <div>
+                <h2 id="discountFormTitle" class="panel-title">Thêm mã giảm giá</h2>
+                <p class="section-note">Khung này hỗ trợ tạo mới hoặc cập nhật nhanh mã giảm giá theo đối tượng áp dụng.
+              </div>
+              <button id="resetDiscountFormBtn" type="button" class="btn btn-soft" data-open-form="#discountForm" data-form-title="Thêm mã giảm giá">Tạo mới</button>
+            </div>
+
+            <form id="discountForm" class="form-grid">
+              <input id="discountFormId" type="hidden">
+
+              <div class="field-group">
+                <label for="discountCode">Mã giảm giá</label>
+                <input id="discountCode" class="admin-input" type="text" placeholder="Nhập mã ưu đãi" required>
+              </div>
+
+              <div class="field-group">
+                <label for="discountPercent">Giảm giá (%)</label>
+                <input id="discountPercent" class="admin-input" type="number" min="1" max="100" step="1" placeholder="Nhập % giảm giá" required>
+              </div>
+
+              <div class="field-group">
+                <label for="discountProduct">Sản phẩm áp dụng</label>
+                <select id="discountProduct" class="admin-select">
+                  <option value="">Tất cả sản phẩm</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="discountCustomer">Khách hàng áp dụng</label>
+                <select id="discountCustomer" class="admin-select">
+                  <option value="">Tất cả người dùng</option>
+                </select>
+                <p class="section-note">Chọn một khách hàng để gửi riêng, hoặc để trống để gửi thông báo cho toàn bộ khách hàng.</p>
+              </div>
+
+              <div class="form-row">
+                <div class="field-group">
+                  <label for="discountUsageLimit">Giới hạn sử dụng</label>
+                  <input id="discountUsageLimit" class="admin-input" type="number" min="1" step="1" placeholder="Nhập giới hạn">
+                </div>
+                <div class="field-group">
+                  <label for="discountStatus">Trạng thái</label>
+                  <select id="discountStatus" class="admin-select">
+                    <option value="true">Đang bật</option>
+                    <option value="false">Đang tắt</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field-group">
+                  <label for="discountStartsAt">Bắt đầu</label>
+                  <input id="discountStartsAt" class="admin-input" type="datetime-local">
+                </div>
+                <div class="field-group">
+                  <label for="discountExpiresAt">Kết thúc</label>
+                  <input id="discountExpiresAt" class="admin-input" type="datetime-local">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="discountDescription">Mô tả</label>
+                <textarea id="discountDescription" class="admin-textarea" placeholder="Nhập mô tả ngắn về mã giảm giá"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button id="discountSubmitBtn" type="submit" class="btn btn-primary">Lưu mã</button>
+                <button id="discountCancelBtn" type="button" class="btn btn-secondary">Hủy</button>
+              </div>
+            </form>
+          </aside>
+        </section>
+
+        <footer class="admin-footer">
+          <span>&copy; 2025 TAM TAI. All rights reserved.</span>
+          <span>Phiên bản 1.0.0</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/core/common.js?v=20260522f"></script>
+  <script src="../../js/admin/core.js?v=20260522e"></script>
+  <script src="../../js/admin/discounts.js?v=20260523a"></script>
+  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
+
+  <!-- Generic modal used to host forms for add/edit actions -->
+  <div id="entityFormModal" class="modal-shell" hidden>
+    <button type="button" class="modal-backdrop" data-close-modal aria-label="Đóng"></button>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityFormModalTitle">
+      <div class="modal-head">
+        <div>
+          <p class="modal-eyebrow">Form</p>
+          <h2 id="entityFormModalTitle">Form</h2>
+        </div>
+        <button type="button" class="modal-close" data-close-modal aria-label="Đóng">×</button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</body>
+</html>

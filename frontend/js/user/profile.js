@@ -30,6 +30,50 @@
     return dd + "/" + mm + "/" + yyyy;
   }
 
+  function parseMoney(value) {
+    if (typeof value === "number") {
+      return Number.isFinite(value) ? value : null;
+    }
+    if (typeof value === "string" && value.trim()) {
+      var parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+    return null;
+  }
+
+  function formatMoney(value) {
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      return "chưa có";
+    }
+    return Number(value).toLocaleString("vi-VN") + "đ";
+  }
+
+  function resolveOrderTotal(order) {
+    var direct = parseMoney(order && (order.total_amount || order.total));
+    if (direct !== null) {
+      return direct;
+    }
+
+    var items = Array.isArray(order && order.items)
+      ? order.items
+      : (Array.isArray(order && order.order_items) ? order.order_items : []);
+
+    if (!items.length) {
+      return null;
+    }
+
+    return items.reduce(function (sum, item) {
+      var amount = parseMoney(item.amount);
+      if (amount !== null) {
+        return sum + amount;
+      }
+
+      var quantity = Math.max(0, Number(item.quantity || 0));
+      var unitPrice = parseMoney(item.price_at_purchase || item.unit_price || item.unitPrice);
+      return sum + ((unitPrice !== null ? unitPrice : 0) * quantity);
+    }, 0);
+  }
+
   function mapOrderStatus(rawStatus) {
     var normalized = (rawStatus || "").toString().trim().toLowerCase();
     if (!normalized) {
@@ -102,12 +146,13 @@
 
     orders.slice(0, 4).forEach(function (order) {
       var status = mapOrderStatus(order.status);
+      var totalText = formatMoney(resolveOrderTotal(order));
       var row = document.createElement("div");
       row.className = "order-row";
       row.innerHTML = [
         "<span>" + displayValue(order.order_id) + "</span>",
         "<span>" + formatDate(order.order_date) + "</span>",
-        "<span>chưa có</span>",
+        "<span>" + totalText + "</span>",
         '<span class="' + status.className + '">' + displayValue(status.label) + "</span>"
       ].join("");
       table.appendChild(row);
@@ -180,6 +225,7 @@
 
     var payload = {
       customer_name: profile.fullName || null,
+      customer_email: profile.email || null,
       phone_number: profile.phone || null
     };
 

@@ -87,3 +87,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# =========================
+# Uploads / media (user-generated)
+# =========================
+backend/uploads/
+backend/media/
+
+# =========================
+# Chat bot (separate module)
+# =========================
+CHAT\ BOT/

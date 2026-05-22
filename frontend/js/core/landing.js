@@ -1,6 +1,6 @@
 (function () {
   var DEFAULT_IMAGE = (window.TamTai && TamTai.DEFAULT_PRODUCT_IMAGE) || "../../images/acer-refurbished-laptop-500x500.webp";
-  var HERO_ROTATE_MS = 3600;
+  var HERO_ROTATE_MS = 3000;
   var HERO_MAX_SLIDES = 8;
 
   var CATEGORY_PRIORITY = [
@@ -317,10 +317,14 @@
       currentIndex = (index + slides.length) % slides.length;
       var slide = slides[currentIndex];
 
-      imageEl.src = slide.image;
-      imageEl.alt = slide.name;
-      tagEl.textContent = slide.tag;
-      titleEl.textContent = slide.name;
+      imageEl.style.opacity = "0";
+      setTimeout(function () {
+        imageEl.src = slide.image;
+        imageEl.alt = slide.name;
+        tagEl.textContent = slide.tag;
+        titleEl.textContent = slide.name;
+        imageEl.style.opacity = "1";
+      }, 60);
 
       dotsWrap.querySelectorAll(".hero-dot").forEach(function (dot, dotIndex) {
         dot.classList.toggle("active", dotIndex === currentIndex);

@@ -150,6 +150,94 @@ body {
   margin-bottom: 10px;
 }
 
+.saved-addresses {
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 1px solid #d7e3d5;
+  border-radius: 10px;
+  background: #f8fcf7;
+}
+
+.saved-addresses-head {
+  margin-bottom: 10px;
+}
+
+.saved-addresses-head h3 {
+  font-size: 16px;
+  color: #29442d;
+  margin-bottom: 4px;
+}
+
+.saved-addresses-head p {
+  font-size: 12px;
+  color: #607162;
+}
+
+.saved-addresses-list {
+  display: grid;
+  gap: 10px;
+}
+
+.saved-address-card {
+  width: 100%;
+  border: 1px solid #d5e2d4;
+  border-radius: 8px;
+  background: #edf5ec;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.saved-address-card:hover {
+  border-color: #8fbc91;
+  background: #f2f8f1;
+  transform: translateY(-1px);
+}
+
+.saved-address-card.is-active {
+  border-color: #49a14e;
+  background: #e4f1e2;
+  box-shadow: inset 0 0 0 1px rgba(73, 161, 78, 0.1);
+}
+
+.saved-address-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.saved-address-name {
+  font-size: 13px;
+  color: #2c412f;
+  font-weight: 700;
+}
+
+.saved-address-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #dcefd8;
+  color: #2f7d39;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.saved-address-phone,
+.saved-address-line {
+  font-size: 12px;
+  color: #556757;
+}
+
+.saved-address-phone {
+  margin-bottom: 4px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -187,6 +275,10 @@ body {
 .checkout-form textarea {
   padding-top: 8px;
   resize: vertical;
+}
+
+.checkout-form input[list]::-webkit-calendar-picker-indicator {
+  opacity: 0;
 }
 
 .method-block {
@@ -284,6 +376,62 @@ body {
   color: #2f8f3c;
 }
 
+.discount-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #d8e4d6;
+}
+
+.discount-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.discount-input-row input {
+  flex: 1;
+  height: 34px;
+  border: 1px solid #ccdbca;
+  border-radius: 7px;
+  background: #f9fcf8;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #2b362d;
+  outline: none;
+  font-family: inherit;
+}
+
+.discount-input-row button {
+  height: 34px;
+  border: none;
+  border-radius: 7px;
+  background: #42994a;
+  color: #fff;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.discount-input-row button:disabled {
+  background: #b0c9af;
+  cursor: not-allowed;
+}
+
+.discount-msg {
+  font-size: 11px;
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+.discount-msg.is-success {
+  color: #2f8f3c;
+}
+
+.discount-msg.is-error {
+  color: #e74c3c;
+}
+
 .confirm-btn,
 .back-btn {
   width: 100%;
@@ -378,6 +526,11 @@ body {
 @media (max-width: 700px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .saved-address-top {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .site-footer {

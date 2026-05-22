@@ -146,40 +146,6 @@
     };
   }
 
-  function mapMockOrder(raw) {
-    var meta = ordersData.statusMeta[raw.status] || { label: "chưa có", className: "pending" };
-    var items = Array.isArray(raw.items) ? raw.items.map(function (item) {
-      var itemMeta = ordersData.statusMeta[item.status] || meta;
-      var qty = Number(item.quantity);
-      var unitPrice = parseMoney(item.unitPrice);
-      var total = unitPrice !== null && Number.isFinite(qty) ? unitPrice * qty : null;
-      return {
-        name: displayValue(item.name),
-        description: displayValue(item.description),
-        image: item.image || DEFAULT_IMAGE,
-        quantity: Number.isFinite(qty) && qty > 0 ? qty : null,
-        statusLabel: itemMeta.label,
-        statusClass: itemMeta.className,
-        unitPrice: unitPrice,
-        total: total
-      };
-    }) : [];
-
-    return {
-      id: normalizeOrderId(raw.id),
-      date: formatDate(raw.date),
-      statusLabel: meta.label,
-      statusClassName: meta.className,
-      total: parseMoney(raw.total),
-      shippingAddress: "chưa có",
-      shippingFee: null,
-      discountAmount: null,
-      paymentMethod: "chưa có",
-      items: items,
-      source: "mock"
-    };
-  }
-
   function getOrderIdFromUrl() {
     var params = new URLSearchParams(window.location.search);
     return normalizeOrderId(params.get("id"));
@@ -207,16 +173,6 @@
     } catch (error) {
       return null;
     }
-  }
-
-  function loadOrderFromMock(orderId) {
-    if (!Array.isArray(ordersData.orders)) {
-      return null;
-    }
-    var found = ordersData.orders.find(function (order) {
-      return normalizeOrderId(order.id) === normalizeOrderId(orderId);
-    });
-    return found ? mapMockOrder(found) : null;
   }
 
   function renderOverview(order) {
@@ -314,8 +270,6 @@
     var order = null;
     if (isLoggedInUser) {
       order = await loadOrderFromBackend(orderId);
-    } else {
-      order = loadOrderFromMock(orderId);
     }
     if (!order) {
       renderNotFound(orderId);

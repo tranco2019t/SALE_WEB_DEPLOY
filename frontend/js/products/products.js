@@ -20,13 +20,8 @@
     CAT_MOUSE: "Chu\u1ed9t m\u00e1y t\u00ednh"
   };
 
-  var PRICE_RANGES = [
-    { key: "lt100", label: "< 100k", test: function (price) { return price < 100000; } },
-    { key: "100_500", label: "100k - 500k", test: function (price) { return price >= 100000 && price <= 500000; } },
-    { key: "500_2000", label: "500k - 2 tri\u1ec7u", test: function (price) { return price > 500000 && price <= 2000000; } },
-    { key: "2000_10000", label: "2 tri\u1ec7u - 10 tri\u1ec7u", test: function (price) { return price > 2000000 && price <= 10000000; } },
-    { key: "gt10000", label: "> 10 tri\u1ec7u", test: function (price) { return price > 10000000; } }
-  ];
+  var PRICE_MIN = 0;
+  var PRICE_MAX = 50000000;
 
   function escapeHtml(value) {
     return String(value || "")
@@ -179,14 +174,8 @@
     return cloned;
   }
 
-  function matchPriceRange(price, selectedRanges) {
-    if (!selectedRanges.size) {
-      return true;
-    }
-
-    return PRICE_RANGES.some(function (range) {
-      return selectedRanges.has(range.key) && range.test(price);
-    });
+  function matchPriceRange(price, min, max) {
+    return price >= min && price <= max;
   }
 
   function buildProductCard(product) {
@@ -317,22 +306,27 @@
     filterBlock.innerHTML = html.join('');
   }
 
-  function renderPriceFilters(filterBlock) {
+  function renderPriceFilters(filterBlock, minVal, maxVal) {
     if (!filterBlock) {
       return;
     }
 
-    var html = [];
-    html.push('<h2>Kho\u1ea3ng gi\u00e1</h2>');
-    PRICE_RANGES.forEach(function (range) {
-      html.push(
-        '<label><input type="checkbox" data-filter-type="price" data-price-range="' + escapeHtml(range.key) + '"> '
-        + escapeHtml(range.label)
-        + '</label>'
-      );
-    });
+    function fmt(v) { return Number(v).toLocaleString("vi-VN") + "\u20ab"; }
 
-    filterBlock.innerHTML = html.join('');
+    filterBlock.innerHTML = [
+      '<h2>Kho\u1ea3ng gi\u00e1</h2>',
+      '<div class="price-slider-wrap">',
+      '  <div class="price-slider-track">',
+      '    <div class="price-slider-fill" id="priceSliderFill"></div>',
+      '  </div>',
+      '  <input type="range" class="price-range price-range-min" id="priceRangeMin" min="0" max="50000000" step="10000" value="' + minVal + '">',
+      '  <input type="range" class="price-range price-range-max" id="priceRangeMax" min="0" max="50000000" step="10000" value="' + maxVal + '">',
+      '  <div class="price-slider-values">',
+      '    <span id="priceLabelMin">' + fmt(minVal) + '</span>',
+      '    <span id="priceLabelMax">' + fmt(maxVal) + '</span>',
+      '  </div>',
+      '</div>'
+    ].join('');
   }
 
   function syncCategoryInputs(filterBlock, selectedCategories) {
@@ -350,15 +344,11 @@
     });
   }
 
-  function syncPriceInputs(filterBlock, selectedRanges) {
-    if (!filterBlock) {
-      return;
-    }
-
-    filterBlock.querySelectorAll('input[data-filter-type="price"]').forEach(function (input) {
-      var value = input.getAttribute('data-price-range');
-      input.checked = selectedRanges.has(value);
-    });
+  function syncPriceInputs(filterBlock, min, max) {
+    var minEl = filterBlock && filterBlock.querySelector("#priceRangeMin");
+    var maxEl = filterBlock && filterBlock.querySelector("#priceRangeMax");
+    if (minEl) minEl.value = min;
+    if (maxEl) maxEl.value = max;
   }
 
   function attachQuickCategoryIds(quickItems, categoriesById) {
@@ -379,6 +369,46 @@
     });
   }
 
+  function setupHeroSlides(allProducts) {
+    var frame = document.querySelector(".hero-img-frame");
+    var img = frame && frame.querySelector("img");
+    var prevBtn = document.querySelector(".hero-img-prev");
+    var nextBtn = document.querySelector(".hero-img-next");
+    var dotsWrap = document.querySelector(".hero-img-dots");
+    if (!img || !prevBtn || !nextBtn || !dotsWrap) return;
+
+    var slides = allProducts.slice(0, 8).filter(function (p) { return p.image; });
+    if (!slides.length) return;
+
+    var idx = 0;
+    dotsWrap.innerHTML = slides.map(function (_, i) {
+      return '<button type="button" class="hero-img-dot' + (i === 0 ? " is-active" : "") + '" data-idx="' + i + '"></button>';
+    }).join("");
+
+    function go(i) {
+      idx = (i + slides.length) % slides.length;
+      img.style.opacity = "0";
+      setTimeout(function () {
+        img.src = slides[idx].image;
+        img.alt = slides[idx].name;
+        img.style.opacity = "1";
+      }, 80);
+      dotsWrap.querySelectorAll(".hero-img-dot").forEach(function (d, di) {
+        d.classList.toggle("is-active", di === idx);
+      });
+    }
+
+    prevBtn.addEventListener("click", function (e) { e.preventDefault(); go(idx - 1); });
+    nextBtn.addEventListener("click", function (e) { e.preventDefault(); go(idx + 1); });
+    dotsWrap.addEventListener("click", function (e) {
+      var dot = e.target.closest(".hero-img-dot");
+      if (dot) go(Number(dot.getAttribute("data-idx")));
+    });
+
+    img.style.transition = "opacity 0.35s ease";
+    setInterval(function () { go(idx + 1); }, 4000);
+  }
+
   document.addEventListener('DOMContentLoaded', async function () {
     TamTai.setupSearchRedirect('.search-box input', '../products/products.html');
     toggleGuestOnlyElements();
@@ -390,7 +420,6 @@
     });
 
     var grid = document.querySelector('.product-grid');
-    var moreBtn = document.querySelector('.more-btn');
     var sortSelect = document.querySelector('.filter-block select');
     var quickItems = Array.prototype.slice.call(document.querySelectorAll('.quick-item'));
     var searchInput = document.querySelector('.search-box input');
@@ -398,6 +427,7 @@
     var filterBlocks = document.querySelectorAll('.filter-panel .filter-block');
     var categoryFilterBlock = filterBlocks[0] || null;
     var priceFilterBlock = filterBlocks[1] || null;
+    var paginationWrap = document.getElementById('productsPagination');
 
     if (!grid) {
       return;
@@ -425,8 +455,10 @@
         .sort(compareCategories);
 
       renderCategoryFilters(categoryFilterBlock, categories, categoryCounts);
-      renderPriceFilters(priceFilterBlock);
+      renderPriceFilters(priceFilterBlock, 0, PRICE_MAX);
       attachQuickCategoryIds(quickItems, catalog.categoriesById);
+
+      setupHeroSlides(products);
 
       var params = new URLSearchParams(window.location.search);
       var initialKeywordRaw = params.get('q') || '';
@@ -438,18 +470,20 @@
 
       var state = {
         selectedCategories: new Set(initialCategoryId ? [initialCategoryId] : []),
-        selectedPriceRanges: new Set(),
+        priceMin: 0,
+        priceMax: PRICE_MAX,
         keyword: initialKeyword,
         sortMode: sortSelect ? sortSelect.selectedIndex : 0,
-        expanded: false,
+        currentPage: 1,
+        PAGE_SIZE: 9,
         render: function () {
           syncCategoryInputs(categoryFilterBlock, state.selectedCategories);
-          syncPriceInputs(priceFilterBlock, state.selectedPriceRanges);
+          syncPriceInputs(priceFilterBlock, state.priceMin, state.priceMax);
           syncQuickItems(quickItems, state.selectedCategories);
 
           var filtered = products.filter(function (product) {
             var byCategory = state.selectedCategories.size === 0 || state.selectedCategories.has(product.categoryId);
-            var byPrice = matchPriceRange(product.price, state.selectedPriceRanges);
+            var byPrice = matchPriceRange(product.price, state.priceMin, state.priceMax);
             var byKeyword = true;
 
             if (state.keyword) {
@@ -461,8 +495,10 @@
           });
 
           var sorted = sortProducts(filtered, state.sortMode);
-          var visibleCount = state.expanded ? sorted.length : BASE_VISIBLE_ITEMS;
-          var visible = sorted.slice(0, visibleCount);
+          var totalPages = Math.ceil(sorted.length / state.PAGE_SIZE) || 1;
+          if (state.currentPage > totalPages) state.currentPage = totalPages;
+          var start = (state.currentPage - 1) * state.PAGE_SIZE;
+          var visible = sorted.slice(start, start + state.PAGE_SIZE);
 
           if (!visible.length) {
             grid.innerHTML = '<p class="empty-products">Kh\u00f4ng t\u00ecm th\u1ea5y s\u1ea3n ph\u1ea9m ph\u00f9 h\u1ee3p.</p>';
@@ -474,12 +510,17 @@
             heading.textContent = 'S\u1ea2N PH\u1ea8M (' + filtered.length + ')';
           }
 
-          if (moreBtn) {
-            if (sorted.length <= BASE_VISIBLE_ITEMS) {
-              moreBtn.style.display = 'none';
+          if (paginationWrap) {
+            if (totalPages <= 1) {
+              paginationWrap.innerHTML = '';
             } else {
-              moreBtn.style.display = 'inline-flex';
-              moreBtn.textContent = state.expanded ? 'Thu g\u1ecdn danh s\u00e1ch' : 'Xem t\u1ea5t c\u1ea3 s\u1ea3n ph\u1ea9m';
+              var btns = [];
+              btns.push('<button type="button" class="page-btn" data-page="' + (state.currentPage - 1) + '"' + (state.currentPage <= 1 ? ' disabled' : '') + '>\u2039</button>');
+              for (var p = 1; p <= totalPages; p++) {
+                btns.push('<button type="button" class="page-btn' + (p === state.currentPage ? ' is-active' : '') + '" data-page="' + p + '">' + p + '</button>');
+              }
+              btns.push('<button type="button" class="page-btn" data-page="' + (state.currentPage + 1) + '"' + (state.currentPage >= totalPages ? ' disabled' : '') + '>\u203a</button>');
+              paginationWrap.innerHTML = btns.join('');
             }
           }
         }
@@ -489,44 +530,55 @@
         searchInput.value = initialKeywordRaw;
       }
 
+      function resetPage() { state.currentPage = 1; }
+
       if (categoryFilterBlock) {
         categoryFilterBlock.addEventListener('change', function (event) {
           var input = event.target.closest('input[data-filter-type="category"]');
-          if (!input) {
-            return;
-          }
-
+          if (!input) return;
           var value = input.getAttribute('data-category');
           if (value === 'all') {
             state.selectedCategories.clear();
           } else {
-            if (input.checked) {
-              state.selectedCategories.add(value);
-            } else {
-              state.selectedCategories.delete(value);
-            }
+            if (input.checked) state.selectedCategories.add(value);
+            else state.selectedCategories.delete(value);
           }
-
-          state.expanded = false;
+          resetPage();
           state.render();
         });
       }
 
+      function updatePriceLabel() {
+        var minEl = document.getElementById("priceRangeMin");
+        var maxEl = document.getElementById("priceRangeMax");
+        var minLabel = document.getElementById("priceLabelMin");
+        var maxLabel = document.getElementById("priceLabelMax");
+        var fill = document.getElementById("priceSliderFill");
+        if (!minEl || !maxEl) return;
+        var min = Number(minEl.value);
+        var max = Number(maxEl.value);
+        if (min > max) { minEl.value = max; min = max; }
+        if (max < min) { maxEl.value = min; max = min; }
+        state.priceMin = Number(minEl.value);
+        state.priceMax = Number(maxEl.value);
+        var pctMin = (state.priceMin / PRICE_MAX) * 100;
+        var pctMax = (state.priceMax / PRICE_MAX) * 100;
+        if (minLabel) minLabel.textContent = Number(state.priceMin).toLocaleString("vi-VN") + "\u20ab";
+        if (maxLabel) maxLabel.textContent = Number(state.priceMax).toLocaleString("vi-VN") + "\u20ab";
+        if (fill) fill.style.cssText = "left:" + pctMin + "%;width:" + (pctMax - pctMin) + "%";
+      }
+
       if (priceFilterBlock) {
-        priceFilterBlock.addEventListener('change', function (event) {
-          var input = event.target.closest('input[data-filter-type="price"]');
-          if (!input) {
-            return;
-          }
-
-          var key = input.getAttribute('data-price-range');
-          if (input.checked) {
-            state.selectedPriceRanges.add(key);
-          } else {
-            state.selectedPriceRanges.delete(key);
-          }
-
-          state.expanded = false;
+        priceFilterBlock.addEventListener("input", function (event) {
+          var slider = event.target.closest(".price-range");
+          if (!slider) return;
+          updatePriceLabel();
+        });
+        priceFilterBlock.addEventListener("change", function (event) {
+          var slider = event.target.closest(".price-range");
+          if (!slider) return;
+          updatePriceLabel();
+          resetPage();
           state.render();
         });
       }
@@ -535,13 +587,9 @@
         item.addEventListener('click', function (event) {
           event.preventDefault();
           var categoryId = item.getAttribute('data-category-id') || '';
-
           state.selectedCategories.clear();
-          if (categoryId) {
-            state.selectedCategories.add(categoryId);
-          }
-
-          state.expanded = false;
+          if (categoryId) state.selectedCategories.add(categoryId);
+          resetPage();
           state.render();
         });
       });
@@ -549,7 +597,7 @@
       if (searchInput) {
         searchInput.addEventListener('input', function () {
           state.keyword = normalizeText(searchInput.value);
-          state.expanded = false;
+          resetPage();
           state.render();
         });
       }
@@ -557,14 +605,16 @@
       if (sortSelect) {
         sortSelect.addEventListener('change', function () {
           state.sortMode = sortSelect.selectedIndex;
+          resetPage();
           state.render();
         });
       }
 
-      if (moreBtn) {
-        moreBtn.addEventListener('click', function (event) {
-          event.preventDefault();
-          state.expanded = !state.expanded;
+      if (paginationWrap) {
+        paginationWrap.addEventListener('click', function (event) {
+          var btn = event.target.closest('.page-btn[data-page]');
+          if (!btn || btn.disabled) return;
+          state.currentPage = Number(btn.getAttribute('data-page'));
           state.render();
         });
       }
@@ -589,7 +639,7 @@
 
           if (action === 'add-cart') {
             TamTai.addToCart(toCartItem(product), 1);
-            window.location.href = '../cart/cart.html';
+            TamTai.flyToCart(cardForAction, product.image);
             return;
           }
 

@@ -9,8 +9,8 @@
     "unit_price": "7690000.00",
     "discount_percent": 30,
     "stock_quantity": 30,
-    "rating_avg": "4.30",
-    "total_reviews": 120
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH002",
@@ -22,8 +22,8 @@
     "unit_price": "5800000.00",
     "discount_percent": 20,
     "stock_quantity": 50,
-    "rating_avg": "3.10",
-    "total_reviews": 133
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH003",
@@ -35,8 +35,8 @@
     "unit_price": "11200000.00",
     "discount_percent": 12,
     "stock_quantity": 121,
-    "rating_avg": "4.50",
-    "total_reviews": 200
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH004",
@@ -48,8 +48,8 @@
     "unit_price": "6790000.00",
     "discount_percent": 20,
     "stock_quantity": 17,
-    "rating_avg": "3.10",
-    "total_reviews": 122
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH005",
@@ -61,8 +61,8 @@
     "unit_price": "23190000.00",
     "discount_percent": 10,
     "stock_quantity": 123,
-    "rating_avg": "4.20",
-    "total_reviews": 123
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH006",
@@ -74,8 +74,8 @@
     "unit_price": "1700000.00",
     "discount_percent": 15,
     "stock_quantity": 12,
-    "rating_avg": "4.50",
-    "total_reviews": 122
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH007",
@@ -87,8 +87,8 @@
     "unit_price": "17490000.00",
     "discount_percent": 15,
     "stock_quantity": 45,
-    "rating_avg": "4.20",
-    "total_reviews": 78
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH008",
@@ -100,8 +100,8 @@
     "unit_price": "23190000.00",
     "discount_percent": 10,
     "stock_quantity": 18,
-    "rating_avg": "4.80",
-    "total_reviews": 45
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH009",
@@ -113,8 +113,8 @@
     "unit_price": "9190000.00",
     "discount_percent": 15,
     "stock_quantity": 45,
-    "rating_avg": "4.30",
-    "total_reviews": 12
+    "rating_avg": "0.00",
+    "total_reviews": 0
   },
   {
     "product_id": "DH010",
@@ -126,7 +126,7 @@
     "unit_price": "5890000.00",
     "discount_percent": 12,
     "stock_quantity": 37,
-    "rating_avg": "4.10",
-    "total_reviews": 34
+    "rating_avg": "0.00",
+    "total_reviews": 0
   }
 ]

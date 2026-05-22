@@ -2,7 +2,7 @@ from datetime import date
 from decimal import Decimal
 import uuid
 
-from sqlalchemy import func, or_
+from sqlalchemy import func, literal, or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, joinedload, selectinload
 
@@ -28,6 +28,7 @@ from app.models.product import Product
 from app.schemas.order import OrderUpdate
 from app.services import order_service, product_service
 from app.services.exceptions import AlreadyExistsException, BusinessLogicException, NotFoundException
+from app.services.notification_service import create_notifications
 
 
 LOW_STOCK_THRESHOLD = 5
@@ -145,8 +146,7 @@ def _product_sales_subquery(db: Session):
 
 
 def _admin_products_query(db: Session):
-    sales_subquery = _product_sales_subquery(db)
-    sold_quantity = func.coalesce(sales_subquery.c.sold_quantity, 0)
+    sold_quantity = literal(0)
     query = (
         db.query(
             Product,
@@ -154,9 +154,19 @@ def _admin_products_query(db: Session):
             sold_quantity.label("sold_quantity"),
         )
         .join(Category, Product.category_id == Category.category_id)
-        .outerjoin(sales_subquery, Product.product_id == sales_subquery.c.product_id)
     )
     return query, sold_quantity
+
+
+def _top_products_ordering():
+    # Sold quantity is intentionally forced to 0 for every product, so we
+    # avoid ordering by that constant expression because PostgreSQL treats
+    # `ORDER BY 0` as an invalid positional reference.
+    return (
+        Product.total_reviews.desc(),
+        Product.rating_avg.desc(),
+        Product.product_name.asc(),
+    )
 
 
 def _admin_orders_query(db: Session):
@@ -189,11 +199,7 @@ def get_dashboard(db: Session) -> AdminDashboardResponse:
 
     query, sold_quantity = _admin_products_query(db)
     top_products = (
-        query.order_by(
-            sold_quantity.desc(),
-            Product.total_reviews.desc(),
-            Product.product_name.asc(),
-        )
+        query.order_by(*_top_products_ordering())
         .limit(5)
         .all()
     )
@@ -324,10 +330,31 @@ def get_order_by_id(db: Session, order_id: str) -> AdminOrderResponse:
 
 def update_order_status(db: Session, order_id: str, payload: OrderUpdate) -> AdminOrderResponse:
     order = order_service.get_order_by_id(db, order_id)
+    previous_status = order.status
+    notification_status = None
+
     if payload.status is not None:
-        order.status = payload.status.strip()
-        db.commit()
-        db.refresh(order)
+        next_status = payload.status.strip()
+        if not next_status:
+            raise BusinessLogicException("Order status is required")
+
+        if next_status != order.status:
+            order.status = next_status
+            db.commit()
+            db.refresh(order)
+
+        if _normalize_order_status(previous_status) != _normalize_order_status(next_status):
+            notification_status = order.status
+
+    if notification_status and order.customer_id:
+        create_notification(
+            db,
+            order.customer_id,
+            _build_order_notification_title(order.order_id),
+            _build_order_notification_message(order.order_id, notification_status),
+            "order",
+            order.order_id,
+        )
 
     reloaded = _admin_orders_query(db).filter(Order.order_id == order_id).first()
     if not reloaded:
@@ -431,6 +458,73 @@ def _validate_discount_dates(starts_at, expires_at) -> None:
         raise BusinessLogicException("Expiry date must be after start date")
 
 
+def _build_discount_notification_message(discount_code: DiscountCode) -> str:
+    msg = f"Mã {discount_code.code} giảm {int(discount_code.discount_percent or 0)}%"
+    if discount_code.product and discount_code.product.product_name:
+        msg += f" cho sản phẩm {discount_code.product.product_name}"
+    return msg
+
+
+def _get_discount_notification_customer_ids(db: Session, customer_id: str | None) -> list[str]:
+    normalized_customer_id = (customer_id or "").strip()
+    if normalized_customer_id:
+        return [normalized_customer_id]
+
+    rows = (
+        db.query(Customer.customer_id)
+        .filter(Customer.is_active == 1)
+        .order_by(Customer.customer_id.asc())
+        .all()
+    )
+    return [str(row[0]).strip() for row in rows if row and str(row[0]).strip()]
+
+
+def _notify_discount_targets(db: Session, discount_code: DiscountCode) -> int:
+    customer_ids = _get_discount_notification_customer_ids(db, discount_code.customer_id)
+    if not customer_ids:
+        return 0
+
+    create_notifications(
+        db,
+        customer_ids,
+        "Bạn nhận được mã giảm giá mới",
+        _build_discount_notification_message(discount_code),
+        "promo",
+        discount_code.discount_code_id,
+    )
+    return len(customer_ids)
+
+
+def _normalize_order_status(status: str | None) -> str:
+    return (status or "").strip().lower()
+
+
+def _build_order_status_label(status: str | None) -> str:
+    normalized = _normalize_order_status(status)
+    if not normalized:
+        return "Ch\u1edd x\u00e1c nh\u1eadn"
+    if "deliver" in normalized:
+        return "\u0110\u00e3 giao"
+    if "ship" in normalized:
+        return "\u0110ang giao"
+    if "cancel" in normalized:
+        return "\u0110\u00e3 h\u1ee7y"
+    if "confirm" in normalized:
+        return "\u0110\u00e3 x\u00e1c nh\u1eadn"
+    if "pending" in normalized or "process" in normalized or "wait" in normalized:
+        return "Ch\u1edd x\u00e1c nh\u1eadn"
+    return (status or "").strip() or "Ch\u1edd x\u00e1c nh\u1eadn"
+
+
+def _build_order_notification_title(order_id: str) -> str:
+    return f"\u0110\u01a1n h\u00e0ng {order_id} c\u1ee7a b\u1ea1n \u0111\u00e3 \u0111\u01b0\u1ee3c c\u1eadp nh\u1eadt"
+
+
+def _build_order_notification_message(order_id: str, status: str | None) -> str:
+    status_label = _build_order_status_label(status)
+    return f"Tr\u1ea1ng th\u00e1i \u0111\u01a1n h\u00e0ng {order_id} \u0111\u00e3 chuy\u1ec3n sang {status_label}."
+
+
 def get_discount_codes(
     db: Session,
     skip: int = 0,
@@ -494,6 +588,8 @@ def create_discount_code(db: Session, payload: DiscountCodeCreate) -> DiscountCo
     )
     if not reloaded:
         raise NotFoundException("Discount code")
+
+    _notify_discount_targets(db, reloaded)
     return _serialize_discount_code(reloaded)
 
 
@@ -502,6 +598,7 @@ def update_discount_code(db: Session, discount_code_id: str, payload: DiscountCo
     if not discount_code:
         raise NotFoundException("Discount code")
 
+    previous_customer_id = discount_code.customer_id
     update_data = payload.model_dump(exclude_unset=True)
     if "code" in update_data and update_data["code"] is not None:
         normalized_code = _normalize_discount_code(update_data["code"])
@@ -554,6 +651,12 @@ def update_discount_code(db: Session, discount_code_id: str, payload: DiscountCo
     )
     if not reloaded:
         raise NotFoundException("Discount code")
+
+    should_notify_specific_customer = bool(reloaded.customer_id and reloaded.customer_id != previous_customer_id)
+    should_notify_broadcast = bool(previous_customer_id and not reloaded.customer_id)
+    if should_notify_specific_customer or should_notify_broadcast:
+        _notify_discount_targets(db, reloaded)
+
     return _serialize_discount_code(reloaded)
 
 

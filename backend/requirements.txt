@@ -11,6 +11,7 @@ python-jose
 email-validator
 python-multipart
 requests
+google-genai
 google-auth
 pytest
 httpx

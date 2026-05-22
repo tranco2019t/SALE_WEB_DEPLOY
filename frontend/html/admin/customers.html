@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Người dùng quản trị - TAM TAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/admin/base.css?v=20260522f">
+  <link rel="stylesheet" href="../../css/admin/customers.css?v=20260522g">
+  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
+        <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
+      </a>
+      <label class="topbar-search" aria-label="Tìm kiếm người dùng trong quản trị">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="adminGlobalSearch" type="search" placeholder="Tìm người dùng theo tên, email hoặc số điện thoại...">
+      </label>
+      <div class="topbar-actions">
+        <a class="topbar-link" href="../core/landing.html">
+          <i class="fa-solid fa-store"></i>
+          <span>Xem shop</span>
+        </a>
+        <div class="admin-user-chip">
+          <div class="admin-avatar">A</div>
+          <div class="admin-user-meta">
+            <strong class="admin-user-name">Admin</strong>
+            <span class="admin-user-role">Quản trị viên</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div>
+          <p class="sidebar-title">Quản trị</p>
+          <nav class="sidebar-nav">
+            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tổng quan</span></a>
+            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
+            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>Đơn hàng</span></a>
+            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>Người dùng</span></a>
+            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>Mã giảm giá</span></a>
+          </nav>
+        </div>
+
+        <div class="sidebar-footer">
+          <button type="button" class="btn btn-danger" data-logout data-redirect="../auth/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Đăng xuất</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <section class="page-header">
+          <div>
+            <p class="page-eyebrow">Người dùng</p>
+            <h1 class="page-title">Quản lý khách hàng</h1>
+            <p class="page-subtitle">
+              Xem nhanh thông tin chi tiết, chỉnh sửa hồ sơ và bật tắt trạng thái tài khoản từ một khu vực riêng.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <button id="refreshCustomersBtn" type="button" class="btn btn-secondary">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>Làm mới</span>
+            </button>
+            <button id="createCustomerBtn" type="button" class="btn btn-primary" data-open-form="#customerForm" data-form-title="Thêm người dùng">
+              <i class="fa-solid fa-plus"></i>
+              <span>Tạo mới</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="stats-strip" aria-label="Thống kê nhanh">
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-box-open"></i></span>
+              <div>
+                <p class="stat-label">Tổng sản phẩm</p>
+                <strong id="statProducts" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tất cả sản phẩm</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
+              <div>
+                <p class="stat-label">Tổng người dùng</p>
+                <strong id="statCustomers" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Đang hoạt động</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+              <div>
+                <p class="stat-label">Đơn hàng</p>
+                <strong id="statOrders" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tổng số đơn</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-wallet"></i></span>
+              <div>
+                <p class="stat-label">Doanh thu</p>
+                <strong id="statRevenue" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Tổng doanh thu</p>
+          </article>
+          <article class="stat-tile">
+            <div class="stat-tile-head">
+              <span class="stat-icon"><i class="fa-solid fa-ticket"></i></span>
+              <div>
+                <p class="stat-label">Mã giảm giá</p>
+                <strong id="statDiscountCodes" class="stat-value">0</strong>
+              </div>
+            </div>
+            <p class="stat-caption">Đang hoạt động</p>
+          </article>
+        </section>
+
+        <div id="pageMessage" class="page-message" aria-live="polite"></div>
+
+        <section class="customers-layout">
+          <article class="page-panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Danh sách khách hàng</h2>
+                <p class="panel-subtext">Bấm vào tên hoặc nút xem để mở thông tin chi tiết trong popup.</p>
+              </div>
+              <div class="panel-tools">
+                <span id="customersCount" class="count-chip">0 tài khoản</span>
+              </div>
+            </div>
+
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th><button type="button" class="sort-btn" data-sort-view="customers" data-sort-key="customer_id"><span>Mã KH</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="customers" data-sort-key="customer_name"><span>Khách hàng</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="customers" data-sort-key="customer_email"><span>Thông tin</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="customers" data-sort-key="orders_count"><span>Đơn hàng</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="customers" data-sort-key="total_spent"><span>Chi tiêu</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="customers" data-sort-key="is_active"><span>Trạng thái</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><span>Thao tác</span></th>
+                  </tr>
+                </thead>
+                <tbody id="customersTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-footer">
+              <p id="customersPageSummary" class="table-summary">Không có dữ liệu để hiển thị.</p>
+              <div id="customersPagination" class="pagination"></div>
+            </div>
+          </article>
+
+          <aside class="editor-card">
+            <div class="editor-card-head">
+              <div>
+                <h2 id="customerFormTitle" class="panel-title">Chỉnh sửa người dùng</h2>
+                <p class="section-note">Chọn một khách hàng từ bảng để cập nhật thông tin hồ sơ hoặc trạng thái.</p>
+              </div>
+              <button id="resetCustomerFormBtn" type="button" class="btn btn-soft" data-open-form="#customerForm" data-form-title="Chỉnh sửa người dùng">Làm mới form</button>
+            </div>
+
+            <form id="customerForm" class="form-grid">
+              <input id="customerFormId" type="hidden">
+
+              <div class="field-group">
+                <label for="customerName">Tên khách hàng</label>
+                <input id="customerName" class="admin-input" type="text" placeholder="Nhập tên khách hàng" required>
+              </div>
+
+              <div class="field-group">
+                <label for="customerEmail">Email</label>
+                <input id="customerEmail" class="admin-input" type="email" placeholder="email@example.com" required>
+              </div>
+
+              <div class="field-group">
+                <label for="customerPhone">Số điện thoại</label>
+                <input id="customerPhone" class="admin-input" type="text" placeholder="Nhập số điện thoại">
+              </div>
+
+              <div class="field-group">
+                <label for="customerAddress">Address</label>
+                <textarea id="customerAddress" class="admin-textarea" placeholder="Nhap dia chi giao hang"></textarea>
+              </div>
+
+              <div class="field-group">
+                <label for="customerStatus">Trang thai</label>
+                <select id="customerStatus" class="admin-select">
+                  <option value="1">Hoat dong</option>
+                  <option value="0">Tam khoa</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Luu thay doi</button>
+                <button id="customerCancelBtn" type="button" class="btn btn-secondary">Huy</button>
+              </div>
+            </form>
+          </aside>
+        </section>
+
+        <footer class="admin-footer">
+          <span>&copy; 2025 TAM TAI. All rights reserved.</span>
+          <span>Phiên bản 1.0.0</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <div id="customerDetailModal" class="modal-shell" hidden>
+    <button type="button" class="modal-backdrop" data-close-customer-modal aria-label="Dong popup"></button>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="customerDetailTitle">
+      <div class="modal-head">
+        <div>
+          <p class="modal-eyebrow">Chi tiet khach hang</p>
+          <h2 id="customerDetailTitle">Dang tai...</h2>
+        </div>
+        <button id="closeCustomerDetailBtn" type="button" class="modal-close" aria-label="Dong">×</button>
+      </div>
+      <div id="customerDetailBody"></div>
+    </div>
+  </div>
+
+  <!-- Generic modal used to host forms for add/edit actions -->
+  <div id="entityFormModal" class="modal-shell" hidden>
+    <button type="button" class="modal-backdrop" data-close-modal aria-label="Đóng"></button>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityFormModalTitle">
+      <div class="modal-head">
+        <div>
+          <p class="modal-eyebrow">Form</p>
+          <h2 id="entityFormModalTitle">Form</h2>
+        </div>
+        <button type="button" class="modal-close" data-close-modal aria-label="Đóng">×</button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="../../js/core/common.js?v=20260522f"></script>
+  <script src="../../js/admin/core.js?v=20260522e"></script>
+  <script src="../../js/admin/customers.js?v=20260522e"></script>
+  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/products/products.css">
+  <link rel="stylesheet" href="../../css/products/products.css?v=20260522c">
+  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
   <header class="site-header">
@@ -53,7 +54,12 @@
       </div>
 
       <div class="hero-image">
-        <img src="../../images/acer-refurbished-laptop-500x500.webp" alt="Sản phẩm laptop nổi bật">
+        <button type="button" class="hero-img-prev" aria-label="Trước">&#10094;</button>
+        <div class="hero-img-frame">
+          <img src="../../images/acer-refurbished-laptop-500x500.webp" alt="Sản phẩm laptop nổi bật">
+        </div>
+        <button type="button" class="hero-img-next" aria-label="Sau">&#10095;</button>
+        <div class="hero-img-dots"></div>
       </div>
     </section>
 
@@ -142,7 +148,6 @@
       <section class="products-content">
         <div class="products-head">
           <h2>SẢN PHẨM</h2>
-          <button class="filter-btn">Bộ lọc</button>
         </div>
 
         <div class="product-grid">
@@ -195,7 +200,7 @@
           </article>
         </div>
 
-        <a href="#" class="more-btn">Xem tất cả sản phẩm</a>
+        <div class="pagination-wrap" id="productsPagination"></div>
       </section>
     </section>
 
@@ -206,31 +211,32 @@
     </section>
   </main>
 
-  <footer class="site-footer">
+    <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>
-      <a href="#">Chính sách bảo mật</a>
-      <a href="#">Quy chế hoạt động</a>
+      <a href="../info/privacy-policy.html">Chính sách bảo mật</a>
+      <a href="../info/operating-regulations.html">Quy chế hoạt động</a>
     </div>
     <div class="footer-col">
       <h3>Liên kết</h3>
-      <a href="#">Khuyến mãi hôm nay</a>
-      <a href="#">Danh mục nổi bật</a>
+      <a href="../info/promotions.html">Khuyến mãi hôm nay</a>
+      <a href="../core/landing.html#featured-categories">Danh mục nổi bật</a>
     </div>
     <div class="footer-col">
       <h3>Hỗ trợ</h3>
-      <a href="#">Trung tâm trợ giúp</a>
-      <a href="#">Câu hỏi thường gặp</a>
+      <a href="../info/help-center.html">Trung tâm trợ giúp</a>
+      <a href="../info/faq.html">Câu hỏi thường gặp</a>
     </div>
     <div class="footer-col">
       <h3>Theo dõi</h3>
-      <a href="#">Facebook</a>
-      <a href="#">TikTok</a>
+      <a href="https://www.facebook.com/tran.co.cow/" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href="https://www.tiktok.com/@ctran771?lang=en" target="_blank" rel="noopener noreferrer">TikTok</a>
     </div>
   </footer>
 
-  <script src="../../js/core/common.js?v=20260408"></script>
-  <script src="../../js/products/products.js?v=20260408b"></script>
+  <script src="../../js/core/common.js?v=20260522f"></script>
+  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
+  <script src="../../js/products/products.js?v=20260522d"></script>
 </body>
 </html>
 
