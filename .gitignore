@@ -94,7 +94,3 @@ pnpm-debug.log*
 backend/uploads/
 backend/media/
 
-# =========================
-# Chat bot (separate module)
-# =========================
-CHAT\ BOT/
