@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: saleweb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    env_file:
+      - backend/.env
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/saleweb
+    entrypoint: ["bash", "/app/docker/entrypoint.sh"]
+    command: ["backend"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/\", timeout=3)' && exit 0' || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+  chatbot:
+    build: .
+    env_file:
+      - backend/.env
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/saleweb
+    entrypoint: ["bash", "/app/docker/entrypoint.sh"]
+    command: ["chatbot"]
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8001/health\", timeout=3)' && exit 0' || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+  tests:
+    profiles:
+      - test
+    build: .
+    env_file:
+      - backend/.env
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/saleweb
+    entrypoint: ["bash", "/app/docker/entrypoint.sh"]
+    command: ["tests"]
+    depends_on:
+      - db
+      - backend
+      - chatbot
+
+volumes:
+  db-data:
