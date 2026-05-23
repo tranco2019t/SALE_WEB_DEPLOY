@@ -4,41 +4,41 @@
     "category_name": "Tai nghe",
     "subcategory": "Tai nghe Bluetooth",
     "folder": "CAT_HEADPHONE_tai-nghe",
-    "product_count": 10
+    "product_count": 60
   },
   {
     "category_id": "CAT_KEYBOARD",
     "category_name": "Ban phim",
     "subcategory": "Co/khong day",
     "folder": "CAT_KEYBOARD_ban-phim",
-    "product_count": 10
+    "product_count": 30
   },
   {
     "category_id": "CAT_LAPTOP",
     "category_name": "Laptop",
     "subcategory": "Laptop",
     "folder": "CAT_LAPTOP_laptop",
-    "product_count": 10
+    "product_count": 30
   },
   {
     "category_id": "CAT_MOUSE",
     "category_name": "Chuot may tinh",
     "subcategory": "Gaming/van phong",
     "folder": "CAT_MOUSE_chuot-may-tinh",
-    "product_count": 10
+    "product_count": 30
   },
   {
     "category_id": "CAT_PHONE",
     "category_name": "Dien thoai",
     "subcategory": "Smartphone",
     "folder": "CAT_PHONE_dien-thoai",
-    "product_count": 10
+    "product_count": 60
   },
   {
     "category_id": "CAT_SMARTWATCH",
     "category_name": "Dong ho thong minh",
     "subcategory": "Smartwatch",
     "folder": "CAT_SMARTWATCH_dong-ho-thong-minh",
-    "product_count": 10
+    "product_count": 53
   }
 ]

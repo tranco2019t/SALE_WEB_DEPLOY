@@ -310,7 +310,7 @@
     }
 
     try {
-      var products = await TamTai.fetchJson("/products?skip=0&limit=100");
+      var products = await TamTai.fetchJson("/products?skip=0&limit=500");
       var list = Array.isArray(products) ? products : [];
 
       var cart = Array.isArray(cartInput) ? cartInput : TamTai.getCart();

@@ -36,7 +36,7 @@ def create_product(
 )
 def get_products(
     skip: int = Query(0, ge=0),
-    limit: int = Query(10, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=500),
     db: Session = Depends(get_db)
 ):
     return product_service.get_all_products(db, skip=skip, limit=limit)

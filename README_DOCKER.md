@@ -112,3 +112,11 @@ docker compose exec db psql -U postgres -d saleweb
 
 
 http://127.0.0.1:5500/html/products/products.html
+
+# Khi thêm data vào seed data
+
+# Bước 1: Gộp dữ liệu mới
+python project_seed_data/Dataset_goc/compile_dataset.py
+
+# Bước 2: Rebuild lại Docker để đồng bộ dữ liệu vào DB
+docker compose up --build -d

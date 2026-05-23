@@ -241,7 +241,7 @@
 
   async function loadCatalog() {
     var categoriesData = await TamTai.fetchJson('/categories?skip=0&limit=100');
-    var productsData = await TamTai.fetchJson('/products?skip=0&limit=100');
+    var productsData = await TamTai.fetchJson('/products?skip=0&limit=500');
 
     var categories = Array.isArray(categoriesData) ? categoriesData : [];
     var products = Array.isArray(productsData) ? productsData : [];
