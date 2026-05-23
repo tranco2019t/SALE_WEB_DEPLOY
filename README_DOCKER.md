@@ -108,3 +108,7 @@ docker compose run --rm tests
 ```
 *Hệ thống sẽ tự động khởi chạy và thực thi bộ kiểm thử `pytest` trong thư mục `tests/`.*
 docker compose exec db psql -U postgres -d saleweb
+
+
+
+http://127.0.0.1:5500/html/products/products.html
