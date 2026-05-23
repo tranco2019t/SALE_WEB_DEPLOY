@@ -107,3 +107,4 @@ Sau khi các dịch vụ đã sẵn sàng hoạt động, bạn có thể chạy
 docker compose run --rm tests
 ```
 *Hệ thống sẽ tự động khởi chạy và thực thi bộ kiểm thử `pytest` trong thư mục `tests/`.*
+docker compose exec db psql -U postgres -d saleweb
