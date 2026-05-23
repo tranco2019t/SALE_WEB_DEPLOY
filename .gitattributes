@@ -1,0 +1,2 @@
+# Force entrypoint script to always use LF line endings, even on Windows
+docker/entrypoint.sh text eol=lf

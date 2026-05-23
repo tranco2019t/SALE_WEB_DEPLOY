@@ -21,7 +21,7 @@ services:
     depends_on:
       - db
     healthcheck:
-      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/\", timeout=3)' && exit 0' || exit 1"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=3)"]
       interval: 10s
       retries: 5
       start_period: 10s
@@ -40,7 +40,7 @@ services:
       - db
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8001/health\", timeout=3)' && exit 0' || exit 1"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=3)"]
       interval: 10s
       retries: 5
       start_period: 10s
@@ -59,6 +59,16 @@ services:
       - db
       - backend
       - chatbot
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    ports:
+      - "5500:80"
+    depends_on:
+      - backend
+
 
 volumes:
   db-data:
