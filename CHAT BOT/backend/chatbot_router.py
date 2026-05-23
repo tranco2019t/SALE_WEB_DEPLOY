@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import re
+import sys
 import unicodedata
 from functools import lru_cache
 from pathlib import Path
@@ -30,6 +31,14 @@ def _load_env_files() -> None:
 
 
 _load_env_files()
+
+BACKEND_DIR = PROJECT_DIR / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
+from app.database import SessionLocal
+from app.models.category import Category
+from app.models.product import Product
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api", tags=["Chatbot"])
@@ -409,18 +418,60 @@ def _extract_specs(product_name: str, description: str) -> dict[str, Any]:
 
 @lru_cache(maxsize=1)
 def _load_catalog() -> dict[str, Any]:
-    products_data = _first_existing_data_file(
-        (
-            CHATBOT_DIR / "data" / "products_all.json",
-            PROJECT_DIR / "project_seed_data" / "Dataset_goc" / "products_all.json",
+    categories_data = None
+    products_data = None
+
+    try:
+        session = SessionLocal()
+        categories_data = []
+        for category in session.query(Category).all():
+            categories_data.append(
+                {
+                    "category_id": category.category_id or "",
+                    "category_name": category.category_name or "",
+                    "subcategory": str(category.subcategory or "").strip(),
+                    "product_count": 0,
+                }
+            )
+
+        products_data = []
+        for item in session.query(Product).all():
+            products_data.append(
+                {
+                    "product_id": str(item.product_id or "").strip(),
+                    "category_id": str(item.category_id or "").strip(),
+                    "product_name": str(item.product_name or "").strip(),
+                    "description": str(item.description or "").strip(),
+                    "unit_price": item.unit_price,
+                    "discount_percent": item.discount_percent,
+                    "stock_quantity": item.stock_quantity,
+                    "rating_avg": float(item.rating_avg or 0),
+                    "total_reviews": item.total_reviews,
+                }
+            )
+    except Exception:
+        categories_data = None
+        products_data = None
+    finally:
+        try:
+            if "session" in locals() and session is not None:
+                session.close()
+        except Exception:
+            pass
+
+    if categories_data is None or products_data is None:
+        products_data = _first_existing_data_file(
+            (
+                CHATBOT_DIR / "data" / "products_all.json",
+                PROJECT_DIR / "project_seed_data" / "Dataset_goc" / "products_all.json",
+            )
         )
-    )
-    categories_data = _first_existing_data_file(
-        (
-            CHATBOT_DIR / "data" / "categories_index.json",
-            PROJECT_DIR / "project_seed_data" / "Dataset_goc" / "categories_index.json",
+        categories_data = _first_existing_data_file(
+            (
+                CHATBOT_DIR / "data" / "categories_index.json",
+                PROJECT_DIR / "project_seed_data" / "Dataset_goc" / "categories_index.json",
+            )
         )
-    )
 
     categories_by_id: dict[str, dict[str, Any]] = {}
     if isinstance(categories_data, list):
@@ -484,7 +535,7 @@ def _load_catalog() -> dict[str, Any]:
                                 description,
                                 category_name,
                                 categories_by_id[category_id]["subcategory"],
-                                " ".join(CATEGORY_ALIASES.get(category_id, ())),
+                                " ".join(CATEGORY_ALIASES.get(category_id, ()) ),
                             ]
                         )
                     ),
