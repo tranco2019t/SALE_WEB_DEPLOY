@@ -20,6 +20,7 @@ from app.database import SessionLocal
 from app.models.category import Category
 from app.models.discount_code import DiscountCode
 from app.models.order_item import OrderItem
+from app.models.payment_method import PaymentMethod
 from app.models.product import Product
 from app.models.review import Review
 from app.models.wishlist import Wishlist
@@ -50,6 +51,29 @@ class SeedProduct:
     stock_quantity: int
     rating_avg: Decimal
     total_reviews: int
+
+
+@dataclass
+class SeedPaymentMethod:
+    payment_method_id: str
+    mode_name: str
+
+
+# Edit this list when you want Docker startup to auto-seed default payment methods.
+DEFAULT_PAYMENT_METHODS: tuple[SeedPaymentMethod, ...] = (
+    SeedPaymentMethod(
+        payment_method_id="SEED_PM_COD",
+        mode_name="Thanh toán khi nhận hàng (COD)",
+    ),
+    SeedPaymentMethod(
+        payment_method_id="SEED_PM_BANK_TRANSFER",
+        mode_name="Chuyển khoản ngân hàng",
+    ),
+    SeedPaymentMethod(
+        payment_method_id="SEED_PM_EWALLET",
+        mode_name="Ví điện tử (Momo, ZaloPay)",
+    ),
+)
 
 
 def _read_json(path: Path) -> Any:
@@ -162,6 +186,17 @@ def apply_product(existing: Product, seed: SeedProduct) -> None:
     existing.total_reviews = seed.total_reviews
 
 
+def diff_payment_method(existing: PaymentMethod, seed: SeedPaymentMethod) -> list[str]:
+    changed: list[str] = []
+    if (existing.mode_name or "") != seed.mode_name:
+        changed.append("mode_name")
+    return changed
+
+
+def apply_payment_method(existing: PaymentMethod, seed: SeedPaymentMethod) -> None:
+    existing.mode_name = seed.mode_name
+
+
 def _group_reference_counts(session, model, extra_product_ids: list[str]) -> dict[str, int]:
     if not extra_product_ids:
         return {}
@@ -192,6 +227,8 @@ def print_summary(
     product_inserts: list[str],
     product_updates: dict[str, list[str]],
     product_extras: list[str],
+    payment_method_inserts: list[str],
+    payment_method_updates: dict[str, list[str]],
     reference_report: dict[str, dict[str, int]],
     apply: bool,
     prune_extra: bool,
@@ -211,6 +248,11 @@ def print_summary(
         f"update={len(product_updates)}",
         f"extra={len(product_extras)}",
     )
+    print(
+        "Payment methods:",
+        f"insert={len(payment_method_inserts)}",
+        f"update={len(payment_method_updates)}",
+    )
 
     if category_inserts:
         print("  New categories:", ", ".join(category_inserts[:10]))
@@ -222,6 +264,14 @@ def print_summary(
     if product_updates:
         preview = [f"{product_id}({','.join(fields)})" for product_id, fields in list(product_updates.items())[:10]]
         print("  Product updates:", ", ".join(preview))
+    if payment_method_inserts:
+        print("  New payment methods:", ", ".join(payment_method_inserts[:10]))
+    if payment_method_updates:
+        preview = [
+            f"{payment_method_id}({','.join(fields)})"
+            for payment_method_id, fields in list(payment_method_updates.items())[:10]
+        ]
+        print("  Payment method updates:", ", ".join(preview))
     if product_extras:
         print("  Extra products:", ", ".join(product_extras[:10]))
     if category_extras:
@@ -242,6 +292,10 @@ def print_summary(
 def sync_catalog(*, apply: bool, prune_extra: bool, image_mode: str) -> int:
     seed_categories = load_seed_categories()
     seed_products = load_seed_products(image_mode=image_mode)
+    seed_payment_methods = {
+        payment_method.payment_method_id: payment_method
+        for payment_method in DEFAULT_PAYMENT_METHODS
+    }
 
     session = SessionLocal()
     try:
@@ -253,11 +307,19 @@ def sync_catalog(*, apply: bool, prune_extra: bool, image_mode: str) -> int:
             product.product_id: product
             for product in session.query(Product).all()
         }
+        existing_payment_methods = {
+            payment_method.payment_method_id: payment_method
+            for payment_method in session.query(PaymentMethod)
+            .filter(PaymentMethod.payment_method_id.in_(list(seed_payment_methods.keys())))
+            .all()
+        }
 
         category_inserts: list[str] = []
         category_updates: dict[str, list[str]] = {}
         product_inserts: list[str] = []
         product_updates: dict[str, list[str]] = {}
+        payment_method_inserts: list[str] = []
+        payment_method_updates: dict[str, list[str]] = {}
 
         for category_id, seed_category in seed_categories.items():
             existing = existing_categories.get(category_id)
@@ -306,6 +368,25 @@ def sync_catalog(*, apply: bool, prune_extra: bool, image_mode: str) -> int:
                 if apply:
                     apply_product(existing, seed_product)
 
+        for payment_method_id, seed_payment_method in seed_payment_methods.items():
+            existing = existing_payment_methods.get(payment_method_id)
+            if existing is None:
+                payment_method_inserts.append(payment_method_id)
+                if apply:
+                    session.add(
+                        PaymentMethod(
+                            payment_method_id=seed_payment_method.payment_method_id,
+                            mode_name=seed_payment_method.mode_name,
+                        )
+                    )
+                continue
+
+            changed = diff_payment_method(existing, seed_payment_method)
+            if changed:
+                payment_method_updates[payment_method_id] = changed
+                if apply:
+                    apply_payment_method(existing, seed_payment_method)
+
         category_extras = sorted(set(existing_categories) - set(seed_categories))
         product_extras = sorted(set(existing_products) - set(seed_products))
         reference_report = build_reference_report(session, product_extras)
@@ -317,6 +398,8 @@ def sync_catalog(*, apply: bool, prune_extra: bool, image_mode: str) -> int:
             product_inserts=product_inserts,
             product_updates=product_updates,
             product_extras=product_extras,
+            payment_method_inserts=payment_method_inserts,
+            payment_method_updates=payment_method_updates,
             reference_report=reference_report,
             apply=apply,
             prune_extra=prune_extra,
@@ -365,7 +448,7 @@ def sync_catalog(*, apply: bool, prune_extra: bool, image_mode: str) -> int:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Sync categories/products in SQL database from project_seed_data/Dataset_goc JSON files."
+        description="Sync categories/products/default payment methods in SQL database from seed data."
     )
     parser.add_argument(
         "--apply",

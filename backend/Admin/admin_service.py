@@ -28,7 +28,7 @@ from app.models.product import Product
 from app.schemas.order import OrderUpdate
 from app.services import order_service, product_service
 from app.services.exceptions import AlreadyExistsException, BusinessLogicException, NotFoundException
-from app.services.notification_service import create_notifications
+from app.services.notification_service import create_notification, create_notifications
 
 
 LOW_STOCK_THRESHOLD = 5
