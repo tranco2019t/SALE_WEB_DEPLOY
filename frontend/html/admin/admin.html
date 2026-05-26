@@ -1,27 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tổng quan quản trị - TAM TAI</title>
+  <title>Tá»•ng quan quáº£n trá»‹ - TAM TAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/admin/base.css?v=20260522g">
   <link rel="stylesheet" href="../../css/admin/dashboard.css?v=20260522g">
-  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
   <div class="admin-shell">
-    <!-- ===== ADMIN TOPBAR - Thanh trên cùng: logo, tìm kiếm, thao tác nhanh ===== -->
+    <!-- ===== ADMIN TOPBAR - Thanh trÃªn cÃ¹ng: logo, tÃ¬m kiáº¿m, thao tÃ¡c nhanh ===== -->
     <header class="admin-topbar">
-      <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
+      <a class="brand-box" href="../core/landing.html" aria-label="Vá» trang chá»§ TAM TAI">
         <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
       </a>
-      <label class="topbar-search" aria-label="Tìm kiếm trong quản trị">
+      <label class="topbar-search" aria-label="TÃ¬m kiáº¿m trong quáº£n trá»‹">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input id="adminGlobalSearch" type="search" placeholder="Tìm trong mục đang mở...">
+        <input id="adminGlobalSearch" type="search" placeholder="TÃ¬m trong má»¥c Ä‘ang má»Ÿ...">
       </label>
       <div class="topbar-actions">
         <a class="topbar-link" href="../core/landing.html">
@@ -32,83 +31,83 @@
           <div class="admin-avatar">A</div>
           <div class="admin-user-meta">
             <strong class="admin-user-name">Admin</strong>
-            <span class="admin-user-role">Quản trị viên</span>
+            <span class="admin-user-role">Quáº£n trá»‹ viÃªn</span>
           </div>
         </div>
       </div>
     </header>
 
     <div class="admin-layout">
-      <!-- ===== ADMIN SIDEBAR - Menu điều hướng quản trị: Tổng quan, Sản phẩm, Đơn hàng, Người dùng, Mã giảm giá ===== -->
+      <!-- ===== ADMIN SIDEBAR - Menu Ä‘iá»u hÆ°á»›ng quáº£n trá»‹: Tá»•ng quan, Sáº£n pháº©m, ÄÆ¡n hÃ ng, NgÆ°á»i dÃ¹ng, MÃ£ giáº£m giÃ¡ ===== -->
       <aside class="admin-sidebar">
         <div>
-          <p class="sidebar-title">Quản trị</p>
+          <p class="sidebar-title">Quáº£n trá»‹</p>
           <nav class="sidebar-nav">
-            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tổng quan</span></a>
-            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
-            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>Đơn hàng</span></a>
-            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>Người dùng</span></a>
-            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>Mã giảm giá</span></a>
+            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tá»•ng quan</span></a>
+            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sáº£n pháº©m</span></a>
+            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>ÄÆ¡n hÃ ng</span></a>
+            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>NgÆ°á»i dÃ¹ng</span></a>
+            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>MÃ£ giáº£m giÃ¡</span></a>
           </nav>
         </div>
 
         <div class="sidebar-footer">
           <button type="button" class="btn btn-danger" data-logout data-redirect="../auth/login.html">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Đăng xuất</span>
+            <span>ÄÄƒng xuáº¥t</span>
           </button>
         </div>
       </aside>
 
-      <!-- ===== ADMIN MAIN - Nội dung chính ===== -->
+      <!-- ===== ADMIN MAIN - Ná»™i dung chÃ­nh ===== -->
       <main class="admin-main">
         <section class="page-header">
           <div>
             <p class="page-eyebrow">Dashboard</p>
-            <h1 class="page-title">Tổng quan quản trị</h1>
+            <h1 class="page-title">Tá»•ng quan quáº£n trá»‹</h1>
             <p class="page-subtitle">
-              Theo dõi nhanh đơn hàng, sản phẩm nổi bật và mức tồn kho thấp trên cùng một giao diện gọn gàng.
+              Theo dÃµi nhanh Ä‘Æ¡n hÃ ng, sáº£n pháº©m ná»•i báº­t vÃ  má»©c tá»“n kho tháº¥p trÃªn cÃ¹ng má»™t giao diá»‡n gá»n gÃ ng.
             </p>
           </div>
           <div class="page-header-actions">
             <button id="refreshOverviewBtn" type="button" class="btn btn-secondary">
               <i class="fa-solid fa-rotate-right"></i>
-              <span>Làm mới dữ liệu</span>
+              <span>LÃ m má»›i dá»¯ liá»‡u</span>
             </button>
           </div>
         </section>
 
-        <!-- Stats Tiles - Các ô thống kê nhanh: tổng sản phẩm, người dùng, đơn hàng, doanh thu, mã giảm giá -->
-        <section class="stats-strip" aria-label="Thống kê nhanh">
+        <!-- Stats Tiles - CÃ¡c Ã´ thá»‘ng kÃª nhanh: tá»•ng sáº£n pháº©m, ngÆ°á»i dÃ¹ng, Ä‘Æ¡n hÃ ng, doanh thu, mÃ£ giáº£m giÃ¡ -->
+        <section class="stats-strip" aria-label="Thá»‘ng kÃª nhanh">
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-box-open"></i></span>
               <div>
-                <p class="stat-label">Tổng sản phẩm</p>
+                <p class="stat-label">Tá»•ng sáº£n pháº©m</p>
                 <strong id="statProducts" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tất cả sản phẩm</p>
+            <p class="stat-caption">Táº¥t cáº£ sáº£n pháº©m</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
               <div>
-                <p class="stat-label">Tổng người dùng</p>
+                <p class="stat-label">Tá»•ng ngÆ°á»i dÃ¹ng</p>
                 <strong id="statCustomers" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Đang hoạt động</p>
+            <p class="stat-caption">Äang hoáº¡t Ä‘á»™ng</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></span>
               <div>
-                <p class="stat-label">Đơn hàng</p>
+                <p class="stat-label">ÄÆ¡n hÃ ng</p>
                 <strong id="statOrders" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Hôm nay</p>
+            <p class="stat-caption">HÃ´m nay</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
@@ -118,31 +117,31 @@
                 <strong id="statRevenue" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tổng doanh thu</p>
+            <p class="stat-caption">Tá»•ng doanh thu</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-ticket"></i></span>
               <div>
-                <p class="stat-label">Mã giảm giá</p>
+                <p class="stat-label">MÃ£ giáº£m giÃ¡</p>
                 <strong id="statDiscountCodes" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Đang hoạt động</p>
+            <p class="stat-caption">Äang hoáº¡t Ä‘á»™ng</p>
           </article>
         </section>
 
         <div id="pageMessage" class="page-message" aria-live="polite"></div>
 
-        <!-- Dashboard Grid - Lưới dashboard: đơn hàng gần đây, sản phẩm sắp hết hàng, sản phẩm nổi bật -->
+        <!-- Dashboard Grid - LÆ°á»›i dashboard: Ä‘Æ¡n hÃ ng gáº§n Ä‘Ã¢y, sáº£n pháº©m sáº¯p háº¿t hÃ ng, sáº£n pháº©m ná»•i báº­t -->
         <section class="dashboard-grid">
           <div class="dashboard-stack">
-            <!-- Recent Orders Table - Bảng đơn hàng gần đây -->
+            <!-- Recent Orders Table - Báº£ng Ä‘Æ¡n hÃ ng gáº§n Ä‘Ã¢y -->
             <article class="page-panel dashboard-table">
               <div class="panel-head">
                 <div>
-                  <h2 class="panel-title">Đơn hàng gần đây</h2>
-                  <p class="panel-subtext">Bảng tổng hợp nhanh các đơn mới nhất.</p>
+                  <h2 class="panel-title">ÄÆ¡n hÃ ng gáº§n Ä‘Ã¢y</h2>
+                  <p class="panel-subtext">Báº£ng tá»•ng há»£p nhanh cÃ¡c Ä‘Æ¡n má»›i nháº¥t.</p>
                 </div>
               </div>
 
@@ -150,11 +149,11 @@
                 <table class="admin-table">
                   <thead>
                     <tr>
-                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="order_id"><span>Mã</span><i class="fa-solid fa-sort"></i></button></th>
-                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="customer_name"><span>Khách hàng</span><i class="fa-solid fa-sort"></i></button></th>
-                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="status"><span>Trạng thái</span><i class="fa-solid fa-sort"></i></button></th>
-                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="total_amount"><span>Tổng tiền</span><i class="fa-solid fa-sort"></i></button></th>
-                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="order_date"><span>Ngày</span><i class="fa-solid fa-sort"></i></button></th>
+                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="order_id"><span>MÃ£</span><i class="fa-solid fa-sort"></i></button></th>
+                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="customer_name"><span>KhÃ¡ch hÃ ng</span><i class="fa-solid fa-sort"></i></button></th>
+                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="status"><span>Tráº¡ng thÃ¡i</span><i class="fa-solid fa-sort"></i></button></th>
+                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="total_amount"><span>Tá»•ng tiá»n</span><i class="fa-solid fa-sort"></i></button></th>
+                      <th><button type="button" class="sort-btn" data-sort-view="dashboardOrders" data-sort-key="order_date"><span>NgÃ y</span><i class="fa-solid fa-sort"></i></button></th>
                     </tr>
                   </thead>
                   <tbody id="dashboardOrdersTable"></tbody>
@@ -162,50 +161,50 @@
               </div>
             </article>
 
-            <!-- Low Stock Alerts - Danh sách sản phẩm sắp hết hàng cần nhập thêm -->
+            <!-- Low Stock Alerts - Danh sÃ¡ch sáº£n pháº©m sáº¯p háº¿t hÃ ng cáº§n nháº­p thÃªm -->
             <article class="page-panel">
               <div class="panel-head">
                 <div>
-                  <h2 class="panel-title">Sản phẩm sắp hết hàng</h2>
-                  <p class="panel-subtext">Danh sách ưu tiên cần bổ sung trong kho.</p>
+                  <h2 class="panel-title">Sáº£n pháº©m sáº¯p háº¿t hÃ ng</h2>
+                  <p class="panel-subtext">Danh sÃ¡ch Æ°u tiÃªn cáº§n bá»• sung trong kho.</p>
                 </div>
               </div>
               <div id="dashboardLowStock" class="mini-list"></div>
             </article>
           </div>
 
-          <!-- Top Products - Danh sách sản phẩm nổi bật với tùy chọn sắp xếp -->
+          <!-- Top Products - Danh sÃ¡ch sáº£n pháº©m ná»•i báº­t vá»›i tÃ¹y chá»n sáº¯p xáº¿p -->
           <article class="page-panel">
             <div class="panel-head">
               <div>
-                <h2 class="panel-title">Sản phẩm nổi bật</h2>
-                <p class="panel-subtext">Bấm vào từng sản phẩm để mở nhanh trang chính sửa.</p>
+                <h2 class="panel-title">Sáº£n pháº©m ná»•i báº­t</h2>
+                <p class="panel-subtext">Báº¥m vÃ o tá»«ng sáº£n pháº©m Ä‘á»ƒ má»Ÿ nhanh trang chÃ­nh sá»­a.</p>
               </div>
               <div class="panel-tools">
                 <select id="dashboardSortField" class="admin-select" style="min-width:130px">
-                  <option value="product_name">Tên</option>
-                  <option value="unit_price">Giá</option>
-                  <option value="stock_quantity">Tồn kho</option>
-                  <option value="sold_quantity">Đã bán</option>
+                  <option value="product_name">TÃªn</option>
+                  <option value="unit_price">GiÃ¡</option>
+                  <option value="stock_quantity">Tá»“n kho</option>
+                  <option value="sold_quantity">ÄÃ£ bÃ¡n</option>
                 </select>
-                <button type="button" id="dashboardSortAsc" class="sort-arrow" title="Tăng dần"><i class="fa-solid fa-arrow-up"></i></button>
-                <button type="button" id="dashboardSortDesc" class="sort-arrow is-active" title="Giảm dần"><i class="fa-solid fa-arrow-down"></i></button>
+                <button type="button" id="dashboardSortAsc" class="sort-arrow" title="TÄƒng dáº§n"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" id="dashboardSortDesc" class="sort-arrow is-active" title="Giáº£m dáº§n"><i class="fa-solid fa-arrow-down"></i></button>
               </div>
             </div>
 
             <div id="dashboardTopProducts" class="mini-list"></div>
 
             <div class="table-footer">
-              <p id="dashboardTopProductsPageSummary" class="table-summary">Không có dữ liệu để hiển thị.</p>
+              <p id="dashboardTopProductsPageSummary" class="table-summary">KhÃ´ng cÃ³ dá»¯ liá»‡u Ä‘á»ƒ hiá»ƒn thá»‹.</p>
               <div id="dashboardTopProductsPagination" class="pagination"></div>
             </div>
           </article>
         </section>
 
-        <!-- Admin Footer - Chân trang quản trị -->
+        <!-- Admin Footer - ChÃ¢n trang quáº£n trá»‹ -->
         <footer class="admin-footer">
           <span>&copy; 2025 TAM TAI. All rights reserved.</span>
-          <span>Phiên bản 1.0.0</span>
+          <span>PhiÃªn báº£n 1.0.0</span>
         </footer>
       </main>
     </div>
@@ -214,6 +213,5 @@
   <script src="../../js/core/common.js?v=20260522f"></script>
   <script src="../../js/admin/core.js?v=20260522g"></script>
   <script src="../../js/admin/dashboard.js?v=20260522g"></script>
-  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
 </body>
 </html>

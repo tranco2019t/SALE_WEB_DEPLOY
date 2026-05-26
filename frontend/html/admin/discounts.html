@@ -1,27 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mã giảm giá quản trị - TAM TAI</title>
+  <title>MÃ£ giáº£m giÃ¡ quáº£n trá»‹ - TAM TAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/admin/base.css?v=20260522f">
   <link rel="stylesheet" href="../../css/admin/discounts.css?v=20260522g">
-  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
   <div class="admin-shell">
     <!-- ===== ADMIN TOPBAR ===== -->
     <header class="admin-topbar">
-      <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
+      <a class="brand-box" href="../core/landing.html" aria-label="Vá» trang chá»§ TAM TAI">
         <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
       </a>
-      <label class="topbar-search" aria-label="Tìm kiếm mã giảm giá trong quản trị">
+      <label class="topbar-search" aria-label="TÃ¬m kiáº¿m mÃ£ giáº£m giÃ¡ trong quáº£n trá»‹">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input id="adminGlobalSearch" type="search" placeholder="Tìm mã giảm giá, sản phẩm hoặc người dùng...">
+        <input id="adminGlobalSearch" type="search" placeholder="TÃ¬m mÃ£ giáº£m giÃ¡, sáº£n pháº©m hoáº·c ngÆ°á»i dÃ¹ng...">
       </label>
       <div class="topbar-actions">
         <a class="topbar-link" href="../core/landing.html">
@@ -32,7 +31,7 @@
           <div class="admin-avatar">A</div>
           <div class="admin-user-meta">
             <strong class="admin-user-name">Admin</strong>
-            <span class="admin-user-role">Quản trị viên</span>
+            <span class="admin-user-role">Quáº£n trá»‹ viÃªn</span>
           </div>
         </div>
       </div>
@@ -42,77 +41,77 @@
       <!-- ===== ADMIN SIDEBAR ===== -->
       <aside class="admin-sidebar">
         <div>
-          <p class="sidebar-title">Quản trị</p>
+          <p class="sidebar-title">Quáº£n trá»‹</p>
           <nav class="sidebar-nav">
-            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tổng quan</span></a>
-            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
-            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>Đơn hàng</span></a>
-            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>Người dùng</span></a>
-            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>Mã giảm giá</span></a>
+            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tá»•ng quan</span></a>
+            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sáº£n pháº©m</span></a>
+            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>ÄÆ¡n hÃ ng</span></a>
+            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>NgÆ°á»i dÃ¹ng</span></a>
+            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>MÃ£ giáº£m giÃ¡</span></a>
           </nav>
         </div>
 
         <div class="sidebar-footer">
           <button type="button" class="btn btn-danger" data-logout data-redirect="../auth/login.html">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Đăng xuất</span>
+            <span>ÄÄƒng xuáº¥t</span>
           </button>
         </div>
       </aside>
 
-      <!-- ===== ADMIN MAIN - Quản lý mã giảm giá ===== -->
+      <!-- ===== ADMIN MAIN - Quáº£n lÃ½ mÃ£ giáº£m giÃ¡ ===== -->
       <main class="admin-main">
         <section class="page-header">
           <div>
-            <p class="page-eyebrow">Mã giảm giá</p>
-            <h1 class="page-title">Quản lý ưu đãi</h1>
+            <p class="page-eyebrow">MÃ£ giáº£m giÃ¡</p>
+            <h1 class="page-title">Quáº£n lÃ½ Æ°u Ä‘Ã£i</h1>
             <p class="page-subtitle">
-              Tạo, cập nhật và bật tắt các mã giảm giá theo sản phẩm hoặc theo từng khách hàng cụ thể.
+              Táº¡o, cáº­p nháº­t vÃ  báº­t táº¯t cÃ¡c mÃ£ giáº£m giÃ¡ theo sáº£n pháº©m hoáº·c theo tá»«ng khÃ¡ch hÃ ng cá»¥ thá»ƒ.
             </p>
           </div>
           <div class="page-header-actions">
             <button id="refreshDiscountsBtn" type="button" class="btn btn-secondary">
               <i class="fa-solid fa-rotate-right"></i>
-              <span>Làm mới</span>
+              <span>LÃ m má»›i</span>
             </button>
-            <button id="createDiscountBtn" type="button" class="btn btn-primary" data-open-form="#discountForm" data-form-title="Thêm mã giảm giá">
+            <button id="createDiscountBtn" type="button" class="btn btn-primary" data-open-form="#discountForm" data-form-title="ThÃªm mÃ£ giáº£m giÃ¡">
               <i class="fa-solid fa-plus"></i>
-              <span>Tạo mới</span>
+              <span>Táº¡o má»›i</span>
             </button>
           </div>
         </section>
 
         <!-- Stats Tiles -->
-        <section class="stats-strip" aria-label="Thống kê nhanh">
+        <section class="stats-strip" aria-label="Thá»‘ng kÃª nhanh">
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-box-open"></i></span>
               <div>
-                <p class="stat-label">Tổng sản phẩm</p>
+                <p class="stat-label">Tá»•ng sáº£n pháº©m</p>
                 <strong id="statProducts" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tất cả sản phẩm</p>
+            <p class="stat-caption">Táº¥t cáº£ sáº£n pháº©m</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
               <div>
-                <p class="stat-label">Tổng người dùng</p>
+                <p class="stat-label">Tá»•ng ngÆ°á»i dÃ¹ng</p>
                 <strong id="statCustomers" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Đang hoạt động</p>
+            <p class="stat-caption">Äang hoáº¡t Ä‘á»™ng</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></span>
               <div>
-                <p class="stat-label">Đơn hàng</p>
+                <p class="stat-label">ÄÆ¡n hÃ ng</p>
                 <strong id="statOrders" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tổng số đơn</p>
+            <p class="stat-caption">Tá»•ng sá»‘ Ä‘Æ¡n</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
@@ -122,33 +121,33 @@
                 <strong id="statRevenue" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tổng doanh thu</p>
+            <p class="stat-caption">Tá»•ng doanh thu</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-ticket"></i></span>
               <div>
-                <p class="stat-label">Mã giảm giá</p>
+                <p class="stat-label">MÃ£ giáº£m giÃ¡</p>
                 <strong id="statDiscountCodes" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Đang hoạt động</p>
+            <p class="stat-caption">Äang hoáº¡t Ä‘á»™ng</p>
           </article>
         </section>
 
         <div id="pageMessage" class="page-message" aria-live="polite"></div>
 
-        <!-- Discounts Layout - Bố cục quản lý mã giảm giá: bảng danh sách + form tạo/sửa -->
+        <!-- Discounts Layout - Bá»‘ cá»¥c quáº£n lÃ½ mÃ£ giáº£m giÃ¡: báº£ng danh sÃ¡ch + form táº¡o/sá»­a -->
         <section class="discounts-layout">
-          <!-- Discount Codes Table - Bảng danh sách mã giảm giá -->
+          <!-- Discount Codes Table - Báº£ng danh sÃ¡ch mÃ£ giáº£m giÃ¡ -->
           <article class="page-panel">
             <div class="panel-head">
               <div>
-                <h2 class="panel-title">Danh sách mã giảm giá</h2>
-                <p class="panel-subtext">Quan sát tỷ lệ giảm, đối tượng áp dụng và lượt sử dụng trên cùng một bảng.
+                <h2 class="panel-title">Danh sÃ¡ch mÃ£ giáº£m giÃ¡</h2>
+                <p class="panel-subtext">Quan sÃ¡t tá»· lá»‡ giáº£m, Ä‘á»‘i tÆ°á»£ng Ã¡p dá»¥ng vÃ  lÆ°á»£t sá»­ dá»¥ng trÃªn cÃ¹ng má»™t báº£ng.
               </div>
               <div class="panel-tools">
-                <span id="discountsCount" class="count-chip">0 mã</span>
+                <span id="discountsCount" class="count-chip">0 mÃ£</span>
               </div>
             </div>
 
@@ -156,13 +155,13 @@
               <table class="admin-table">
                 <thead>
                   <tr>
-                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="code"><span>Mã</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="discount_percent"><span>Giảm</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="product_name"><span>Sản phẩm</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="customer_name"><span>Khách hàng</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="usage_limit"><span>Lượt dùng</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="is_active"><span>Trạng thái</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><span>Thao tác</span></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="code"><span>MÃ£</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="discount_percent"><span>Giáº£m</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="product_name"><span>Sáº£n pháº©m</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="customer_name"><span>KhÃ¡ch hÃ ng</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="usage_limit"><span>LÆ°á»£t dÃ¹ng</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="discounts" data-sort-key="is_active"><span>Tráº¡ng thÃ¡i</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><span>Thao tÃ¡c</span></th>
                   </tr>
                 </thead>
                 <tbody id="discountsTableBody"></tbody>
@@ -170,82 +169,82 @@
             </div>
 
             <div class="table-footer">
-              <p id="discountsPageSummary" class="table-summary">Không có dữ liệu để hiển thị.</p>
+              <p id="discountsPageSummary" class="table-summary">KhÃ´ng cÃ³ dá»¯ liá»‡u Ä‘á»ƒ hiá»ƒn thá»‹.</p>
               <div id="discountsPagination" class="pagination"></div>
             </div>
           </article>
 
-          <!-- Discount Create/Edit Form - Form tạo và cập nhật mã giảm giá -->
+          <!-- Discount Create/Edit Form - Form táº¡o vÃ  cáº­p nháº­t mÃ£ giáº£m giÃ¡ -->
           <aside class="editor-card">
             <div class="editor-card-head">
               <div>
-                <h2 id="discountFormTitle" class="panel-title">Thêm mã giảm giá</h2>
-                <p class="section-note">Khung này hỗ trợ tạo mới hoặc cập nhật nhanh mã giảm giá theo đối tượng áp dụng.
+                <h2 id="discountFormTitle" class="panel-title">ThÃªm mÃ£ giáº£m giÃ¡</h2>
+                <p class="section-note">Khung nÃ y há»— trá»£ táº¡o má»›i hoáº·c cáº­p nháº­t nhanh mÃ£ giáº£m giÃ¡ theo Ä‘á»‘i tÆ°á»£ng Ã¡p dá»¥ng.
               </div>
-              <button id="resetDiscountFormBtn" type="button" class="btn btn-soft" data-open-form="#discountForm" data-form-title="Thêm mã giảm giá">Tạo mới</button>
+              <button id="resetDiscountFormBtn" type="button" class="btn btn-soft" data-open-form="#discountForm" data-form-title="ThÃªm mÃ£ giáº£m giÃ¡">Táº¡o má»›i</button>
             </div>
 
             <form id="discountForm" class="form-grid">
               <input id="discountFormId" type="hidden">
 
               <div class="field-group">
-                <label for="discountCode">Mã giảm giá</label>
-                <input id="discountCode" class="admin-input" type="text" placeholder="Nhập mã ưu đãi" required>
+                <label for="discountCode">MÃ£ giáº£m giÃ¡</label>
+                <input id="discountCode" class="admin-input" type="text" placeholder="Nháº­p mÃ£ Æ°u Ä‘Ã£i" required>
               </div>
 
               <div class="field-group">
-                <label for="discountPercent">Giảm giá (%)</label>
-                <input id="discountPercent" class="admin-input" type="number" min="1" max="100" step="1" placeholder="Nhập % giảm giá" required>
+                <label for="discountPercent">Giáº£m giÃ¡ (%)</label>
+                <input id="discountPercent" class="admin-input" type="number" min="1" max="100" step="1" placeholder="Nháº­p % giáº£m giÃ¡" required>
               </div>
 
               <div class="field-group">
-                <label for="discountProduct">Sản phẩm áp dụng</label>
+                <label for="discountProduct">Sáº£n pháº©m Ã¡p dá»¥ng</label>
                 <select id="discountProduct" class="admin-select">
-                  <option value="">Tất cả sản phẩm</option>
+                  <option value="">Táº¥t cáº£ sáº£n pháº©m</option>
                 </select>
               </div>
 
               <div class="field-group">
-                <label for="discountCustomer">Khách hàng áp dụng</label>
+                <label for="discountCustomer">KhÃ¡ch hÃ ng Ã¡p dá»¥ng</label>
                 <select id="discountCustomer" class="admin-select">
-                  <option value="">Tất cả người dùng</option>
+                  <option value="">Táº¥t cáº£ ngÆ°á»i dÃ¹ng</option>
                 </select>
-                <p class="section-note">Chọn một khách hàng để gửi riêng, hoặc để trống để gửi thông báo cho toàn bộ khách hàng.</p>
+                <p class="section-note">Chá»n má»™t khÃ¡ch hÃ ng Ä‘á»ƒ gá»­i riÃªng, hoáº·c Ä‘á»ƒ trá»‘ng Ä‘á»ƒ gá»­i thÃ´ng bÃ¡o cho toÃ n bá»™ khÃ¡ch hÃ ng.</p>
               </div>
 
               <div class="form-row">
                 <div class="field-group">
-                  <label for="discountUsageLimit">Giới hạn sử dụng</label>
-                  <input id="discountUsageLimit" class="admin-input" type="number" min="1" step="1" placeholder="Nhập giới hạn">
+                  <label for="discountUsageLimit">Giá»›i háº¡n sá»­ dá»¥ng</label>
+                  <input id="discountUsageLimit" class="admin-input" type="number" min="1" step="1" placeholder="Nháº­p giá»›i háº¡n">
                 </div>
                 <div class="field-group">
-                  <label for="discountStatus">Trạng thái</label>
+                  <label for="discountStatus">Tráº¡ng thÃ¡i</label>
                   <select id="discountStatus" class="admin-select">
-                    <option value="true">Đang bật</option>
-                    <option value="false">Đang tắt</option>
+                    <option value="true">Äang báº­t</option>
+                    <option value="false">Äang táº¯t</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="field-group">
-                  <label for="discountStartsAt">Bắt đầu</label>
+                  <label for="discountStartsAt">Báº¯t Ä‘áº§u</label>
                   <input id="discountStartsAt" class="admin-input" type="datetime-local">
                 </div>
                 <div class="field-group">
-                  <label for="discountExpiresAt">Kết thúc</label>
+                  <label for="discountExpiresAt">Káº¿t thÃºc</label>
                   <input id="discountExpiresAt" class="admin-input" type="datetime-local">
                 </div>
               </div>
 
               <div class="field-group">
-                <label for="discountDescription">Mô tả</label>
-                <textarea id="discountDescription" class="admin-textarea" placeholder="Nhập mô tả ngắn về mã giảm giá"></textarea>
+                <label for="discountDescription">MÃ´ táº£</label>
+                <textarea id="discountDescription" class="admin-textarea" placeholder="Nháº­p mÃ´ táº£ ngáº¯n vá» mÃ£ giáº£m giÃ¡"></textarea>
               </div>
 
               <div class="form-actions">
-                <button id="discountSubmitBtn" type="submit" class="btn btn-primary">Lưu mã</button>
-                <button id="discountCancelBtn" type="button" class="btn btn-secondary">Hủy</button>
+                <button id="discountSubmitBtn" type="submit" class="btn btn-primary">LÆ°u mÃ£</button>
+                <button id="discountCancelBtn" type="button" class="btn btn-secondary">Há»§y</button>
               </div>
             </form>
           </aside>
@@ -254,7 +253,7 @@
         <!-- Admin Footer -->
         <footer class="admin-footer">
           <span>&copy; 2025 TAM TAI. All rights reserved.</span>
-          <span>Phiên bản 1.0.0</span>
+          <span>PhiÃªn báº£n 1.0.0</span>
         </footer>
       </main>
     </div>
@@ -263,18 +262,17 @@
   <script src="../../js/core/common.js?v=20260522f"></script>
   <script src="../../js/admin/core.js?v=20260522e"></script>
   <script src="../../js/admin/discounts.js?v=20260523a"></script>
-  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
 
-  <!-- Generic Modal - Modal dùng chung cho form thêm/sửa -->
+  <!-- Generic Modal - Modal dÃ¹ng chung cho form thÃªm/sá»­a -->
   <div id="entityFormModal" class="modal-shell" hidden>
-    <button type="button" class="modal-backdrop" data-close-modal aria-label="Đóng"></button>
+    <button type="button" class="modal-backdrop" data-close-modal aria-label="ÄÃ³ng"></button>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityFormModalTitle">
       <div class="modal-head">
         <div>
           <p class="modal-eyebrow">Form</p>
           <h2 id="entityFormModalTitle">Form</h2>
         </div>
-        <button type="button" class="modal-close" data-close-modal aria-label="Đóng">×</button>
+        <button type="button" class="modal-close" data-close-modal aria-label="ÄÃ³ng">Ã—</button>
       </div>
       <div class="modal-body"></div>
     </div>

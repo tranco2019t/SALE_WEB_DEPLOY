@@ -1,27 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sản phẩm quản trị - TAM TAI</title>
+  <title>Sáº£n pháº©m quáº£n trá»‹ - TAM TAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/admin/base.css?v=20260522f">
   <link rel="stylesheet" href="../../css/admin/products.css?v=20260522g">
-  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
   <div class="admin-shell">
     <!-- ===== ADMIN TOPBAR ===== -->
     <header class="admin-topbar">
-      <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
+      <a class="brand-box" href="../core/landing.html" aria-label="Vá» trang chá»§ TAM TAI">
         <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
       </a>
-      <label class="topbar-search" aria-label="Tìm kiếm sản phẩm trong quản trị">
+      <label class="topbar-search" aria-label="TÃ¬m kiáº¿m sáº£n pháº©m trong quáº£n trá»‹">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input id="adminGlobalSearch" type="search" placeholder="Tìm sản phẩm theo mã, tên hoặc mô tả...">
+        <input id="adminGlobalSearch" type="search" placeholder="TÃ¬m sáº£n pháº©m theo mÃ£, tÃªn hoáº·c mÃ´ táº£...">
       </label>
       <div class="topbar-actions">
         <a class="topbar-link" href="../core/landing.html">
@@ -32,7 +31,7 @@
           <div class="admin-avatar">A</div>
           <div class="admin-user-meta">
             <strong class="admin-user-name">Admin</strong>
-            <span class="admin-user-role">Quản trị viên</span>
+            <span class="admin-user-role">Quáº£n trá»‹ viÃªn</span>
           </div>
         </div>
       </div>
@@ -42,77 +41,77 @@
       <!-- ===== ADMIN SIDEBAR ===== -->
       <aside class="admin-sidebar">
         <div>
-          <p class="sidebar-title">Quản trị</p>
+          <p class="sidebar-title">Quáº£n trá»‹</p>
           <nav class="sidebar-nav">
-            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tổng quan</span></a>
-            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sản phẩm</span></a>
-            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>Đơn hàng</span></a>
-            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>Người dùng</span></a>
-            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>Mã giảm giá</span></a>
+            <a class="nav-link" data-admin-nav="dashboard" href="./admin.html"><i class="fa-solid fa-chart-line"></i><span>Tá»•ng quan</span></a>
+            <a class="nav-link" data-admin-nav="products" href="./products.html"><i class="fa-solid fa-box-open"></i><span>Sáº£n pháº©m</span></a>
+            <a class="nav-link" data-admin-nav="orders" href="./orders.html"><i class="fa-solid fa-bag-shopping"></i><span>ÄÆ¡n hÃ ng</span></a>
+            <a class="nav-link" data-admin-nav="customers" href="./customers.html"><i class="fa-solid fa-users"></i><span>NgÆ°á»i dÃ¹ng</span></a>
+            <a class="nav-link" data-admin-nav="discounts" href="./discounts.html"><i class="fa-solid fa-ticket"></i><span>MÃ£ giáº£m giÃ¡</span></a>
           </nav>
         </div>
 
         <div class="sidebar-footer">
           <button type="button" class="btn btn-danger" data-logout data-redirect="../auth/login.html">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Đăng xuất</span>
+            <span>ÄÄƒng xuáº¥t</span>
           </button>
         </div>
       </aside>
 
-      <!-- ===== ADMIN MAIN - Quản lý sản phẩm ===== -->
+      <!-- ===== ADMIN MAIN - Quáº£n lÃ½ sáº£n pháº©m ===== -->
       <main class="admin-main">
         <section class="page-header">
           <div>
-            <p class="page-eyebrow">Sản phẩm</p>
-            <h1 class="page-title">Danh sách sản phẩm</h1>
+            <p class="page-eyebrow">Sáº£n pháº©m</p>
+            <h1 class="page-title">Danh sÃ¡ch sáº£n pháº©m</h1>
             <p class="page-subtitle">
-              Quản lý catalog, cập nhật giá bán và theo dõi số lượng tồn kho theo một bộ cục để quan sát.
+              Quáº£n lÃ½ catalog, cáº­p nháº­t giÃ¡ bÃ¡n vÃ  theo dÃµi sá»‘ lÆ°á»£ng tá»“n kho theo má»™t bá»™ cá»¥c Ä‘á»ƒ quan sÃ¡t.
             </p>
           </div>
           <div class="page-header-actions">
             <button id="refreshProductsBtn" type="button" class="btn btn-secondary">
               <i class="fa-solid fa-rotate-right"></i>
-              <span>Làm mới</span>
+              <span>LÃ m má»›i</span>
             </button>
-            <button id="createProductBtn" type="button" class="btn btn-primary" data-open-form="#productForm" data-form-title="Thêm sản phẩm mới">
+            <button id="createProductBtn" type="button" class="btn btn-primary" data-open-form="#productForm" data-form-title="ThÃªm sáº£n pháº©m má»›i">
               <i class="fa-solid fa-plus"></i>
-              <span>Tạo mới</span>
+              <span>Táº¡o má»›i</span>
             </button>
           </div>
         </section>
 
-        <!-- Stats Tiles - Thống kê nhanh -->
-        <section class="stats-strip" aria-label="Thống kê nhanh">
+        <!-- Stats Tiles - Thá»‘ng kÃª nhanh -->
+        <section class="stats-strip" aria-label="Thá»‘ng kÃª nhanh">
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-box-open"></i></span>
               <div>
-                <p class="stat-label">Tổng sản phẩm</p>
+                <p class="stat-label">Tá»•ng sáº£n pháº©m</p>
                 <strong id="statProducts" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tất cả sản phẩm</p>
+            <p class="stat-caption">Táº¥t cáº£ sáº£n pháº©m</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
               <div>
-                <p class="stat-label">Tổng người dùng</p>
+                <p class="stat-label">Tá»•ng ngÆ°á»i dÃ¹ng</p>
                 <strong id="statCustomers" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Đang hoạt động</p>
+            <p class="stat-caption">Äang hoáº¡t Ä‘á»™ng</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></span>
               <div>
-                <p class="stat-label">Đơn hàng</p>
+                <p class="stat-label">ÄÆ¡n hÃ ng</p>
                 <strong id="statOrders" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tổng số đơn</p>
+            <p class="stat-caption">Tá»•ng sá»‘ Ä‘Æ¡n</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
@@ -122,38 +121,38 @@
                 <strong id="statRevenue" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Tổng doanh thu</p>
+            <p class="stat-caption">Tá»•ng doanh thu</p>
           </article>
           <article class="stat-tile">
             <div class="stat-tile-head">
               <span class="stat-icon"><i class="fa-solid fa-ticket"></i></span>
               <div>
-                <p class="stat-label">Mã giảm giá</p>
+                <p class="stat-label">MÃ£ giáº£m giÃ¡</p>
                 <strong id="statDiscountCodes" class="stat-value">0</strong>
               </div>
             </div>
-            <p class="stat-caption">Đang hoạt động</p>
+            <p class="stat-caption">Äang hoáº¡t Ä‘á»™ng</p>
           </article>
         </section>
 
         <div id="pageMessage" class="page-message" aria-live="polite"></div>
 
-        <!-- Products Layout - Bố cục quản lý sản phẩm: bảng danh sách (trái) + form CRUD (phải) -->
+        <!-- Products Layout - Bá»‘ cá»¥c quáº£n lÃ½ sáº£n pháº©m: báº£ng danh sÃ¡ch (trÃ¡i) + form CRUD (pháº£i) -->
         <section class="products-layout">
-          <!-- Products Table - Bảng danh sách sản phẩm với bộ lọc danh mục, sắp xếp và phân trang -->
+          <!-- Products Table - Báº£ng danh sÃ¡ch sáº£n pháº©m vá»›i bá»™ lá»c danh má»¥c, sáº¯p xáº¿p vÃ  phÃ¢n trang -->
           <article class="page-panel">
             <div class="panel-head">
               <div>
-                <h2 class="panel-title">Bảng sản phẩm</h2>
-                <p class="panel-subtext">Sắp xếp theo mã, tên, danh mục, giá, tồn kho và đã bán.</p>
+                <h2 class="panel-title">Báº£ng sáº£n pháº©m</h2>
+                <p class="panel-subtext">Sáº¯p xáº¿p theo mÃ£, tÃªn, danh má»¥c, giÃ¡, tá»“n kho vÃ  Ä‘Ã£ bÃ¡n.</p>
               </div>
               <div class="panel-tools">
                 <div class="toolbar-field">
                   <select id="productCategoryFilter" class="admin-select">
-                    <option value="">Tất cả danh mục</option>
+                    <option value="">Táº¥t cáº£ danh má»¥c</option>
                   </select>
                 </div>
-                <span id="productsCount" class="count-chip">0 sản phẩm</span>
+                <span id="productsCount" class="count-chip">0 sáº£n pháº©m</span>
               </div>
             </div>
 
@@ -161,13 +160,13 @@
               <table class="admin-table">
                 <thead>
                   <tr>
-                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="product_id"><span>Mã</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="product_name"><span>Sản phẩm</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="category_name"><span>Danh mục</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="unit_price"><span>Giá</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="stock_quantity"><span>Tồn kho</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="sold_quantity"><span>Đã bán</span><i class="fa-solid fa-sort"></i></button></th>
-                    <th><span>Thao tác</span></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="product_id"><span>MÃ£</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="product_name"><span>Sáº£n pháº©m</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="category_name"><span>Danh má»¥c</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="unit_price"><span>GiÃ¡</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="stock_quantity"><span>Tá»“n kho</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><button type="button" class="sort-btn" data-sort-view="products" data-sort-key="sold_quantity"><span>ÄÃ£ bÃ¡n</span><i class="fa-solid fa-sort"></i></button></th>
+                    <th><span>Thao tÃ¡c</span></th>
                   </tr>
                 </thead>
                 <tbody id="productsTableBody"></tbody>
@@ -175,77 +174,77 @@
             </div>
 
             <div class="table-footer">
-              <p id="productsPageSummary" class="table-summary">Không có dữ liệu để hiển thị.</p>
+              <p id="productsPageSummary" class="table-summary">KhÃ´ng cÃ³ dá»¯ liá»‡u Ä‘á»ƒ hiá»ƒn thá»‹.</p>
               <div id="productsPagination" class="pagination"></div>
             </div>
           </article>
 
-          <!-- CRUD Form - Form thêm/sửa sản phẩm -->
+          <!-- CRUD Form - Form thÃªm/sá»­a sáº£n pháº©m -->
           <aside class="editor-card">
             <div class="editor-card-head">
               <div>
-                <h2 id="productFormTitle" class="panel-title">Thêm sản phẩm mới</h2>
-                <p class="section-note">Khung này dùng để tạo mới hoặc cập nhật thông tin của từng sản phẩm.</p>
+                <h2 id="productFormTitle" class="panel-title">ThÃªm sáº£n pháº©m má»›i</h2>
+                <p class="section-note">Khung nÃ y dÃ¹ng Ä‘á»ƒ táº¡o má»›i hoáº·c cáº­p nháº­t thÃ´ng tin cá»§a tá»«ng sáº£n pháº©m.</p>
               </div>
-              <button id="resetProductFormBtn" type="button" class="btn btn-soft" data-open-form="#productForm" data-form-title="Thêm sản phẩm mới">Tạo mới</button>
+              <button id="resetProductFormBtn" type="button" class="btn btn-soft" data-open-form="#productForm" data-form-title="ThÃªm sáº£n pháº©m má»›i">Táº¡o má»›i</button>
             </div>
 
-            <!-- Product Form - Form nhập thông tin sản phẩm: tên, danh mục, ảnh, giá, giảm giá, tồn kho, đánh giá, mô tả -->
+            <!-- Product Form - Form nháº­p thÃ´ng tin sáº£n pháº©m: tÃªn, danh má»¥c, áº£nh, giÃ¡, giáº£m giÃ¡, tá»“n kho, Ä‘Ã¡nh giÃ¡, mÃ´ táº£ -->
             <form id="productForm" class="form-grid">
               <input id="productFormId" type="hidden">
 
               <div class="field-group">
-                <label for="productName">Tên sản phẩm</label>
-                <input id="productName" class="admin-input" type="text" placeholder="Nhập tên sản phẩm" required>
+                <label for="productName">TÃªn sáº£n pháº©m</label>
+                <input id="productName" class="admin-input" type="text" placeholder="Nháº­p tÃªn sáº£n pháº©m" required>
               </div>
 
               <div class="field-group">
-                <label for="productCategory">Danh mục</label>
+                <label for="productCategory">Danh má»¥c</label>
                 <select id="productCategory" class="admin-select" required>
-                  <option value="">Chọn danh mục</option>
+                  <option value="">Chá»n danh má»¥c</option>
                 </select>
               </div>
 
               <div class="field-group">
-                <label for="productImageUrl">Ảnh sản phẩm</label>
+                <label for="productImageUrl">áº¢nh sáº£n pháº©m</label>
                 <input id="productImageUrl" class="admin-input" type="url" placeholder="https://...">
               </div>
 
               <div class="form-row">
                 <div class="field-group">
-                  <label for="productPrice">Giá bán</label>
-                  <input id="productPrice" class="admin-input" type="number" min="0" step="1000" placeholder="Nhập giá bán" required>
+                  <label for="productPrice">GiÃ¡ bÃ¡n</label>
+                  <input id="productPrice" class="admin-input" type="number" min="0" step="1000" placeholder="Nháº­p giÃ¡ bÃ¡n" required>
                 </div>
                 <div class="field-group">
-                  <label for="productDiscount">Giảm giá (%)</label>
-                  <input id="productDiscount" class="admin-input" type="number" min="0" max="100" step="1" placeholder="Nhập % giảm giá">
+                  <label for="productDiscount">Giáº£m giÃ¡ (%)</label>
+                  <input id="productDiscount" class="admin-input" type="number" min="0" max="100" step="1" placeholder="Nháº­p % giáº£m giÃ¡">
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="field-group">
-                  <label for="productStock">Tồn kho</label>
-                  <input id="productStock" class="admin-input" type="number" min="0" step="1" placeholder="Nhập số lượng" required>
+                  <label for="productStock">Tá»“n kho</label>
+                  <input id="productStock" class="admin-input" type="number" min="0" step="1" placeholder="Nháº­p sá»‘ lÆ°á»£ng" required>
                 </div>
                 <div class="field-group">
-                  <label for="productReviews">Tổng đánh giá</label>
-                  <input id="productReviews" class="admin-input" type="number" min="0" step="1" placeholder="Nhập tổng đánh giá">
+                  <label for="productReviews">Tá»•ng Ä‘Ã¡nh giÃ¡</label>
+                  <input id="productReviews" class="admin-input" type="number" min="0" step="1" placeholder="Nháº­p tá»•ng Ä‘Ã¡nh giÃ¡">
                 </div>
               </div>
 
               <div class="field-group">
-                <label for="productRating">Điểm đánh giá</label>
-                <input id="productRating" class="admin-input" type="number" min="0" max="5" step="0.1" placeholder="Nhập điểm đánh giá">
+                <label for="productRating">Äiá»ƒm Ä‘Ã¡nh giÃ¡</label>
+                <input id="productRating" class="admin-input" type="number" min="0" max="5" step="0.1" placeholder="Nháº­p Ä‘iá»ƒm Ä‘Ã¡nh giÃ¡">
               </div>
 
               <div class="field-group">
-                <label for="productDescription">Mô tả sản phẩm</label>
-                <textarea id="productDescription" class="admin-textarea" placeholder="Nhập mô tả sản phẩm"></textarea>
+                <label for="productDescription">MÃ´ táº£ sáº£n pháº©m</label>
+                <textarea id="productDescription" class="admin-textarea" placeholder="Nháº­p mÃ´ táº£ sáº£n pháº©m"></textarea>
               </div>
 
               <div class="form-actions">
-                <button id="productSubmitBtn" type="submit" class="btn btn-primary">Lưu sản phẩm</button>
-                <button id="productCancelBtn" type="button" class="btn btn-secondary">Hủy</button>
+                <button id="productSubmitBtn" type="submit" class="btn btn-primary">LÆ°u sáº£n pháº©m</button>
+                <button id="productCancelBtn" type="button" class="btn btn-secondary">Há»§y</button>
               </div>
             </form>
           </aside>
@@ -254,7 +253,7 @@
         <!-- Admin Footer -->
         <footer class="admin-footer">
           <span>&copy; 2025 TAM TAI. All rights reserved.</span>
-          <span>Phiên bản 1.0.0</span>
+          <span>PhiÃªn báº£n 1.0.0</span>
         </footer>
       </main>
     </div>
@@ -263,18 +262,17 @@
   <script src="../../js/core/common.js?v=20260522f"></script>
   <script src="../../js/admin/core.js?v=20260522e"></script>
   <script src="../../js/admin/products.js?v=20260522e"></script>
-  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
 
   <!-- Generic modal used to host forms for add/edit actions -->
   <div id="entityFormModal" class="modal-shell" hidden>
-    <button type="button" class="modal-backdrop" data-close-modal aria-label="Đóng"></button>
+    <button type="button" class="modal-backdrop" data-close-modal aria-label="ÄÃ³ng"></button>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityFormModalTitle">
       <div class="modal-head">
         <div>
           <p class="modal-eyebrow">Form</p>
           <h2 id="entityFormModalTitle">Form</h2>
         </div>
-        <button type="button" class="modal-close" data-close-modal aria-label="Đóng">×</button>
+        <button type="button" class="modal-close" data-close-modal aria-label="ÄÃ³ng">Ã—</button>
       </div>
       <div class="modal-body"></div>
     </div>

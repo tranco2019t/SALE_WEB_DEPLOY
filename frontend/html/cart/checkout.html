@@ -1,18 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thanh toán - TAM TAI</title>
+  <title>Thanh toÃ¡n - TAM TAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/cart/checkout.css?v=20260523a">
-  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
-  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
+  <!-- ===== HEADER - Thanh Ä‘iá»u hÆ°á»›ng chÃ­nh ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -22,41 +21,41 @@
 
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="search" placeholder="Tìm kiếm sản phẩm">
+        <input type="search" placeholder="TÃ¬m kiáº¿m sáº£n pháº©m">
       </div>
 
       <div class="header-icons">
-        <a href="../user/notification.html" aria-label="Thông báo"><i class="fa-solid fa-bell"></i></a>
-        <a href="cart.html" aria-label="Giỏ hàng"><i class="fa-solid fa-cart-shopping"></i></a>
-        <a href="../user/profile.html" aria-label="Tài khoản"><i class="fa-solid fa-user"></i></a>
+        <a href="../user/notification.html" aria-label="ThÃ´ng bÃ¡o"><i class="fa-solid fa-bell"></i></a>
+        <a href="cart.html" aria-label="Giá» hÃ ng"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="../user/profile.html" aria-label="TÃ i khoáº£n"><i class="fa-solid fa-user"></i></a>
       </div>
     </div>
   </header>
 
   <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
-    <!-- Breadcrumb - Đường dẫn: Trang chủ / Giỏ hàng / Thanh toán -->
+    <!-- Breadcrumb - ÄÆ°á»ng dáº«n: Trang chá»§ / Giá» hÃ ng / Thanh toÃ¡n -->
     <section class="breadcrumb-row">
-      <a href="../core/landing.html">Trang chủ</a>
+      <a href="../core/landing.html">Trang chá»§</a>
       <span>/</span>
-      <a href="cart.html">Giỏ hàng</a>
+      <a href="cart.html">Giá» hÃ ng</a>
       <span>/</span>
-      <strong>Thanh toán</strong>
+      <strong>Thanh toÃ¡n</strong>
     </section>
 
-    <h1 class="page-title">THANH TOÁN ĐƠN HÀNG</h1>
+    <h1 class="page-title">THANH TOÃN ÄÆ N HÃ€NG</h1>
 
-    <!-- Checkout Layout - Bố cục thanh toán: form thông tin (trái) + tóm tắt đơn hàng (phải) -->
+    <!-- Checkout Layout - Bá»‘ cá»¥c thanh toÃ¡n: form thÃ´ng tin (trÃ¡i) + tÃ³m táº¯t Ä‘Æ¡n hÃ ng (pháº£i) -->
     <section class="checkout-layout">
-      <!-- Shipping Form - Form thông tin giao hàng -->
+      <!-- Shipping Form - Form thÃ´ng tin giao hÃ ng -->
       <article class="checkout-form">
-        <h2>Thông tin giao hàng</h2>
+        <h2>ThÃ´ng tin giao hÃ ng</h2>
 
-        <!-- Saved Addresses - Danh sách địa chỉ đã lưu, chọn để tự động điền form -->
+        <!-- Saved Addresses - Danh sÃ¡ch Ä‘á»‹a chá»‰ Ä‘Ã£ lÆ°u, chá»n Ä‘á»ƒ tá»± Ä‘á»™ng Ä‘iá»n form -->
         <div class="saved-addresses" id="savedAddressesSection" style="display:none;">
           <div class="saved-addresses-head">
-            <h3>Địa chỉ đã lưu</h3>
-            <p>Chọn nhanh một địa chỉ để tự điền thông tin giao hàng.</p>
+            <h3>Äá»‹a chá»‰ Ä‘Ã£ lÆ°u</h3>
+            <p>Chá»n nhanh má»™t Ä‘á»‹a chá»‰ Ä‘á»ƒ tá»± Ä‘iá»n thÃ´ng tin giao hÃ ng.</p>
           </div>
           <div class="saved-addresses-list" id="savedAddressesList"></div>
         </div>
@@ -64,79 +63,79 @@
         <form id="checkoutShippingForm">
           <div class="form-grid">
             <label>
-              Họ và tên
-              <input id="checkoutFullName" type="text" placeholder="Nhập họ tên người nhận">
+              Há» vÃ  tÃªn
+              <input id="checkoutFullName" type="text" placeholder="Nháº­p há» tÃªn ngÆ°á»i nháº­n">
             </label>
             <label>
-              Số điện thoại
-              <input id="checkoutPhone" type="tel" placeholder="Nhập số điện thoại">
+              Sá»‘ Ä‘iá»‡n thoáº¡i
+              <input id="checkoutPhone" type="tel" placeholder="Nháº­p sá»‘ Ä‘iá»‡n thoáº¡i">
             </label>
             <label>
               Email
-              <input id="checkoutEmail" type="email" placeholder="Nhập email">
+              <input id="checkoutEmail" type="email" placeholder="Nháº­p email">
             </label>
             <label>
-              Tỉnh/Thành phố
-              <input id="checkoutCity" type="text" placeholder="Nhập tỉnh/thành phố" list="checkoutCitySuggestions">
+              Tá»‰nh/ThÃ nh phá»‘
+              <input id="checkoutCity" type="text" placeholder="Nháº­p tá»‰nh/thÃ nh phá»‘" list="checkoutCitySuggestions">
               <datalist id="checkoutCitySuggestions"></datalist>
             </label>
           </div>
 
           <label>
-            Địa chỉ chi tiết
-            <input id="checkoutDetailAddress" type="text" placeholder="Số nhà, tên đường, phường/xã">
+            Äá»‹a chá»‰ chi tiáº¿t
+            <input id="checkoutDetailAddress" type="text" placeholder="Sá»‘ nhÃ , tÃªn Ä‘Æ°á»ng, phÆ°á»ng/xÃ£">
           </label>
 
           <label>
-            Ghi chú đơn hàng
-            <textarea id="checkoutNote" rows="3" placeholder="Ghi chú thêm cho đơn hàng (không bắt buộc)"></textarea>
+            Ghi chÃº Ä‘Æ¡n hÃ ng
+            <textarea id="checkoutNote" rows="3" placeholder="Ghi chÃº thÃªm cho Ä‘Æ¡n hÃ ng (khÃ´ng báº¯t buá»™c)"></textarea>
           </label>
         </form>
 
-        <!-- Shipping Methods - Lựa chọn phương thức vận chuyển -->
+        <!-- Shipping Methods - Lá»±a chá»n phÆ°Æ¡ng thá»©c váº­n chuyá»ƒn -->
         <div class="method-block">
-          <h3>Phương thức vận chuyển</h3>
+          <h3>PhÆ°Æ¡ng thá»©c váº­n chuyá»ƒn</h3>
           <label class="method-item">
             <input type="radio" name="shipping" checked>
-            <span>Giao nhanh trong ngày</span>
-            <strong>30.000đ</strong>
+            <span>Giao nhanh trong ngÃ y</span>
+            <strong>30.000Ä‘</strong>
           </label>
           <label class="method-item">
             <input type="radio" name="shipping">
-            <span>Giao tiêu chuẩn 2-3 ngày</span>
-            <strong>20.000đ</strong>
+            <span>Giao tiÃªu chuáº©n 2-3 ngÃ y</span>
+            <strong>20.000Ä‘</strong>
           </label>
         </div>
 
-        <!-- Payment Methods - Lựa chọn phương thức thanh toán: COD, chuyển khoản, ví điện tử -->
+        <!-- Payment Methods - Lá»±a chá»n phÆ°Æ¡ng thá»©c thanh toÃ¡n: COD, chuyá»ƒn khoáº£n, vÃ­ Ä‘iá»‡n tá»­ -->
         <div class="method-block">
-          <h3>Phương thức thanh toán</h3>
+          <h3>PhÆ°Æ¡ng thá»©c thanh toÃ¡n</h3>
           <label class="method-item">
             <input type="radio" name="payment" checked>
-            <span>Thanh toán khi nhận hàng (COD)</span>
+            <span>Thanh toÃ¡n khi nháº­n hÃ ng (COD)</span>
           </label>
           <label class="method-item">
             <input type="radio" name="payment">
-            <span>Chuyển khoản ngân hàng</span>
+            <span>Chuyá»ƒn khoáº£n ngÃ¢n hÃ ng</span>
           </label>
           <label class="method-item">
             <input type="radio" name="payment">
-            <span>Ví điện tử (Momo, ZaloPay)</span>
+            <span>VÃ­ Ä‘iá»‡n tá»­ (Momo, ZaloPay)</span>
           </label>
         </div>
       </article>
 
-      <!-- Order Summary - Tóm tắt đơn hàng: danh sách sản phẩm, mã giảm giá, tổng thanh toán -->
+      <!-- Order Summary - TÃ³m táº¯t Ä‘Æ¡n hÃ ng: danh sÃ¡ch sáº£n pháº©m, mÃ£ giáº£m giÃ¡, tá»•ng thanh toÃ¡n -->
       <aside class="order-summary">
-        <h2>Tóm tắt đơn hàng</h2>
+        <h2>TÃ³m táº¯t Ä‘Æ¡n hÃ ng</h2>
 
         <div class="summary-item">
           <div class="thumb"><img src="../../images/acer-refurbished-laptop-500x500.webp" alt="Laptop A1"></div>
           <div class="meta">
-            <h3>Laptop Văn Phòng A1</h3>
+            <h3>Laptop VÄƒn PhÃ²ng A1</h3>
             <p>SL: 1</p>
           </div>
-          <strong>15.900.000đ</strong>
+          <strong>15.900.000Ä‘</strong>
         </div>
 
         <div class="summary-item">
@@ -145,67 +144,66 @@
             <h3>Tai nghe Pro X</h3>
             <p>SL: 2</p>
           </div>
-          <strong>2.500.000đ</strong>
+          <strong>2.500.000Ä‘</strong>
         </div>
 
-        <!-- Discount Code - Khu vực nhập và áp dụng mã giảm giá -->
+        <!-- Discount Code - Khu vá»±c nháº­p vÃ  Ã¡p dá»¥ng mÃ£ giáº£m giÃ¡ -->
         <div class="discount-section">
           <div class="discount-input-row">
-            <input type="text" id="discountCodeInput" placeholder="Nhập mã giảm giá" maxlength="50">
-            <button type="button" id="applyDiscountBtn">Áp dụng</button>
+            <input type="text" id="discountCodeInput" placeholder="Nháº­p mÃ£ giáº£m giÃ¡" maxlength="50">
+            <button type="button" id="applyDiscountBtn">Ãp dá»¥ng</button>
           </div>
           <p id="discountMessage" class="discount-msg"></p>
         </div>
 
         <div class="price-line">
-          <span>Tạm tính</span>
-          <strong id="checkoutSubtotal">18.400.000đ</strong>
+          <span>Táº¡m tÃ­nh</span>
+          <strong id="checkoutSubtotal">18.400.000Ä‘</strong>
         </div>
         <div class="price-line" id="discountPriceLine" style="display:none;">
-          <span>Giảm giá</span>
-          <strong id="checkoutDiscount">-0đ</strong>
+          <span>Giáº£m giÃ¡</span>
+          <strong id="checkoutDiscount">-0Ä‘</strong>
         </div>
         <div class="price-line">
-          <span>Phí vận chuyển</span>
-          <strong id="checkoutShipping">30.000đ</strong>
+          <span>PhÃ­ váº­n chuyá»ƒn</span>
+          <strong id="checkoutShipping">30.000Ä‘</strong>
         </div>
         <div class="price-line total">
-          <span>Tổng thanh toán</span>
-          <strong id="checkoutTotal">18.430.000đ</strong>
+          <span>Tá»•ng thanh toÃ¡n</span>
+          <strong id="checkoutTotal">18.430.000Ä‘</strong>
         </div>
 
-        <button class="confirm-btn">Xác nhận thanh toán</button>
-        <a href="cart.html" class="back-btn">Quay lại giỏ hàng</a>
+        <button class="confirm-btn">XÃ¡c nháº­n thanh toÃ¡n</button>
+        <a href="cart.html" class="back-btn">Quay láº¡i giá» hÃ ng</a>
       </aside>
     </section>
   </main>
 
-  <!-- ===== FOOTER - Chân trang ===== -->
+  <!-- ===== FOOTER - ChÃ¢n trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
-      <h3>Về Website</h3>
-      <a href="../info/privacy-policy.html">Chính sách bảo mật</a>
-      <a href="../info/operating-regulations.html">Quy chế hoạt động</a>
+      <h3>Vá» Website</h3>
+      <a href="../info/privacy-policy.html">ChÃ­nh sÃ¡ch báº£o máº­t</a>
+      <a href="../info/operating-regulations.html">Quy cháº¿ hoáº¡t Ä‘á»™ng</a>
     </div>
     <div class="footer-col">
-      <h3>Liên kết</h3>
-      <a href="../info/promotions.html">Khuyến mãi hôm nay</a>
-      <a href="../core/landing.html#featured-categories">Danh mục nổi bật</a>
+      <h3>LiÃªn káº¿t</h3>
+      <a href="../info/promotions.html">Khuyáº¿n mÃ£i hÃ´m nay</a>
+      <a href="../core/landing.html#featured-categories">Danh má»¥c ná»•i báº­t</a>
     </div>
     <div class="footer-col">
-      <h3>Hỗ trợ</h3>
-      <a href="../info/help-center.html">Trung tâm trợ giúp</a>
-      <a href="../info/faq.html">Câu hỏi thường gặp</a>
+      <h3>Há»— trá»£</h3>
+      <a href="../info/help-center.html">Trung tÃ¢m trá»£ giÃºp</a>
+      <a href="../info/faq.html">CÃ¢u há»i thÆ°á»ng gáº·p</a>
     </div>
     <div class="footer-col">
-      <h3>Theo dõi</h3>
+      <h3>Theo dÃµi</h3>
       <a href="https://www.facebook.com/tran.co.cow/" target="_blank" rel="noopener noreferrer">Facebook</a>
       <a href="https://www.tiktok.com/@ctran771?lang=en" target="_blank" rel="noopener noreferrer">TikTok</a>
     </div>
   </footer>
 
   <script src="../../js/core/common.js?v=20260522f"></script>
-  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
   <script src="../../js/cart/checkout.js?v=20260523b"></script>
 </body>
 </html>

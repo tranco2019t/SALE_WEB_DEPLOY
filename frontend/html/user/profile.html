@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -9,10 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/user/profile.css">
-  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
-  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
+  <!-- ===== HEADER - Thanh Ä‘iá»u hÆ°á»›ng chÃ­nh ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -22,84 +21,84 @@
 
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="search" placeholder="Tìm kiếm sản phẩm">
+        <input type="search" placeholder="TÃ¬m kiáº¿m sáº£n pháº©m">
       </div>
 
       <div class="header-icons">
-        <a href="notification.html" aria-label="Thông báo"><i class="fa-solid fa-bell"></i></a>
-        <a href="../cart/cart.html" aria-label="Giỏ hàng"><i class="fa-solid fa-cart-shopping"></i></a>
-        <a href="profile.html" aria-label="Tài khoản"><i class="fa-solid fa-user"></i></a>
+        <a href="notification.html" aria-label="ThÃ´ng bÃ¡o"><i class="fa-solid fa-bell"></i></a>
+        <a href="../cart/cart.html" aria-label="Giá» hÃ ng"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="profile.html" aria-label="TÃ i khoáº£n"><i class="fa-solid fa-user"></i></a>
       </div>
     </div>
   </header>
 
   <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
-    <!-- Profile Layout - Bố cục trang tài khoản: sidebar điều hướng (trái) + nội dung (phải) -->
+    <!-- Profile Layout - Bá»‘ cá»¥c trang tÃ i khoáº£n: sidebar Ä‘iá»u hÆ°á»›ng (trÃ¡i) + ná»™i dung (pháº£i) -->
     <section class="profile-layout">
-      <!-- Sidebar - Menu điều hướng các chức năng tài khoản -->
+      <!-- Sidebar - Menu Ä‘iá»u hÆ°á»›ng cÃ¡c chá»©c nÄƒng tÃ i khoáº£n -->
       <aside class="profile-sidebar">
         <div class="profile-head">
           <div class="avatar">
             <i class="fa-solid fa-user"></i>
           </div>
-          <h2>chưa có</h2>
-          <p>chưa có</p>
+          <h2>chÆ°a cÃ³</h2>
+          <p>chÆ°a cÃ³</p>
         </div>
 
         <nav class="menu-list">
-          <a href="profile.html" class="active"><i class="fa-solid fa-user"></i> Thông tin tài khoản</a>
-          <a href="address.html"><i class="fa-solid fa-location-dot"></i> Địa chỉ của tôi</a>
-          <a href="password.html"><i class="fa-solid fa-lock"></i> Mật khẩu</a>
-          <a href="../cart/all-orders.html"><i class="fa-solid fa-box"></i> Đơn hàng của tôi</a>
-          <a href="product-reviews.html"><i class="fa-solid fa-star"></i> Đánh giá sản phẩm</a>
-          <a href="../admin/admin.html" id="adminMenuLink" style="display: none;"><i class="fa-solid fa-screwdriver-wrench"></i> Trang quản trị</a>
-          <a href="#" class="logout-link" data-logout><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+          <a href="profile.html" class="active"><i class="fa-solid fa-user"></i> ThÃ´ng tin tÃ i khoáº£n</a>
+          <a href="address.html"><i class="fa-solid fa-location-dot"></i> Äá»‹a chá»‰ cá»§a tÃ´i</a>
+          <a href="password.html"><i class="fa-solid fa-lock"></i> Máº­t kháº©u</a>
+          <a href="../cart/all-orders.html"><i class="fa-solid fa-box"></i> ÄÆ¡n hÃ ng cá»§a tÃ´i</a>
+          <a href="product-reviews.html"><i class="fa-solid fa-star"></i> ÄÃ¡nh giÃ¡ sáº£n pháº©m</a>
+          <a href="../admin/admin.html" id="adminMenuLink" style="display: none;"><i class="fa-solid fa-screwdriver-wrench"></i> Trang quáº£n trá»‹</a>
+          <a href="#" class="logout-link" data-logout><i class="fa-solid fa-right-from-bracket"></i> ÄÄƒng xuáº¥t</a>
         </nav>
       </aside>
 
-      <!-- Content - Nội dung chính: thông tin tài khoản và đơn hàng gần đây -->
+      <!-- Content - Ná»™i dung chÃ­nh: thÃ´ng tin tÃ i khoáº£n vÃ  Ä‘Æ¡n hÃ ng gáº§n Ä‘Ã¢y -->
       <section class="profile-content">
-        <!-- Account Info Form - Form thông tin cá nhân: họ tên, email, số điện thoại -->
+        <!-- Account Info Form - Form thÃ´ng tin cÃ¡ nhÃ¢n: há» tÃªn, email, sá»‘ Ä‘iá»‡n thoáº¡i -->
         <article class="account-card">
-          <h1>Tài khoản của tôi</h1>
+          <h1>TÃ i khoáº£n cá»§a tÃ´i</h1>
 
           <div class="tabs">
-            <a class="tab active" href="profile.html">Thông tin</a>
-            <a class="tab" href="address.html">Địa chỉ</a>
-            <a class="tab" href="password.html">Mật khẩu</a>
+            <a class="tab active" href="profile.html">ThÃ´ng tin</a>
+            <a class="tab" href="address.html">Äá»‹a chá»‰</a>
+            <a class="tab" href="password.html">Máº­t kháº©u</a>
           </div>
 
           <form class="account-form">
-            <label>Họ và tên</label>
+            <label>Há» vÃ  tÃªn</label>
             <input type="text" value="">
             <label>Email</label>
             <input type="email" value="">
-            <label>Số điện thoại</label>
+            <label>Sá»‘ Ä‘iá»‡n thoáº¡i</label>
             <input type="tel" value="">
-            <button type="button">Cập nhật thông tin</button>
+            <button type="button">Cáº­p nháº­t thÃ´ng tin</button>
           </form>
         </article>
 
-        <!-- Recent Orders Table - Bảng đơn hàng gần đây -->
+        <!-- Recent Orders Table - Báº£ng Ä‘Æ¡n hÃ ng gáº§n Ä‘Ã¢y -->
         <article class="orders-card" id="ordersCard">
           <div class="orders-head">
-            <h2>Tất cả đơn hàng</h2>
-            <a href="../cart/all-orders.html">Xem tất cả đơn hàng</a>
+            <h2>Táº¥t cáº£ Ä‘Æ¡n hÃ ng</h2>
+            <a href="../cart/all-orders.html">Xem táº¥t cáº£ Ä‘Æ¡n hÃ ng</a>
           </div>
 
           <div class="orders-table">
             <div class="order-row order-head">
-              <span>Mã đơn</span>
-              <span>Ngày đặt</span>
-              <span>Tổng tiền</span>
-              <span>Trạng thái</span>
+              <span>MÃ£ Ä‘Æ¡n</span>
+              <span>NgÃ y Ä‘áº·t</span>
+              <span>Tá»•ng tiá»n</span>
+              <span>Tráº¡ng thÃ¡i</span>
             </div>
             <div class="order-row order-empty">
-              <span>chưa có</span>
-              <span>chưa có</span>
-              <span>chưa có</span>
-              <span class="pending">chưa có</span>
+              <span>chÆ°a cÃ³</span>
+              <span>chÆ°a cÃ³</span>
+              <span>chÆ°a cÃ³</span>
+              <span class="pending">chÆ°a cÃ³</span>
             </div>
           </div>
         </article>
@@ -107,32 +106,31 @@
     </section>
   </main>
 
-  <!-- ===== FOOTER - Chân trang ===== -->
+  <!-- ===== FOOTER - ChÃ¢n trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
-      <h3>Về Website</h3>
-      <a href="../info/privacy-policy.html">Chính sách bảo mật</a>
-      <a href="../info/operating-regulations.html">Quy chế hoạt động</a>
+      <h3>Vá» Website</h3>
+      <a href="../info/privacy-policy.html">ChÃ­nh sÃ¡ch báº£o máº­t</a>
+      <a href="../info/operating-regulations.html">Quy cháº¿ hoáº¡t Ä‘á»™ng</a>
     </div>
     <div class="footer-col">
-      <h3>Liên kết</h3>
-      <a href="../info/promotions.html">Khuyến mãi hôm nay</a>
-      <a href="../core/landing.html#featured-categories">Danh mục nổi bật</a>
+      <h3>LiÃªn káº¿t</h3>
+      <a href="../info/promotions.html">Khuyáº¿n mÃ£i hÃ´m nay</a>
+      <a href="../core/landing.html#featured-categories">Danh má»¥c ná»•i báº­t</a>
     </div>
     <div class="footer-col">
-      <h3>Hỗ trợ</h3>
-      <a href="../info/help-center.html">Trung tâm trợ giúp</a>
-      <a href="../info/faq.html">Câu hỏi thường gặp</a>
+      <h3>Há»— trá»£</h3>
+      <a href="../info/help-center.html">Trung tÃ¢m trá»£ giÃºp</a>
+      <a href="../info/faq.html">CÃ¢u há»i thÆ°á»ng gáº·p</a>
     </div>
     <div class="footer-col">
-      <h3>Theo dõi</h3>
+      <h3>Theo dÃµi</h3>
       <a href="https://www.facebook.com/tran.co.cow/" target="_blank" rel="noopener noreferrer">Facebook</a>
       <a href="https://www.tiktok.com/@ctran771?lang=en" target="_blank" rel="noopener noreferrer">TikTok</a>
     </div>
   </footer>
 
   <script src="../../js/core/common.js?v=20260522f"></script>
-  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
   <script src="../../js/user/profile.js?v=20260522g"></script>
 </body>
 </html>

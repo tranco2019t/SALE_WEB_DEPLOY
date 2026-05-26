@@ -1,18 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tất cả đơn hàng - TAM TAI</title>
+  <title>Táº¥t cáº£ Ä‘Æ¡n hÃ ng - TAM TAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/cart/all-orders.css">
-  <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
-  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
+  <!-- ===== HEADER - Thanh Ä‘iá»u hÆ°á»›ng chÃ­nh ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -22,13 +21,13 @@
 
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="search" id="orderSearch" placeholder="Tìm kiếm theo mã đơn hàng">
+        <input type="search" id="orderSearch" placeholder="TÃ¬m kiáº¿m theo mÃ£ Ä‘Æ¡n hÃ ng">
       </div>
 
       <div class="header-icons">
-        <a href="../user/notification.html" aria-label="Thông báo"><i class="fa-solid fa-bell"></i></a>
-        <a href="cart.html" aria-label="Giỏ hàng"><i class="fa-solid fa-cart-shopping"></i></a>
-        <a href="../user/profile.html" aria-label="Tài khoản"><i class="fa-solid fa-user"></i></a>
+        <a href="../user/notification.html" aria-label="ThÃ´ng bÃ¡o"><i class="fa-solid fa-bell"></i></a>
+        <a href="cart.html" aria-label="Giá» hÃ ng"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="../user/profile.html" aria-label="TÃ i khoáº£n"><i class="fa-solid fa-user"></i></a>
       </div>
     </div>
   </header>
@@ -37,66 +36,65 @@
   <main class="page-wrap">
     <div class="orders-shell">
       <div class="orders-head">
-        <h1>Tất cả đơn hàng</h1>
-        <a href="../user/profile.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại trang tài khoản</a>
+        <h1>Táº¥t cáº£ Ä‘Æ¡n hÃ ng</h1>
+        <a href="../user/profile.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay láº¡i trang tÃ i khoáº£n</a>
       </div>
 
-      <!-- Status Filter Tabs - Tab lọc đơn hàng theo trạng thái: Tất cả, Chờ xác nhận, Đang giao, Đã giao, Đã hủy -->
+      <!-- Status Filter Tabs - Tab lá»c Ä‘Æ¡n hÃ ng theo tráº¡ng thÃ¡i: Táº¥t cáº£, Chá» xÃ¡c nháº­n, Äang giao, ÄÃ£ giao, ÄÃ£ há»§y -->
       <div class="orders-filters" id="ordersFilters">
-        <button class="active" data-status="all">Tất cả</button>
-        <button data-status="pending">Chờ xác nhận</button>
-        <button data-status="shipping">Đang giao</button>
-        <button data-status="delivered">Đã giao</button>
-        <button data-status="cancelled">Đã hủy</button>
+        <button class="active" data-status="all">Táº¥t cáº£</button>
+        <button data-status="pending">Chá» xÃ¡c nháº­n</button>
+        <button data-status="shipping">Äang giao</button>
+        <button data-status="delivered">ÄÃ£ giao</button>
+        <button data-status="cancelled">ÄÃ£ há»§y</button>
       </div>
 
-      <!-- Search bar - Thanh tìm kiếm theo mã đơn hàng (nằm trong header) -->
-      <p class="orders-summary" id="ordersSummary">Hiển thị 0 - 0 / 0 đơn hàng</p>
+      <!-- Search bar - Thanh tÃ¬m kiáº¿m theo mÃ£ Ä‘Æ¡n hÃ ng (náº±m trong header) -->
+      <p class="orders-summary" id="ordersSummary">Hiá»ƒn thá»‹ 0 - 0 / 0 Ä‘Æ¡n hÃ ng</p>
 
-      <!-- Orders Table - Bảng danh sách đơn hàng: mã đơn, ngày đặt, sản phẩm, tổng tiền, trạng thái, thao tác -->
+      <!-- Orders Table - Báº£ng danh sÃ¡ch Ä‘Æ¡n hÃ ng: mÃ£ Ä‘Æ¡n, ngÃ y Ä‘áº·t, sáº£n pháº©m, tá»•ng tiá»n, tráº¡ng thÃ¡i, thao tÃ¡c -->
       <section class="orders-table">
         <div class="order-row order-head-row">
-          <span>Mã đơn</span>
-          <span>Ngày đặt</span>
-          <span>Sản phẩm</span>
-          <span>Tổng tiền</span>
-          <span>Trạng thái</span>
-          <span>Thao tác</span>
+          <span>MÃ£ Ä‘Æ¡n</span>
+          <span>NgÃ y Ä‘áº·t</span>
+          <span>Sáº£n pháº©m</span>
+          <span>Tá»•ng tiá»n</span>
+          <span>Tráº¡ng thÃ¡i</span>
+          <span>Thao tÃ¡c</span>
         </div>
         <div id="ordersBody"></div>
       </section>
 
-      <!-- Pagination - Phân trang -->
+      <!-- Pagination - PhÃ¢n trang -->
       <div class="pagination" id="pagination"></div>
     </div>
   </main>
 
-  <!-- ===== FOOTER - Chân trang ===== -->
+  <!-- ===== FOOTER - ChÃ¢n trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
-      <h3>Về Website</h3>
-      <a href="../info/privacy-policy.html">Chính sách bảo mật</a>
-      <a href="../info/operating-regulations.html">Quy chế hoạt động</a>
+      <h3>Vá» Website</h3>
+      <a href="../info/privacy-policy.html">ChÃ­nh sÃ¡ch báº£o máº­t</a>
+      <a href="../info/operating-regulations.html">Quy cháº¿ hoáº¡t Ä‘á»™ng</a>
     </div>
     <div class="footer-col">
-      <h3>Liên kết</h3>
-      <a href="../info/promotions.html">Khuyến mãi hôm nay</a>
-      <a href="../core/landing.html#featured-categories">Danh mục nổi bật</a>
+      <h3>LiÃªn káº¿t</h3>
+      <a href="../info/promotions.html">Khuyáº¿n mÃ£i hÃ´m nay</a>
+      <a href="../core/landing.html#featured-categories">Danh má»¥c ná»•i báº­t</a>
     </div>
     <div class="footer-col">
-      <h3>Hỗ trợ</h3>
-      <a href="../info/help-center.html">Trung tâm trợ giúp</a>
-      <a href="../info/faq.html">Câu hỏi thường gặp</a>
+      <h3>Há»— trá»£</h3>
+      <a href="../info/help-center.html">Trung tÃ¢m trá»£ giÃºp</a>
+      <a href="../info/faq.html">CÃ¢u há»i thÆ°á»ng gáº·p</a>
     </div>
     <div class="footer-col">
-      <h3>Theo dõi</h3>
+      <h3>Theo dÃµi</h3>
       <a href="https://www.facebook.com/tran.co.cow/" target="_blank" rel="noopener noreferrer">Facebook</a>
       <a href="https://www.tiktok.com/@ctran771?lang=en" target="_blank" rel="noopener noreferrer">TikTok</a>
     </div>
   </footer>
 
   <script src="../../js/core/common.js?v=20260522f"></script>
-  <script src="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.js?v=20260522c"></script>
   <script src="../../js/cart/all-orders.js?v=20260522g"></script>
 </body>
 </html>
