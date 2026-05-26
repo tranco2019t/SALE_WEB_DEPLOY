@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -32,7 +33,9 @@
     </div>
   </header>
 
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
+    <!-- Breadcrumb - Đường dẫn: Trang chủ / Giỏ hàng / Thanh toán -->
     <section class="breadcrumb-row">
       <a href="../core/landing.html">Trang chủ</a>
       <span>/</span>
@@ -43,10 +46,13 @@
 
     <h1 class="page-title">THANH TOÁN ĐƠN HÀNG</h1>
 
+    <!-- Checkout Layout - Bố cục thanh toán: form thông tin (trái) + tóm tắt đơn hàng (phải) -->
     <section class="checkout-layout">
+      <!-- Shipping Form - Form thông tin giao hàng -->
       <article class="checkout-form">
         <h2>Thông tin giao hàng</h2>
 
+        <!-- Saved Addresses - Danh sách địa chỉ đã lưu, chọn để tự động điền form -->
         <div class="saved-addresses" id="savedAddressesSection" style="display:none;">
           <div class="saved-addresses-head">
             <h3>Địa chỉ đã lưu</h3>
@@ -87,6 +93,7 @@
           </label>
         </form>
 
+        <!-- Shipping Methods - Lựa chọn phương thức vận chuyển -->
         <div class="method-block">
           <h3>Phương thức vận chuyển</h3>
           <label class="method-item">
@@ -101,6 +108,7 @@
           </label>
         </div>
 
+        <!-- Payment Methods - Lựa chọn phương thức thanh toán: COD, chuyển khoản, ví điện tử -->
         <div class="method-block">
           <h3>Phương thức thanh toán</h3>
           <label class="method-item">
@@ -118,6 +126,7 @@
         </div>
       </article>
 
+      <!-- Order Summary - Tóm tắt đơn hàng: danh sách sản phẩm, mã giảm giá, tổng thanh toán -->
       <aside class="order-summary">
         <h2>Tóm tắt đơn hàng</h2>
 
@@ -139,6 +148,7 @@
           <strong>2.500.000đ</strong>
         </div>
 
+        <!-- Discount Code - Khu vực nhập và áp dụng mã giảm giá -->
         <div class="discount-section">
           <div class="discount-input-row">
             <input type="text" id="discountCodeInput" placeholder="Nhập mã giảm giá" maxlength="50">
@@ -170,7 +180,8 @@
     </section>
   </main>
 
-  <footer class="site-footer">
+  <!-- ===== FOOTER - Chân trang ===== -->
+    <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>
       <a href="../info/privacy-policy.html">Chính sách bảo mật</a>

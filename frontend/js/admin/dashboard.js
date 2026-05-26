@@ -1,5 +1,7 @@
+/* ===== Trang Dashboard Admin ===== */
 (function () {
   var Admin = window.TamTaiAdmin;
+  // Biến trạng thái: dữ liệu dashboard, từ khóa tìm kiếm, sắp xếp, phân trang
   var state = {
     dashboard: null,
     keyword: "",
@@ -12,6 +14,8 @@
     }
   };
 
+  /* ---- Ánh xạ trạng thái đơn hàng ---- */
+  // Chuyển status từ API thành nhãn tiếng Việt và class CSS
   function getStatusMeta(status) {
     var normalized = String(status || "").trim().toLowerCase();
     if (normalized.indexOf("deliver") !== -1 || normalized.indexOf("done") !== -1) {
@@ -32,6 +36,7 @@
     return { label: status || "Không rõ", className: "is-neutral" };
   }
 
+  // Kiểm tra xem item có khớp với từ khóa tìm kiếm ở một trong các field không
   function matchesKeyword(item, fields) {
     if (!state.keyword) {
       return true;
@@ -42,6 +47,8 @@
     });
   }
 
+  /* ---- Render bảng đơn hàng gần đây ---- */
+  // Lọc theo keyword, sắp xếp, hiển thị trong #dashboardOrdersTable
   function renderRecentOrders() {
     var body = document.getElementById("dashboardOrdersTable");
     if (!body) {
@@ -68,6 +75,9 @@
     }).join("") : Admin.renderEmptyRow(5, "Không có đơn hàng phù hợp.");
   }
 
+  /* ---- Render danh sách dạng mini card ---- */
+  // Dùng cho top sản phẩm và sản phẩm sắp hết hàng
+  // Hỗ trợ sắp xếp và phân trang nếu có viewName
   function renderMiniList(targetId, items, emptyText, viewName, clickHrefBuilder) {
     var node = document.getElementById(targetId);
     if (!node) {
@@ -127,6 +137,8 @@
     }).join("");
   }
 
+  /* ---- Render toàn bộ dashboard ---- */
+  // Gọi renderStats, renderRecentOrders, renderMiniList cho top sản phẩm và low stock
   function renderDashboard() {
     Admin.renderStats(state.dashboard && state.dashboard.stats);
     renderRecentOrders();
@@ -147,6 +159,7 @@
     renderSortControls();
   }
 
+  // Cập nhật giao diện điều khiển sắp xếp (field chọn, nút tăng/giảm)
   function renderSortControls() {
     var field = document.getElementById("dashboardSortField");
     var ascBtn = document.getElementById("dashboardSortAsc");
@@ -157,6 +170,8 @@
     if (descBtn) descBtn.classList.toggle("is-active", s && s.direction === "desc");
   }
 
+  /* ---- Làm mới dữ liệu dashboard ---- */
+  // Gọi API dashboard, reset phân trang, render lại toàn bộ
   async function refreshData(messageNode) {
     Admin.showMessage(messageNode, "Đang tải dữ liệu tổng quan...", "info");
     state.dashboard = await Admin.fetchDashboard();
@@ -165,6 +180,8 @@
     Admin.showMessage(messageNode, "Đã làm mới dữ liệu tổng quan.", "success");
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Xác thực admin, thiết lập tìm kiếm, sắp xếp, phân trang, refresh data
   document.addEventListener("DOMContentLoaded", async function () {
     var shell = Admin.initShell({
       navKey: "dashboard",

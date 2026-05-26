@@ -1,6 +1,10 @@
+/* ===== Thư viện dùng chung cho Admin (TamTaiAdmin) ===== */
+// Chứa các hàm tiện ích: xác thực, request API, sắp xếp, phân trang, modal, render...
 (function (window) {
+  // Số lượng item mỗi trang mặc định
   var PAGE_SIZE = 10;
 
+  // Thoát HTML để tránh XSS khi chèn nội dung vào DOM
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -10,14 +14,17 @@
       .replace(/'/g, "&#39;");
   }
 
+  // Chuẩn hóa giá trị tìm kiếm (trim khoảng trắng)
   function normalizeSearchValue(value) {
     return String(value || "").trim();
   }
 
+  // Định dạng tiền tệ (ủy quyền cho TamTai.formatCurrency)
   function formatMoney(value) {
     return TamTai.formatCurrency(Number(value || 0));
   }
 
+  // Định dạng ngày tháng theo locale vi-VN, nếu lỗi trả về chuỗi gốc
   function formatDate(value) {
     if (!value) {
       return "-";
@@ -31,6 +38,7 @@
     return date.toLocaleDateString("vi-VN");
   }
 
+  // Định dạng ngày giờ thành chuỗi dùng cho input type="datetime-local" (YYYY-MM-DDTHH:mm)
   function formatDateTimeLocal(value) {
     if (!value) {
       return "";
@@ -58,6 +66,8 @@
     ].join("");
   }
 
+  /* ---- Xử lý đường dẫn ảnh sản phẩm ---- */
+  // Nếu là URL tuyệt đối hoặc data URI thì dùng nguyên, nếu không thì build qua API
   function toImageSrc(imageUrl) {
     var raw = String(imageUrl || "").trim();
     if (!raw) {
@@ -71,6 +81,7 @@
     return TamTai.buildApiUrl(raw.indexOf("/") === 0 ? raw : "/" + raw);
   }
 
+  // Chuyển đổi giá trị ngày thành timestamp (ms), nếu lỗi trả về 0
   function parseDateValue(value) {
     if (!value) {
       return 0;
@@ -80,15 +91,21 @@
     return Number.isNaN(date.getTime()) ? 0 : date.getTime();
   }
 
+  /* ---- Chuyển hướng đến trang đăng nhập ---- */
+  // Đưa người dùng về trang login với query redirect=admin
   function redirectToLogin() {
     window.location.href = "../auth/login.html?redirect=admin";
   }
 
+  /* ---- Tạo headers xác thực cho request ---- */
+  // Lấy access_token từ localStorage và thêm vào Authorization header
   function getAuthHeaders(extraHeaders) {
     var token = localStorage.getItem("access_token");
     return Object.assign({ Authorization: "Bearer " + token }, extraHeaders || {});
   }
 
+  /* ---- Hiển thị thông báo trên giao diện ---- */
+  // type: "info", "success", "error". Nếu message rỗng thì ẩn thông báo
   function showMessage(node, message, type) {
     if (!node) {
       return;
@@ -104,6 +121,9 @@
     node.className = "page-message is-visible is-" + (type || "info");
   }
 
+  /* ---- Hàm request API tổng quát ---- */
+  // Tự động thêm Authorization header, xử lý lỗi 401/403 (logout + redirect)
+  // Parse response JSON, throw Error nếu request thất bại
   async function request(path, options) {
     var response = await fetch(TamTai.API_BASE_URL + path, Object.assign({}, options || {}, {
       headers: getAuthHeaders((options && options.headers) || {})
@@ -132,6 +152,8 @@
     return data;
   }
 
+  /* ---- Kiểm tra quyền truy cập Admin ---- */
+  // Gọi /admin/me để xác thực, nếu không hợp lệ thì redirect về login
   async function verifyAccess(messageNode) {
     if (TamTai.getRole() !== "admin" || !localStorage.getItem("access_token")) {
       redirectToLogin();
@@ -147,6 +169,8 @@
     }
   }
 
+  /* ---- Hàm gọi API lấy dữ liệu ---- */
+  // GET /categories, /admin/dashboard, /admin/products, /admin/orders, /admin/customers, /admin/discount-codes
   async function fetchCategories() {
     var response = await fetch(TamTai.API_BASE_URL + "/categories?skip=0&limit=100");
     var raw = await response.text();
@@ -161,26 +185,33 @@
     return Array.isArray(data) ? data : [];
   }
 
+  // Lấy dữ liệu dashboard thống kê
   function fetchDashboard() {
     return request("/admin/dashboard");
   }
 
+  // Lấy danh sách sản phẩm, hỗ trợ tìm kiếm và lọc theo danh mục
   function fetchProducts(keyword, categoryId) {
     return request("/admin/products?skip=0&limit=300&keyword=" + encodeURIComponent(keyword || "") + "&category_id=" + encodeURIComponent(categoryId || ""));
   }
 
+  // Lấy danh sách đơn hàng, hỗ trợ tìm kiếm
   function fetchOrders(keyword) {
     return request("/admin/orders?skip=0&limit=300&keyword=" + encodeURIComponent(keyword || ""));
   }
 
+  // Lấy danh sách khách hàng, hỗ trợ tìm kiếm
   function fetchCustomers(keyword) {
     return request("/admin/customers?skip=0&limit=300&keyword=" + encodeURIComponent(keyword || ""));
   }
 
+  // Lấy danh sách mã giảm giá, hỗ trợ tìm kiếm
   function fetchDiscountCodes(keyword) {
     return request("/admin/discount-codes?skip=0&limit=300&keyword=" + encodeURIComponent(keyword || ""));
   }
 
+  /* ---- Render thống kê dashboard ---- */
+  // Cập nhật các ô stat (sản phẩm, khách hàng, đơn hàng, doanh thu, mã giảm giá)
   function renderStats(stats) {
     if (!stats) {
       return;
@@ -202,6 +233,8 @@
     });
   }
 
+  /* ---- Điền dữ liệu vào dropdown ---- */
+  // Tạo các option từ mảng items, valueSelector/labelSelector là hàm hoặc tên thuộc tính
   function populateSelect(selectNode, placeholder, items, valueSelector, labelSelector) {
     if (!selectNode) {
       return;
@@ -220,10 +253,13 @@
     selectNode.value = currentValue || "";
   }
 
+  // Tạo hàng trống trong bảng với thông báo tùy chỉnh
   function renderEmptyRow(colspan, message) {
     return '<tr><td colspan="' + colspan + '"><div class="empty-state">' + escapeHtml(message) + "</div></td></tr>";
   }
 
+  /* ---- Hàm hỗ trợ sắp xếp ---- */
+  // Trả về hướng sắp xếp mặc định (desc cho các trường số/ngày, asc cho text)
   function getInitialSortDirection(key) {
     return [
       "created_at",
@@ -242,6 +278,7 @@
     ].indexOf(key) !== -1 ? "desc" : "asc";
   }
 
+  // Lấy giá trị của một trường để so sánh, xử lý riêng theo từng view (orders, products, customers, discounts)
   function getSortValue(viewName, item, key) {
     if (!item) {
       return "";
@@ -323,6 +360,7 @@
     return typeof rawValue === "string" ? rawValue.toLowerCase() : rawValue;
   }
 
+  // So sánh hai giá trị theo hướng (asc/desc), hỗ trợ string và number
   function compareValues(left, right, direction) {
     var dir = direction === "desc" ? -1 : 1;
 
@@ -343,6 +381,8 @@
     return leftValue > rightValue ? dir : -dir;
   }
 
+  /* ---- Sắp xếp danh sách ---- */
+  // Clone mảng, nếu có sortState.key thì sort theo getSortValue + compareValues
   function sortItems(items, viewName, sortState) {
     var list = Array.isArray(items) ? items.slice() : [];
     if (!sortState || !sortState.key) {
@@ -358,6 +398,8 @@
     });
   }
 
+  /* ---- Phân trang ---- */
+  // Cắt mảng theo PAGE_SIZE, trả về { items, totalItems, totalPages, currentPage, start, end }
   function paginateItems(items, currentPage) {
     var list = Array.isArray(items) ? items : [];
     var totalItems = list.length;
@@ -376,6 +418,8 @@
     };
   }
 
+  /* ---- Render thanh phân trang ---- */
+  // Tạo các nút trang (‹, số trang, ›), gắn data-page-view và data-page-target
   function renderPagination(containerNode, summaryNode, pageData, viewName) {
     if (summaryNode) {
       summaryNode.textContent = pageData.totalItems
@@ -413,9 +457,11 @@
     containerNode.innerHTML = buttons.join("");
   }
 
-  /* Modal form helper: move form into modal for add/edit and restore on close */
+  /* ---- Modal form helper ---- */
+  // Di chuyển form vào modal để thêm/sửa, khi đóng modal thì trả form về vị trí cũ
   var _modalState = { hostMap: new Map() };
 
+  // Mở modal form: di chuyển form vào modal body, đặt tiêu đề
   function openFormModal(formSelector, title) {
     var formNode = document.querySelector(formSelector);
     var modal = document.getElementById("entityFormModal");
@@ -437,6 +483,7 @@
     document.documentElement.classList.add("modal-open");
   }
 
+  // Đóng modal: trả form về vị trí gốc, xóa hidden attribute khỏi modal
   function closeFormModal() {
     var modal = document.getElementById("entityFormModal");
     if (!modal) return;
@@ -463,7 +510,7 @@
   document.addEventListener("click", function (e) {
     var target = e.target;
 
-    // Open modal when clicking a button with data-open-form attribute
+    // Mở modal khi click nút có data-open-form (attribute chứa selector của form)
     var openBtn = target.closest && target.closest('[data-open-form]');
     if (openBtn) {
       var selector = openBtn.getAttribute('data-open-form');
@@ -472,7 +519,7 @@
       return;
     }
 
-    // Open modal when clicking edit icon (.icon-btn.is-edit)
+    // Mở modal khi click nút chỉnh sửa (.icon-btn.is-edit) - tự động tìm form tương ứng
     var editBtn = target.closest && target.closest('.icon-btn.is-edit');
     if (editBtn) {
       // Try to open corresponding form if exists (#productForm, #discountForm, #customerForm)
@@ -482,18 +529,20 @@
       return;
     }
 
-    // Close modal when clicking close buttons or backdrop
+    // Đóng modal khi click nút đóng hoặc click ra ngoài (backdrop)
     if (target.closest && (target.matches('[data-close-modal]') || target.closest('[data-close-modal]'))) {
       closeFormModal();
       return;
     }
   });
 
-  // Expose for other modules if needed
+  // Export modal helpers cho các module khác dùng
   window.TamTai = window.TamTai || {};
   window.TamTai.openFormModal = openFormModal;
   window.TamTai.closeFormModal = closeFormModal;
 
+  /* ---- Render trạng thái nút sắp xếp ---- */
+  // Duyệt các .sort-btn và cập nhật class active + icon (fa-sort-up/fa-sort-down/fa-sort)
   function renderSortButtons(root, sorting) {
     var scope = root || document;
     scope.querySelectorAll(".sort-btn").forEach(function (button) {
@@ -512,12 +561,15 @@
     });
   }
 
+  // Đánh dấu navigation item đang active dựa trên data-admin-nav
   function activateNav(navKey) {
     document.querySelectorAll("[data-admin-nav]").forEach(function (link) {
       link.classList.toggle("is-active", link.getAttribute("data-admin-nav") === navKey);
     });
   }
 
+  /* ---- Gán sự kiện cho UI ---- */
+  // Event delegation cho nút sắp xếp, gọi callback onSort với { viewName, key }
   function bindSortButtons(root, onSort) {
     root.addEventListener("click", function (event) {
       var button = event.target.closest(".sort-btn");
@@ -532,6 +584,7 @@
     });
   }
 
+  // Event delegation cho nút phân trang, gọi callback onPaginate với { viewName, page }
   function bindPagination(root, onPaginate) {
     root.addEventListener("click", function (event) {
       var button = event.target.closest("button[data-page-view]");
@@ -546,6 +599,7 @@
     });
   }
 
+  // Gán sự kiện input cho ô tìm kiếm, gọi callback onChange với giá trị đã chuẩn hóa
   function bindTopSearch(inputNode, onChange) {
     if (!inputNode) {
       return;
@@ -556,6 +610,9 @@
     });
   }
 
+  /* ---- Khởi tạo shell Admin ---- */
+  // Thiết lập logout button, active nav, placeholder cho ô tìm kiếm
+  // Trả về { pageSearchInput, messageNode }
   function initShell(config) {
     TamTai.bindLogoutButtons(document);
     activateNav(config.navKey);

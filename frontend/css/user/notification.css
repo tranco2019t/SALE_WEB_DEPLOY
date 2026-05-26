@@ -1,3 +1,4 @@
+/* ===== Reset & Body ===== */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f2f6f2 0%, #e7ece7 55%, #e0e5df 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -97,6 +99,7 @@ body {
   position: relative;
 }
 
+/* ===== Notify Badge (chưa đọc) ===== */
 .notify-badge {
   position: absolute;
   top: -6px;
@@ -122,12 +125,14 @@ body {
   opacity: 1;
 }
 
+/* ===== Page Wrap ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
   padding: 16px 0 24px;
 }
 
+/* ===== Notification Head ===== */
 .notify-head {
   display: flex;
   align-items: center;
@@ -154,6 +159,7 @@ body {
   cursor: pointer;
 }
 
+/* ===== Tab Filters ===== */
 .notify-tabs {
   display: flex;
   gap: 8px;
@@ -178,11 +184,13 @@ body {
   border-color: #b4d2b1;
 }
 
+/* ===== Notification List ===== */
 .notify-list {
   display: grid;
   gap: 8px;
 }
 
+/* Mỗi item: icon trái + nội dung phải */
 .notify-item {
   background: #f3f8f2;
   border: 1px solid #dbe7d9;
@@ -193,6 +201,7 @@ body {
   gap: 10px;
 }
 
+/* Item chưa đọc — viền trái xanh lá */
 .notify-item.unread {
   border-left: 4px solid #4ca952;
 }
@@ -226,6 +235,7 @@ body {
   color: #6d7e6f;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -271,6 +281,7 @@ body {
   text-decoration: underline;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;

@@ -1,13 +1,16 @@
+/* ===== Admin Orders Layout ===== */
 .orders-layout {
   display: grid;
   gap: 18px;
 }
 
+/* Cột mã đơn hàng */
 .orders-layout .admin-table th:nth-child(1),
 .orders-layout .admin-table td:nth-child(1) {
   width: 92px;
 }
 
+/* Cột khách hàng và ngày đặt */
 .orders-layout .admin-table th:nth-child(3),
 .orders-layout .admin-table td:nth-child(3),
 .orders-layout .admin-table th:nth-child(4),
@@ -15,11 +18,13 @@
   width: 130px;
 }
 
+/* Cột tổng tiền */
 .orders-layout .admin-table th:nth-child(5),
 .orders-layout .admin-table td:nth-child(5) {
   width: 150px;
 }
 
+/* Cột trạng thái (status dropdown) */
 .orders-layout .admin-table th:nth-child(6),
 .orders-layout .admin-table td:nth-child(6) {
   width: 220px;

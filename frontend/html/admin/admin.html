@@ -14,6 +14,7 @@
 </head>
 <body>
   <div class="admin-shell">
+    <!-- ===== ADMIN TOPBAR - Thanh trên cùng: logo, tìm kiếm, thao tác nhanh ===== -->
     <header class="admin-topbar">
       <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
         <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
@@ -38,6 +39,7 @@
     </header>
 
     <div class="admin-layout">
+      <!-- ===== ADMIN SIDEBAR - Menu điều hướng quản trị: Tổng quan, Sản phẩm, Đơn hàng, Người dùng, Mã giảm giá ===== -->
       <aside class="admin-sidebar">
         <div>
           <p class="sidebar-title">Quản trị</p>
@@ -58,6 +60,7 @@
         </div>
       </aside>
 
+      <!-- ===== ADMIN MAIN - Nội dung chính ===== -->
       <main class="admin-main">
         <section class="page-header">
           <div>
@@ -75,6 +78,7 @@
           </div>
         </section>
 
+        <!-- Stats Tiles - Các ô thống kê nhanh: tổng sản phẩm, người dùng, đơn hàng, doanh thu, mã giảm giá -->
         <section class="stats-strip" aria-label="Thống kê nhanh">
           <article class="stat-tile">
             <div class="stat-tile-head">
@@ -130,8 +134,10 @@
 
         <div id="pageMessage" class="page-message" aria-live="polite"></div>
 
+        <!-- Dashboard Grid - Lưới dashboard: đơn hàng gần đây, sản phẩm sắp hết hàng, sản phẩm nổi bật -->
         <section class="dashboard-grid">
           <div class="dashboard-stack">
+            <!-- Recent Orders Table - Bảng đơn hàng gần đây -->
             <article class="page-panel dashboard-table">
               <div class="panel-head">
                 <div>
@@ -156,6 +162,7 @@
               </div>
             </article>
 
+            <!-- Low Stock Alerts - Danh sách sản phẩm sắp hết hàng cần nhập thêm -->
             <article class="page-panel">
               <div class="panel-head">
                 <div>
@@ -167,6 +174,7 @@
             </article>
           </div>
 
+          <!-- Top Products - Danh sách sản phẩm nổi bật với tùy chọn sắp xếp -->
           <article class="page-panel">
             <div class="panel-head">
               <div>
@@ -194,6 +202,7 @@
           </article>
         </section>
 
+        <!-- Admin Footer - Chân trang quản trị -->
         <footer class="admin-footer">
           <span>&copy; 2025 TAM TAI. All rights reserved.</span>
           <span>Phiên bản 1.0.0</span>

@@ -1,3 +1,4 @@
+/* ===== Biến CSS cho toàn bộ admin ===== */
 :root {
   --admin-bg: #f4f7f2;
   --admin-surface: #ffffff;
@@ -19,6 +20,7 @@
   --admin-blue-soft: #eef5ff;
 }
 
+/* ===== Reset ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -55,12 +57,14 @@ a {
   text-decoration: none;
 }
 
+/* ===== Shell Layout ===== */
 .admin-shell {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* ===== Top Bar ===== */
 .admin-topbar {
   position: sticky;
   top: 0;
@@ -206,6 +210,7 @@ a {
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* ===== Admin Layout: sidebar + main ===== */
 .admin-layout {
   flex: 1;
   display: grid;
@@ -216,6 +221,7 @@ a {
   padding-bottom: 18px;
 }
 
+/* ===== Sidebar ===== */
 .admin-sidebar {
   display: flex;
   flex-direction: column;
@@ -279,6 +285,7 @@ a {
   justify-content: flex-start;
 }
 
+/* ===== Main Content Grid ===== */
 .admin-main {
   display: grid;
   gap: 18px;
@@ -354,6 +361,7 @@ a {
   color: #2f5e97;
 }
 
+/* ===== Stats Strip ===== */
 .stats-strip {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -467,6 +475,7 @@ a {
   font-weight: 600;
 }
 
+/* ===== Buttons ===== */
 .btn {
   min-height: 40px;
   padding: 0 14px;
@@ -522,6 +531,7 @@ a {
   background: var(--admin-blue-soft);
 }
 
+/* ===== Form Controls ===== */
 .admin-input,
 .admin-select,
 .admin-textarea {
@@ -565,6 +575,7 @@ a {
   box-shadow: 0 0 0 3px rgba(46, 167, 92, 0.12), 0 6px 16px rgba(46, 167, 92, 0.18);
 }
 
+/* ===== Table ===== */
 .admin-table-wrap {
   overflow: auto;
   border: 1px solid #edf2ec;
@@ -751,6 +762,7 @@ a {
   color: var(--admin-text-soft);
 }
 
+/* ===== Editor Card (CRUD Form) ===== */
 .editor-card {
   display: grid;
   gap: 16px;
@@ -801,6 +813,7 @@ a {
   flex-wrap: wrap;
 }
 
+/* ===== Modal ===== */
 .modal-shell[hidden] {
   display: none;
 }
@@ -814,7 +827,6 @@ a {
   padding: 18px;
 }
 
-/* Modal dialog styles for form overlays */
 .modal-backdrop {
   position: absolute;
   inset: 0;
@@ -870,13 +882,13 @@ a {
   padding: 6px 0 12px 0;
 }
 
-/* prevent page scroll when modal open */
+/* Chặn scroll khi modal mở */
 .modal-open html, .modal-open body {
   height: 100%;
   overflow: hidden;
 }
 
-/* Hide inline editor panels by default. Add `show-inline-editor` on `body` to restore */
+/* Ẩn editor inline mặc định, bật bằng class show-inline-editor */
 .editor-card {
   display: none !important;
 }
@@ -938,6 +950,7 @@ a {
   cursor: pointer;
 }
 
+/* ===== Detail Grid (chi tiết trong modal) ===== */
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -985,6 +998,7 @@ body.admin-modal-open {
   overflow: hidden;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1280px) {
   .stats-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -1,19 +1,23 @@
+/* ===== Admin Customers Layout ===== */
 .customers-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px;
 }
 
+/* Cột avatar */
 .customers-layout .admin-table th:nth-child(1),
 .customers-layout .admin-table td:nth-child(1) {
   width: 88px;
 }
 
+/* Cột email */
 .customers-layout .admin-table th:nth-child(3),
 .customers-layout .admin-table td:nth-child(3) {
   width: 220px;
 }
 
+/* Cột số điện thoại, tổng đơn, chi tiêu */
 .customers-layout .admin-table th:nth-child(4),
 .customers-layout .admin-table td:nth-child(4),
 .customers-layout .admin-table th:nth-child(5),
@@ -23,6 +27,7 @@
   width: 110px;
 }
 
+/* Cột actions (detail modal trigger) */
 .customers-layout .admin-table th:nth-child(7),
 .customers-layout .admin-table td:nth-child(7) {
   width: 128px;
@@ -39,7 +44,7 @@
   }
 }
 
-/* Hide inline editor card when using modal-only workflow */
+/* Ẩn editor inline — dùng modal */
 .editor-card {
   display: none !important;
 }

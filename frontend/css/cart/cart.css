@@ -1,4 +1,5 @@
-﻿* {
+﻿/* ===== Reset & Body ===== */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f2f6f2 0%, #e7ece7 55%, #e0e5df 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -102,12 +104,14 @@ body {
   opacity: 1;
 }
 
+/* ===== Page Wrap ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
   padding: 16px 0 24px;
 }
 
+/* ===== Cart Layout: items + summary ===== */
 .cart-layout {
   display: grid;
   grid-template-columns: minmax(0, 2fr) 290px;
@@ -115,6 +119,7 @@ body {
   align-items: start;
 }
 
+/* ===== Cart Items List ===== */
 .cart-panel {
   background: #f3f8f2;
   border: 1px solid #dbe7d9;
@@ -137,6 +142,7 @@ body {
   font-weight: 500;
 }
 
+/* Mỗi item trong giỏ: ảnh | thông tin | actions */
 .cart-item {
   display: grid;
   grid-template-columns: 70px 1fr auto;
@@ -150,6 +156,7 @@ body {
   border-top: none;
 }
 
+/* ===== Item Image ===== */
 .item-image {
   width: 70px;
   height: 70px;
@@ -164,6 +171,7 @@ body {
   object-fit: cover;
 }
 
+/* ===== Item Info ===== */
 .item-info h2 {
   font-size: 28px;
   color: #2d3b2f;
@@ -181,11 +189,13 @@ body {
   font-weight: 700;
 }
 
+/* ===== Item Actions (qty + remove) ===== */
 .item-actions {
   display: grid;
   gap: 8px;
 }
 
+/* Quantity Controls */
 .qty-box {
   display: inline-flex;
   align-items: center;
@@ -224,6 +234,7 @@ body {
   cursor: pointer;
 }
 
+/* ===== Summary Panel ===== */
 .summary-panel {
   background: #f3f8f2;
   border: 1px solid #dbe7d9;
@@ -293,6 +304,7 @@ body {
   background: #fff;
 }
 
+/* ===== Related Products ===== */
 .related-products {
   margin-top: 14px;
   background: #f3f8f2;
@@ -372,6 +384,7 @@ body {
   color: #d39f25;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -417,6 +430,7 @@ body {
   text-decoration: underline;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;
@@ -466,6 +480,7 @@ body {
 }
 
 
+/* ===== Dynamic / JS-driven states ===== */
 .empty-cart-note {
   border-top: 1px solid #e0e9de;
   padding: 16px 0 4px;

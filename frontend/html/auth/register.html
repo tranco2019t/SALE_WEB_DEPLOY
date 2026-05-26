@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
-  <!-- Header -->
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
 
@@ -42,13 +42,14 @@
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- ===== MAIN CONTENT - Khu vực đăng ký tài khoản ===== -->
   <main class="page-wrap">
     <section class="auth-card">
       <h1 class="auth-title">
         ĐĂNG KÝ <span>TÀI KHOẢN</span>
       </h1>
 
+            <!-- Register Form - Form đăng ký gồm: nhập thông tin, xác thực OTP, tạo mật khẩu -->
             <form class="auth-form" id="registerForm">
         <div class="form-group">
           <input type="text" id="registerName" placeholder="Full name">
@@ -58,12 +59,14 @@
           <input type="email" id="registerEmail" placeholder="Email">
         </div>
 
+        <!-- OTP Verification - Bước xác thực email bằng mã OTP 6 số, gửi mã qua nút Send code -->
         <div class="form-group otp-group">
           <input type="text" id="registerOtp" maxlength="6" inputmode="numeric" placeholder="6-digit verification code">
           <button type="button" id="sendOtpBtn" class="otp-send-btn">Send code</button>
         </div>
         <p class="otp-note" id="otpStatusText">OTP is valid for 10 minutes.</p>
 
+        <!-- Password Creation - Bước tạo mật khẩu và xác nhận mật khẩu -->
         <div class="form-group password-group">
           <input type="password" id="registerPassword" placeholder="Password">
           <button type="button" class="eye-btn">
@@ -93,7 +96,7 @@
     </section>
   </main>
 
-  <!-- Footer -->
+  <!-- ===== FOOTER - Chân trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>

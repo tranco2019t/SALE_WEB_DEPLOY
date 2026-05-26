@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -32,8 +33,11 @@
     </div>
   </header>
 
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
+    <!-- Profile Layout - Bố cục trang tài khoản: sidebar điều hướng (trái) + nội dung (phải) -->
     <section class="profile-layout">
+      <!-- Sidebar - Menu điều hướng các chức năng tài khoản -->
       <aside class="profile-sidebar">
         <div class="profile-head">
           <div class="avatar">
@@ -54,7 +58,9 @@
         </nav>
       </aside>
 
+      <!-- Content - Nội dung chính: thông tin tài khoản và đơn hàng gần đây -->
       <section class="profile-content">
+        <!-- Account Info Form - Form thông tin cá nhân: họ tên, email, số điện thoại -->
         <article class="account-card">
           <h1>Tài khoản của tôi</h1>
 
@@ -75,6 +81,7 @@
           </form>
         </article>
 
+        <!-- Recent Orders Table - Bảng đơn hàng gần đây -->
         <article class="orders-card" id="ordersCard">
           <div class="orders-head">
             <h2>Tất cả đơn hàng</h2>
@@ -100,6 +107,7 @@
     </section>
   </main>
 
+  <!-- ===== FOOTER - Chân trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>

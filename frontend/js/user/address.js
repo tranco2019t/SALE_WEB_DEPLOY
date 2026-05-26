@@ -1,15 +1,19 @@
+/* ===== Trang quản lý địa chỉ người dùng ===== */
 (function () {
+  // Biến trạng thái toàn cục trong module
   var state = {
-    customerId: "",
-    token: "",
-    addresses: []
+    customerId: "",  // ID khách hàng hiện tại
+    token: "",       // Token xác thực
+    addresses: []    // Danh sách địa chỉ
   };
 
+  // Hiển thị giá trị, nếu rỗng trả về "chưa có"
   function displayValue(value) {
     var text = (value || "").toString().trim();
     return text ? text : "chưa có";
   }
 
+  // Lấy tên và số điện thoại từ profile đã lưu
   function getProfileMeta() {
     var profile = TamTai.getProfile();
     return {
@@ -18,6 +22,7 @@
     };
   }
 
+  // Cập nhật sidebar với tên và email của người dùng
   function applySidebarProfile() {
     var profile = TamTai.getProfile();
     var heading = document.querySelector(".profile-head h2");
@@ -30,6 +35,7 @@
     }
   }
 
+  // Ghép các thành phần địa chỉ (street, district, city) thành chuỗi
   function composeAddressLine(address) {
     var parts = [address.street, address.district, address.city, address.zipcode]
       .map(function (item) { return (item || "").toString().trim(); })
@@ -40,6 +46,8 @@
     return parts.join(", ");
   }
 
+  /* ---- Hiển thị danh sách địa chỉ ---- */
+  // Mỗi địa chỉ là một thẻ article, địa chỉ mặc định có badge "Mặc định"
   function renderAddressList(addresses) {
     var addressList = document.querySelector(".address-list");
     if (!addressList) {
@@ -76,6 +84,8 @@
     });
   }
 
+  /* ---- Lấy context khách hàng từ API ---- */
+  // Đảm bảo customerId và token hợp lệ, đồng bộ profile
   async function ensureCustomerContext() {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -111,6 +121,8 @@
     }
   }
 
+  /* ---- Tải danh sách địa chỉ từ API ---- */
+  // GET /addresses/customer/{customerId}
   async function loadAddresses() {
     var ok = await ensureCustomerContext();
     if (!ok) {
@@ -145,6 +157,7 @@
     }
   }
 
+  // Cập nhật tên/số điện thoại khách hàng qua PUT API nếu có thay đổi
   async function updateCustomerProfile(fullName, phone) {
     var payload = {};
     if (fullName) {
@@ -173,6 +186,9 @@
     }
   }
 
+  /* ---- Thêm địa chỉ mới ---- */
+  // Lấy dữ liệu từ form (tỉnh/huyện/xã/chi tiết), POST /addresses/
+  // Nếu có tên/sđt mới thì cập nhật profile luôn
   async function createAddress() {
     var form = document.querySelector(".address-form");
     if (!form) {
@@ -241,6 +257,8 @@
     }
   }
 
+  /* ---- Xóa địa chỉ ---- */
+  // DELETE /addresses/{addressId}, sau đó tải lại danh sách
   async function deleteAddress(addressId) {
     var ok = await ensureCustomerContext();
     if (!ok) {
@@ -264,6 +282,7 @@
     }
   }
 
+  // Gán sự kiện click cho các nút Xóa trong danh sách địa chỉ (event delegation)
   function bindAddressActions() {
     var addressList = document.querySelector(".address-list");
     if (!addressList) {
@@ -289,6 +308,7 @@
     });
   }
 
+  // Gán sự kiện submit cho form thêm địa chỉ mới
   function bindAddAddressForm() {
     var form = document.querySelector(".address-form");
     if (!form) {
@@ -305,6 +325,7 @@
     });
   }
 
+  /* ---- Khởi tạo trang ---- */
   document.addEventListener("DOMContentLoaded", function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
     TamTai.showAdminMenuLink(document);

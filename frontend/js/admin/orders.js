@@ -1,5 +1,7 @@
+/* ===== Trang Quản lý Đơn hàng Admin ===== */
 (function () {
   var Admin = window.TamTaiAdmin;
+  // Danh sách trạng thái đơn hàng cho dropdown
   var ORDER_STATUSES = ["Pending", "Confirmed", "Shipping", "Delivered", "Cancelled"];
   var state = {
     orders: [],
@@ -11,6 +13,7 @@
     }
   };
 
+  /* ---- Ánh xạ trạng thái đơn hàng ---- */
   function getStatusMeta(status) {
     var normalized = String(status || "").trim().toLowerCase();
     if (normalized.indexOf("deliver") !== -1 || normalized.indexOf("done") !== -1) {
@@ -28,6 +31,8 @@
     return { label: "Chờ xử lý", className: "is-neutral" };
   }
 
+  /* ---- Render bảng đơn hàng ---- */
+  // Mỗi dòng có dropdown chọn trạng thái + nút Lưu để cập nhật inline
   function renderOrders() {
     var body = document.getElementById("ordersTableBody");
     var countNode = document.getElementById("ordersCount");
@@ -76,17 +81,21 @@
     Admin.renderSortButtons(document, state.sorting);
   }
 
+  /* ---- Làm mới thống kê & tải đơn hàng ---- */
   async function refreshStats() {
     var dashboard = await Admin.fetchDashboard();
     Admin.renderStats(dashboard && dashboard.stats);
   }
 
+  // Gọi API lấy đơn hàng theo từ khóa
   async function loadOrders() {
     state.orders = await Admin.fetchOrders(document.getElementById("adminGlobalSearch").value);
     state.pagination.orders = 1;
     renderOrders();
   }
 
+  /* ---- Cập nhật trạng thái đơn hàng ---- */
+  // Lấy giá trị từ dropdown, gọi PATCH /admin/orders/{id}/status
   async function updateOrderStatus(orderId, messageNode) {
     var select = document.querySelector('select[data-order-status="' + orderId + '"]');
     if (!select) {
@@ -103,6 +112,8 @@
     Admin.showMessage(messageNode, "Đã cập nhật trạng thái đơn hàng.", "success");
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Xác thực admin, tìm kiếm, sắp xếp, phân trang, load dữ liệu
   document.addEventListener("DOMContentLoaded", async function () {
     var shell = Admin.initShell({
       navKey: "orders",

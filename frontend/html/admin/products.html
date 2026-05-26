@@ -14,6 +14,7 @@
 </head>
 <body>
   <div class="admin-shell">
+    <!-- ===== ADMIN TOPBAR ===== -->
     <header class="admin-topbar">
       <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
         <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
@@ -38,6 +39,7 @@
     </header>
 
     <div class="admin-layout">
+      <!-- ===== ADMIN SIDEBAR ===== -->
       <aside class="admin-sidebar">
         <div>
           <p class="sidebar-title">Quản trị</p>
@@ -58,6 +60,7 @@
         </div>
       </aside>
 
+      <!-- ===== ADMIN MAIN - Quản lý sản phẩm ===== -->
       <main class="admin-main">
         <section class="page-header">
           <div>
@@ -79,6 +82,7 @@
           </div>
         </section>
 
+        <!-- Stats Tiles - Thống kê nhanh -->
         <section class="stats-strip" aria-label="Thống kê nhanh">
           <article class="stat-tile">
             <div class="stat-tile-head">
@@ -134,7 +138,9 @@
 
         <div id="pageMessage" class="page-message" aria-live="polite"></div>
 
+        <!-- Products Layout - Bố cục quản lý sản phẩm: bảng danh sách (trái) + form CRUD (phải) -->
         <section class="products-layout">
+          <!-- Products Table - Bảng danh sách sản phẩm với bộ lọc danh mục, sắp xếp và phân trang -->
           <article class="page-panel">
             <div class="panel-head">
               <div>
@@ -174,6 +180,7 @@
             </div>
           </article>
 
+          <!-- CRUD Form - Form thêm/sửa sản phẩm -->
           <aside class="editor-card">
             <div class="editor-card-head">
               <div>
@@ -183,6 +190,7 @@
               <button id="resetProductFormBtn" type="button" class="btn btn-soft" data-open-form="#productForm" data-form-title="Thêm sản phẩm mới">Tạo mới</button>
             </div>
 
+            <!-- Product Form - Form nhập thông tin sản phẩm: tên, danh mục, ảnh, giá, giảm giá, tồn kho, đánh giá, mô tả -->
             <form id="productForm" class="form-grid">
               <input id="productFormId" type="hidden">
 
@@ -243,6 +251,7 @@
           </aside>
         </section>
 
+        <!-- Admin Footer -->
         <footer class="admin-footer">
           <span>&copy; 2025 TAM TAI. All rights reserved.</span>
           <span>Phiên bản 1.0.0</span>

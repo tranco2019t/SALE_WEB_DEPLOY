@@ -1,3 +1,4 @@
+/* ===== Reset & Body ===== */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f2f6f2 0%, #e7ece7 55%, #e0e5df 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -102,18 +104,22 @@ body {
   opacity: 1;
 }
 
+/* ===== Page Wrap ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
   padding: 16px 0 24px;
 }
 
+/* ===== Profile Layout ===== */
+/* Grid 2 cột: sidebar trái, nội dung phải */
 .profile-layout {
   display: grid;
   grid-template-columns: 250px 1fr;
   gap: 14px;
 }
 
+/* ===== Sidebar Navigation ===== */
 .profile-sidebar {
   background: #edf4ec;
   border: 1px solid #d8e4d7;
@@ -170,12 +176,14 @@ body {
   background: #e6f0e4;
 }
 
+/* Mục đang active — viền xanh bên trái */
 .menu-list a.active {
   background: #dcebd9;
   border-left-color: #49a14e;
   font-weight: 700;
 }
 
+/* Link đăng xuất màu đỏ */
 .menu-list a.logout-link {
   margin-top: 6px;
   border-top: 1px solid #d6e2d5;
@@ -187,11 +195,13 @@ body {
   background: #f5e9e9;
 }
 
+/* ===== Profile Content ===== */
 .profile-content {
   display: grid;
   gap: 12px;
 }
 
+/* ===== Account Info ===== */
 .account-card,
 .orders-card {
   background: #f2f8f1;
@@ -270,6 +280,7 @@ body {
   cursor: pointer;
 }
 
+/* ===== Recent Orders ===== */
 .orders-head {
   display: flex;
   justify-content: space-between;
@@ -328,6 +339,7 @@ body {
   font-weight: 700;
 }
 
+/* ===== Address List ===== */
 .address-list {
   display: grid;
   gap: 10px;
@@ -393,6 +405,7 @@ body {
   background: #7d8f7e;
 }
 
+/* ===== Password Form ===== */
 .password-form {
   max-width: 560px;
 }
@@ -403,6 +416,7 @@ body {
   color: #4a5d4d;
 }
 
+/* ===== Review List ===== */
 .review-list {
   display: grid;
   gap: 12px;
@@ -469,6 +483,7 @@ body {
   padding: 8px 12px;
 }
 
+/* ===== Review Form ===== */
 .review-form {
   margin-top: 10px;
   display: grid;
@@ -612,6 +627,7 @@ body {
   background: #f7fbf6;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -657,6 +673,7 @@ body {
   text-decoration: underline;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;

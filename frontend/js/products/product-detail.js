@@ -1,6 +1,8 @@
 (function () {
+  // ====== Khởi tạo hằng số ======
   var DEFAULT_IMAGE = (window.TamTai && TamTai.DEFAULT_PRODUCT_IMAGE) || "../../images/acer-refurbished-laptop-500x500.webp";
 
+  // Lấy tham số từ URL, trả về fallback nếu không có
   function getQuery(name, fallback) {
     var value = new URLSearchParams(window.location.search).get(name);
     if (value === null || value === undefined || value === "") {
@@ -42,6 +44,7 @@
     return Math.round((price * 100) / (100 - discountPercent));
   }
 
+  /* === Bộ chọn số lượng (+/-) === */
   function setupQuantity() {
     var qtyBox = document.querySelector(".qty-box");
     if (!qtyBox) {
@@ -79,6 +82,7 @@
     return function () { return qty; };
   }
 
+  // Tạo HTML hiển thị sao đánh giá (sao đầy/sao rỗng)
   function buildStarsMarkup(rating) {
     var safeRating = Math.max(0, Math.min(5, Number(rating || 0)));
     var full = Math.round(safeRating);
@@ -91,6 +95,7 @@
     return html;
   }
 
+  // Map dữ liệu sản phẩm từ API sang cấu trúc frontend
   function mapApiProduct(raw) {
     var price = toNumber(raw.unit_price, 0);
     var discountPercent = toNumber(raw.discount_percent, 0);
@@ -110,6 +115,7 @@
     };
   }
 
+  // Tạo đối tượng sản phẩm dự phòng khi không tải được từ API
   function buildFallbackProduct() {
     var name = getQuery("name", "S\u1ea3n ph\u1ea9m");
     var price = toNumber(getQuery("price", "0"), 0);
@@ -131,6 +137,7 @@
     };
   }
 
+  /* === Render thông tin chi tiết sản phẩm ra giao diện === */
   function renderProduct(product, categoryName) {
     var title = document.querySelector(".info-area h2");
     var priceEl = document.querySelector(".price");
@@ -193,6 +200,7 @@
     document.title = product.name + " - TAM TAI";
   }
 
+  // Chuyển sản phẩm thành item giỏ hàng
   function toCartItem(product) {
     return {
       id: product.id,
@@ -205,6 +213,7 @@
     };
   }
 
+  // Gọi API lấy tên danh mục theo categoryId
   async function loadCategoryName(categoryId) {
     if (!categoryId) {
       return "";
@@ -218,14 +227,16 @@
     }
   }
 
+  /* === Khởi tạo trang chi tiết sản phẩm === */
   document.addEventListener("DOMContentLoaded", async function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
 
-    var getQty = setupQuantity();
-    var productId = getQuery("id", "");
+    var getQty = setupQuantity();               // Hàm lấy số lượng đã chọn
+    var productId = getQuery("id", "");          // Lấy ID sản phẩm từ URL
     var product = null;
     var categoryName = "";
 
+    // Gọi API lấy thông tin sản phẩm theo ID
     if (productId) {
       try {
         var payload = await TamTai.fetchJson("/products/" + encodeURIComponent(productId));
@@ -242,6 +253,7 @@
 
     renderProduct(product, categoryName);
 
+    // Xử lý sự kiện nút "Thêm vào giỏ" (kèm hiệu ứng bay)
     var addCartBtn = document.querySelector(".btn-cart");
     if (addCartBtn) {
       addCartBtn.addEventListener("click", function (event) {
@@ -251,6 +263,7 @@
       });
     }
 
+    // Xử lý sự kiện nút "Mua ngay" (thêm vào giỏ rồi chuyển đến checkout)
     var buyNowBtn = document.querySelector(".btn-buy");
     if (buyNowBtn) {
       buyNowBtn.addEventListener("click", function (event) {

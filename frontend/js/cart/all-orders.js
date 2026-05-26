@@ -1,4 +1,5 @@
 ﻿(function () {
+  // ====== Dữ liệu đơn hàng mặc định (fallback) và cấu hình ======
   var ordersData = window.TamTaiOrdersData || {
     orders: [],
     statusMeta: {
@@ -13,6 +14,7 @@
     }
   };
 
+  // Các tham chiếu DOM
   var filtersWrap = document.getElementById("ordersFilters");
   var filterButtons = filtersWrap ? filtersWrap.querySelectorAll("button[data-status]") : [];
   var searchInput = document.getElementById("orderSearch");
@@ -20,12 +22,14 @@
   var paginationWrap = document.getElementById("pagination");
   var summaryEl = document.getElementById("ordersSummary");
 
+  // State: bộ lọc trạng thái, từ khóa tìm kiếm, trang hiện tại
   var state = {
     status: "all",
     searchKeyword: "",
     page: 1
   };
 
+  // Chuẩn hóa mã đơn (bỏ #, in hoa)
   function normalizeOrderId(orderId) {
     return String(orderId || "")
       .replace("#", "")
@@ -33,6 +37,7 @@
       .toUpperCase();
   }
 
+  // Chuyển đổi giá trị tiền tệ về số
   function parseMoney(value) {
     if (typeof value === "number") {
       return Number.isFinite(value) ? value : null;
@@ -46,6 +51,7 @@
     return null;
   }
 
+  // Chuẩn hóa chuỗi trạng thái (bỏ dấu, lowercase) để so khớp
   function normalizeStatusText(value) {
     return String(value || "")
       .trim()
@@ -55,6 +61,7 @@
       .replace(/đ/g, "d");
   }
 
+  // Định dạng ngày tháng thành dd/MM/yyyy
   function formatDate(dateValue) {
     if (!dateValue) {
       return "Chưa có";
@@ -71,6 +78,7 @@
     return dd + "/" + mm + "/" + yyyy;
   }
 
+  // Map trạng thái từ API sang cấu trúc hiển thị (key, label, className)
   function mapStatus(rawStatus) {
     var normalized = normalizeStatusText(rawStatus);
     if (!normalized) {
@@ -91,6 +99,7 @@
     return { key: "pending", label: rawStatus, className: "pending" };
   }
 
+  // Map đơn hàng từ API sang cấu trúc frontend
   function toFrontendOrder(raw) {
     var status = mapStatus(raw.status);
     var items = Array.isArray(raw.items)
@@ -132,6 +141,7 @@
     };
   }
 
+  /* === Gọi API lấy danh sách đơn hàng của người dùng === */
   async function loadOrdersFromBackend() {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -163,6 +173,7 @@
     }
   }
 
+  // Lọc đơn hàng theo trạng thái và từ khóa tìm kiếm
   function filterOrders() {
     return ordersData.orders.filter(function (order) {
       var byStatus = state.status === "all" || order.status === state.status;
@@ -172,6 +183,7 @@
     });
   }
 
+  // Tạo HTML cho một dòng đơn hàng trong bảng
   function createOrderRow(order) {
     var status = order.statusLabel
       ? { label: order.statusLabel, className: order.statusClassName }
@@ -201,6 +213,7 @@
     ].join("");
   }
 
+  /* === Render phân trang === */
   function renderPagination(totalItems, pageSize) {
     var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
     if (state.page > totalPages) {
@@ -216,6 +229,7 @@
     paginationWrap.innerHTML = html;
   }
 
+  // Hiển thị dòng "Hiển thị x - y / z đơn hàng"
   function renderSummary(totalItems, pageSize) {
     if (!summaryEl) {
       return;
@@ -231,6 +245,7 @@
     summaryEl.textContent = "Hiển thị " + start + " - " + end + " / " + totalItems + " đơn hàng";
   }
 
+  /* === Render chính: lọc -> phân trang -> tạo hàng và cập nhật giao diện === */
   function renderOrders() {
     var pageSize = ordersData.defaultPageSize || 10;
     var filteredOrders = filterOrders();
@@ -252,6 +267,7 @@
     renderPagination(filteredOrders.length, pageSize);
   }
 
+  // Đồng bộ class active trên các nút lọc trạng thái
   function setActiveFilter() {
     filterButtons.forEach(function (button) {
       var isActive = button.getAttribute("data-status") === state.status;
@@ -259,6 +275,7 @@
     });
   }
 
+  /* === Gán sự kiện: lọc trạng thái, tìm kiếm, phân trang === */
   function bindEvents() {
     if (filtersWrap) {
       filtersWrap.addEventListener("click", function (event) {
@@ -294,8 +311,9 @@
     }
   }
 
+  /* === Khởi tạo trang danh sách đơn hàng === */
   document.addEventListener("DOMContentLoaded", async function () {
-    await loadOrdersFromBackend();
+    await loadOrdersFromBackend();  // Tải dữ liệu từ API
     bindEvents();
     setActiveFilter();
     renderOrders();

@@ -1,9 +1,11 @@
+/* ===== Admin Discounts Layout ===== */
 .discounts-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px;
 }
 
+/* Cột mã, loại, giá trị trong bảng */
 .discounts-layout .admin-table th:nth-child(2),
 .discounts-layout .admin-table td:nth-child(2),
 .discounts-layout .admin-table th:nth-child(5),
@@ -13,12 +15,13 @@
   width: 110px;
 }
 
+/* Cột toggle switch + actions */
 .discounts-layout .admin-table th:nth-child(7),
 .discounts-layout .admin-table td:nth-child(7) {
   width: 132px;
 }
 
-/* Compact date fields in discount form */
+/* ===== Discount Form: compact date fields ===== */
 #discountForm > .form-row:last-of-type {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
@@ -39,7 +42,7 @@
   height: 38px;
 }
 
-/* Enhanced datetime-local styling */
+/* ===== datetime-local Input Styling ===== */
 input[type="datetime-local"].admin-input {
   color: #1f2d21;
   font-family: "Be Vietnam Pro", sans-serif;
@@ -50,7 +53,7 @@ input[type="datetime-local"].admin-input::placeholder {
   color: #9caca0;
 }
 
-/* Form card improvements */
+/* ===== Editor Card (CRUD form) ===== */
 .editor-card {
   background: #fefffe;
   border: 1px solid #e8eee6;
@@ -85,7 +88,7 @@ input[type="datetime-local"].admin-input::placeholder {
   }
 }
 
-/* Hide inline editor card when using modal-only workflow */
+/* Ẩn editor inline — dùng modal */
 .editor-card {
   display: none !important;
 }

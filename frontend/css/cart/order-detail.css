@@ -1,3 +1,4 @@
+/* ===== Reset & Body ===== */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f2f6f2 0%, #e6ece6 60%, #dde4dc 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -94,12 +96,14 @@ body {
   font-size: 24px;
 }
 
+/* ===== Page Wrap ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
   padding: 16px 0 24px;
 }
 
+/* ===== Detail Shell ===== */
 .detail-shell {
   border-radius: 12px;
   border: 1px solid #d6e3d4;
@@ -133,6 +137,7 @@ body {
   margin-right: 5px;
 }
 
+/* ===== Overview Cards ===== */
 .overview-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -159,6 +164,7 @@ body {
   color: #233123;
 }
 
+/* ===== Products Section ===== */
 .products-section {
   border: 1px solid #d4e1d2;
   border-radius: 10px;
@@ -179,6 +185,7 @@ body {
   gap: 10px;
 }
 
+/* Product card: ảnh + info + tổng tiền */
 .product-card {
   border: 1px solid #deeadb;
   border-radius: 10px;
@@ -270,6 +277,7 @@ body {
   font-weight: 600;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -310,6 +318,12 @@ body {
   opacity: 0.95;
 }
 
+.footer-col a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;

@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
 
@@ -41,12 +42,14 @@
     </div>
   </header>
 
+  <!-- ===== MAIN CONTENT - Khu vực đăng nhập ===== -->
   <main class="page-wrap">
     <section class="auth-card">
       <h1 class="auth-title">
         ĐĂNG NHẬP <span>TÀI KHOẢN</span>
       </h1>
 
+      <!-- Login Form - Form đăng nhập với email, mật khẩu, ghi nhớ đăng nhập và nút quên mật khẩu -->
       <form class="auth-form" id="loginForm">
         <div class="form-group">
           <input type="email" id="loginEmail" placeholder="Email">
@@ -54,11 +57,13 @@
 
         <div class="form-group password-group">
           <input type="password" id="loginPassword" placeholder="Mật khẩu">
+          <!-- Password toggle - Nút hiện/ẩn mật khẩu -->
           <button type="button" class="eye-btn">
             <i class="fa-regular fa-eye"></i>
           </button>
         </div>
 
+        <!-- Remember me checkbox + Forgot password link - Ghi nhớ đăng nhập và liên kết quên mật khẩu -->
         <div class="login-row">
           <label class="remember-wrap">
             <input type="checkbox">
@@ -78,11 +83,13 @@
           <span>Hoặc đăng nhập với</span>
         </div>
 
+        <!-- Google sign-in button - Nút đăng nhập bằng tài khoản Google -->
         <div id="googleLoginBtn"></div>
       </form>
     </section>
   </main>
 
+  <!-- ===== FOOTER - Chân trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>

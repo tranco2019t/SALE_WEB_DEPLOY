@@ -1,3 +1,5 @@
+/* ===== Dashboard Grid ===== */
+/* Layout 2 cột: nội dung chính + sidebar */
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(360px, 1.2fr);
@@ -9,6 +11,7 @@
   gap: 18px;
 }
 
+/* ===== Mini List / Alerts ===== */
 .mini-list {
   display: grid;
   gap: 12px;
@@ -51,6 +54,7 @@
   min-width: 0;
 }
 
+/* ===== Sort Arrow ===== */
 .sort-arrow {
   width: 34px;
   height: 34px;
@@ -77,6 +81,7 @@
   color: var(--admin-green-dark);
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1180px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

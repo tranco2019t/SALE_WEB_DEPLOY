@@ -1,3 +1,4 @@
+/* ===== Reset & Body ===== */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f2f6f2 0%, #e7ece7 55%, #e0e5df 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -94,12 +96,14 @@ body {
   font-size: 24px;
 }
 
+/* ===== Page Wrap ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
   padding: 16px 0 24px;
 }
 
+/* ===== Orders Shell ===== */
 .orders-shell {
   background: #f3f8f2;
   border: 1px solid #dbe7d9;
@@ -133,6 +137,7 @@ body {
   margin-right: 5px;
 }
 
+/* ===== Filter Tabs ===== */
 .orders-filters {
   display: flex;
   flex-wrap: wrap;
@@ -164,6 +169,7 @@ body {
   margin-bottom: 10px;
 }
 
+/* ===== Orders Table ===== */
 .orders-table {
   border: 1px solid #d8e4d7;
   border-radius: 8px;
@@ -199,6 +205,7 @@ body {
   padding: 16px;
 }
 
+/* ===== Status Colors ===== */
 .status {
   font-weight: 700;
 }
@@ -239,6 +246,7 @@ body {
   background: #6a7f6b;
 }
 
+/* ===== Pagination ===== */
 .pagination {
   margin-top: 12px;
   display: flex;
@@ -271,6 +279,7 @@ body {
   cursor: not-allowed;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -311,6 +320,12 @@ body {
   opacity: 0.95;
 }
 
+.footer-col a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -32,6 +33,7 @@
     </div>
   </header>
 
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
     <div class="detail-shell">
       <div class="detail-head">
@@ -39,8 +41,10 @@
         <a href="all-orders.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại tất cả đơn hàng</a>
       </div>
 
+      <!-- Overview Cards - Thẻ tổng quan đơn hàng: mã đơn, ngày đặt, trạng thái, tổng tiền -->
       <section class="overview-grid" id="orderOverview"></section>
 
+      <!-- Products Section - Danh sách sản phẩm trong đơn hàng -->
       <section class="products-section">
         <h2>Sản phẩm trong đơn</h2>
         <div class="products-list" id="orderItems"></div>
@@ -48,6 +52,7 @@
     </div>
   </main>
 
+  <!-- ===== FOOTER - Chân trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>

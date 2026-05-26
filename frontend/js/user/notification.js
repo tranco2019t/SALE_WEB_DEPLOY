@@ -1,19 +1,25 @@
+/* ===== Trang thông báo người dùng ===== */
 (function () {
+  // Key localStorage để lưu trạng thái đã đọc/chưa đọc
   var READ_KEY = "tamtai_notify_read";
   var UNREAD_KEY = "tamtai_notify_unread";
 
+  // Lấy access token từ localStorage
   function getAuthToken() {
     return localStorage.getItem("access_token");
   }
 
+  // Lấy vai trò người dùng từ localStorage
   function getRole() {
     return localStorage.getItem("tamtai_role") || "guest";
   }
 
+  // Kiểm tra xem người dùng đã đăng nhập với vai trò user chưa
   function isLoggedIn() {
     return getAuthToken() && getRole() === "user";
   }
 
+  // Thoát HTML để tránh XSS khi hiển thị nội dung thông báo
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -23,12 +29,14 @@
       .replace(/'/g, "&#39;");
   }
 
+  // Chuẩn hóa loại thông báo (ví dụ "orders" -> "order")
   function normalizeNotificationType(type) {
     var normalized = String(type || "").trim().toLowerCase();
     if (normalized === "orders") return "order";
     return normalized;
   }
 
+  // Chọn icon FontAwesome dựa trên loại thông báo
   function getIconForType(type) {
     var normalized = normalizeNotificationType(type);
     if (normalized === "promo") return "fa-ticket";
@@ -36,6 +44,8 @@
     return "fa-circle-info";
   }
 
+  /* ---- Xử lý ngày thông báo ---- */
+  // Chuyển đổi chuỗi ngày từ API thành đối tượng Date, xử lý trường hợp thiếu timezone
   function parseNotificationDate(value) {
     if (!value) return null;
 
@@ -59,6 +69,7 @@
     return parsed;
   }
 
+  // Tính thời gian tương đối: "Vừa xong", "X phút trước", "X giờ trước", ...
   function getTimeAgo(dateStr) {
     if (!dateStr) return "";
     var d = parseNotificationDate(dateStr);
@@ -75,6 +86,9 @@
     return d.toLocaleDateString("vi-VN");
   }
 
+  /* ---- Hiển thị danh sách thông báo ---- */
+  // Mỗi thông báo là một <article>, đánh dấu unread nếu chưa đọc
+  // Thêm sự kiện click để đánh dấu đã đọc (gọi API hoặc lưu local)
   function renderNotifications(items, readSet) {
     var list = document.querySelector(".notify-list");
     if (!list) return;
@@ -125,6 +139,8 @@
     updateLocalBadge();
   }
 
+  /* ---- Cập nhật badge thông báo chưa đọc ---- */
+  // Đếm số .notify-item có class .unread và cập nhật vào localStorage + badge
   function updateLocalBadge() {
     var unread = 0;
     var items = document.querySelectorAll(".notify-item");
@@ -139,6 +155,8 @@
     }
   }
 
+  /* ---- Dữ liệu thông báo giả (fallback) ---- */
+  // Dùng khi người dùng chưa đăng nhập hoặc API lỗi
   function getFakeNotifications() {
     return [
       { notification_id: "f1", type: "orders", title: "Đơn hàng #DH1002 đang được giao", message: "Tài xế đã lấy hàng và đang giao đến bạn. Dự kiến nhận hàng trước 17:30 hôm nay.", created_at: new Date(Date.now() - 5 * 60000).toISOString(), is_read: false },
@@ -148,6 +166,7 @@
     ];
   }
 
+  // Lấy tab đang active, trả về category tương ứng (all/order/promo/system)
   function getActiveCategory() {
     var active = document.querySelector(".notify-tabs button.active");
     if (!active) return "all";
@@ -159,6 +178,10 @@
     return "all";
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Thiết lập tabs lọc (Tất cả/Đơn hàng/ Khuyến mãi/Hệ thống)
+  // Nếu đã đăng nhập: gọi API thật, có nút "Đánh dấu tất cả đã đọc"
+  // Nếu chưa đăng nhập: dùng dữ liệu giả + lưu local
   document.addEventListener("DOMContentLoaded", function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
 

@@ -1,7 +1,9 @@
 ﻿(function () {
+  // ====== Khởi tạo hằng số và cấu hình mặc định ======
   var DEFAULT_IMAGE = (window.TamTai && TamTai.DEFAULT_PRODUCT_IMAGE) || "../../images/acer-refurbished-laptop-500x500.webp";
   var BASE_VISIBLE_ITEMS = 9;
 
+  // Định nghĩa danh mục ưu tiên và nhãn hiển thị
   var CATEGORY_PRIORITY = [
     "CAT_PHONE",
     "CAT_LAPTOP",
@@ -23,6 +25,7 @@
   var PRICE_MIN = 0;
   var PRICE_MAX = 50000000;
 
+  // Hàm tiện ích: thoát HTML để tránh XSS
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -32,6 +35,7 @@
       .replace(/'/g, "&#39;");
   }
 
+  // Chuẩn hóa chuỗi (bỏ dấu, lowercase) để tìm kiếm
   function normalizeText(value) {
     if (window.TamTai && typeof TamTai.normalizeText === "function") {
       return TamTai.normalizeText(value);
@@ -44,11 +48,13 @@
       .replace(/[\u0300-\u036f]/g, "");
   }
 
+  // Chuyển đổi giá trị sang số, nếu không hợp lệ trả về fallback
   function toNumber(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
 
+  // Chuyển đổi đường dẫn ảnh sang URL đầy đủ
   function toImageSrc(imageUrl) {
     var raw = String(imageUrl || "").trim();
     if (!raw) {
@@ -69,6 +75,7 @@
     return raw;
   }
 
+  // Lấy tên hiển thị của danh mục theo ID
   function categoryLabel(categoryId, fallbackName) {
     if (CATEGORY_LABELS[categoryId]) {
       return CATEGORY_LABELS[categoryId];
@@ -90,11 +97,13 @@
     return fallbackName || categoryId || "Kh\u00e1c";
   }
 
+  // Lấy chỉ số ưu tiên sắp xếp danh mục
   function getCategoryPriority(categoryId) {
     var idx = CATEGORY_PRIORITY.indexOf(categoryId);
     return idx === -1 ? 999 : idx;
   }
 
+  // So sánh hai danh mục để sắp xếp
   function compareCategories(a, b) {
     var pa = getCategoryPriority(a.category_id);
     var pb = getCategoryPriority(b.category_id);
@@ -104,10 +113,12 @@
     return categoryLabel(a.category_id, a.category_name).localeCompare(categoryLabel(b.category_id, b.category_name), "vi");
   }
 
+  // Kiểm tra xem categoryId có thuộc danh mục chính không
   function isPrimaryCategoryId(categoryId) {
     return CATEGORY_PRIORITY.indexOf(String(categoryId || "")) !== -1;
   }
 
+  // Tính giá gốc trước khi giảm dựa trên giá hiện tại và % giảm
   function getPriceBeforeDiscount(price, discountPercent) {
     if (!discountPercent || discountPercent <= 0 || discountPercent >= 100) {
       return price;
@@ -117,6 +128,7 @@
     return Math.round(before);
   }
 
+  // Xác định ID danh mục từ chuỗi truy vấn (hỗ trợ tên tiếng Việt và alias)
   function resolveCategoryIdFromQuery(rawCategory, categoriesById) {
     if (!rawCategory) {
       return "";
@@ -160,6 +172,7 @@
     return matched ? matched.category_id : "";
   }
 
+  // Sắp xếp danh sách sản phẩm theo chế độ: 0-mặc định, 1-giá tăng, 2-giá giảm
   function sortProducts(list, sortMode) {
     var cloned = list.slice();
 
@@ -174,10 +187,12 @@
     return cloned;
   }
 
+  // Kiểm tra giá nằm trong khoảng [min, max]
   function matchPriceRange(price, min, max) {
     return price >= min && price <= max;
   }
 
+  // Xây dựng HTML cho một thẻ sản phẩm trong lưới
   function buildProductCard(product) {
     var oldPrice = getPriceBeforeDiscount(product.price, product.discountPercent);
     var hasDiscount = oldPrice > product.price;
@@ -203,6 +218,7 @@
     ].join('');
   }
 
+  // Chuyển đổi đối tượng sản phẩm thành item để thêm vào giỏ hàng
   function toCartItem(product) {
     return {
       id: product.id,
@@ -215,6 +231,7 @@
     };
   }
 
+  // Kiểm tra trạng thái đăng nhập của người dùng
   function isLoggedIn() {
     var token = localStorage.getItem('access_token');
     var hasToken = Boolean(token && String(token).trim());
@@ -230,6 +247,7 @@
     return role !== 'guest';
   }
 
+  // Ẩn/hiện các phần tử chỉ dành cho khách (chưa đăng nhập)
   function toggleGuestOnlyElements() {
     var loggedIn = isLoggedIn();
     var guestOnlyElements = document.querySelectorAll('[data-guest-only]');
@@ -239,6 +257,7 @@
     });
   }
 
+  // Tải dữ liệu danh mục và sản phẩm từ API, chuẩn hóa về cấu trúc chung
   async function loadCatalog() {
     var categoriesData = await TamTai.fetchJson('/categories?skip=0&limit=100');
     var productsData = await TamTai.fetchJson('/products?skip=0&limit=500');
@@ -281,6 +300,7 @@
     };
   }
 
+  // Render bộ lọc danh mục (checkbox cho từng danh mục)
   function renderCategoryFilters(filterBlock, categories, categoryCounts) {
     if (!filterBlock) {
       return;
@@ -306,6 +326,7 @@
     filterBlock.innerHTML = html.join('');
   }
 
+  // Render bộ lọc khoảng giá (thanh trượt kép min-max)
   function renderPriceFilters(filterBlock, minVal, maxVal) {
     if (!filterBlock) {
       return;
@@ -329,6 +350,7 @@
     ].join('');
   }
 
+  // Đồng bộ trạng thái checkbox danh mục với state
   function syncCategoryInputs(filterBlock, selectedCategories) {
     if (!filterBlock) {
       return;
@@ -344,6 +366,7 @@
     });
   }
 
+  // Đồng bộ giá trị thanh trượt giá với state
   function syncPriceInputs(filterBlock, min, max) {
     var minEl = filterBlock && filterBlock.querySelector("#priceRangeMin");
     var maxEl = filterBlock && filterBlock.querySelector("#priceRangeMax");
@@ -351,6 +374,7 @@
     if (maxEl) maxEl.value = max;
   }
 
+  // Gán data-category-id cho các nút danh mục nhanh (quick items)
   function attachQuickCategoryIds(quickItems, categoriesById) {
     quickItems.forEach(function (item) {
       var label = normalizeText(item.textContent);
@@ -361,6 +385,7 @@
     });
   }
 
+  // Đồng bộ trạng thái active của các nút danh mục nhanh
   function syncQuickItems(quickItems, selectedCategories) {
     quickItems.forEach(function (item) {
       var itemCategoryId = item.getAttribute('data-category-id') || '';
@@ -369,6 +394,7 @@
     });
   }
 
+  /* === Slider ảnh hero (tự động chuyển slide) === */
   function setupHeroSlides(allProducts) {
     var frame = document.querySelector(".hero-img-frame");
     var img = frame && frame.querySelector("img");
@@ -409,6 +435,7 @@
     setInterval(function () { go(idx + 1); }, 4000);
   }
 
+  /* === Trang chính: khởi tạo sự kiện, state, và render lần đầu === */
   document.addEventListener('DOMContentLoaded', async function () {
     TamTai.setupSearchRedirect('.search-box input', '../products/products.html');
     toggleGuestOnlyElements();
@@ -468,6 +495,7 @@
         initialCategoryId = '';
       }
 
+      // State trung tâm: lưu trạng thái bộ lọc, từ khóa, sắp xếp, phân trang
       var state = {
         selectedCategories: new Set(initialCategoryId ? [initialCategoryId] : []),
         priceMin: 0,
@@ -476,6 +504,7 @@
         sortMode: sortSelect ? sortSelect.selectedIndex : 0,
         currentPage: 1,
         PAGE_SIZE: 9,
+        // Hàm render chính: lọc sản phẩm theo state -> sắp xếp -> phân trang -> cập nhật giao diện
         render: function () {
           syncCategoryInputs(categoryFilterBlock, state.selectedCategories);
           syncPriceInputs(priceFilterBlock, state.priceMin, state.priceMax);
@@ -532,6 +561,7 @@
 
       function resetPage() { state.currentPage = 1; }
 
+      // Xử lý sự kiện khi checkbox danh mục thay đổi
       if (categoryFilterBlock) {
         categoryFilterBlock.addEventListener('change', function (event) {
           var input = event.target.closest('input[data-filter-type="category"]');
@@ -548,6 +578,7 @@
         });
       }
 
+      // Cập nhật nhãn hiển thị và thanh trượt khi kéo slider giá
       function updatePriceLabel() {
         var minEl = document.getElementById("priceRangeMin");
         var maxEl = document.getElementById("priceRangeMax");
@@ -568,6 +599,7 @@
         if (fill) fill.style.cssText = "left:" + pctMin + "%;width:" + (pctMax - pctMin) + "%";
       }
 
+      // Xử lý sự kiện kéo thanh trượt khoảng giá (cập nhật label trong lúc kéo)
       if (priceFilterBlock) {
         priceFilterBlock.addEventListener("input", function (event) {
           var slider = event.target.closest(".price-range");
@@ -583,6 +615,7 @@
         });
       }
 
+      // Xử lý click vào nút danh mục nhanh (quick access)
       quickItems.forEach(function (item) {
         item.addEventListener('click', function (event) {
           event.preventDefault();
@@ -594,6 +627,7 @@
         });
       });
 
+      // Xử lý tìm kiếm theo từ khóa (gõ đến đâu lọc đến đó)
       if (searchInput) {
         searchInput.addEventListener('input', function () {
           state.keyword = normalizeText(searchInput.value);
@@ -602,6 +636,7 @@
         });
       }
 
+      // Xử lý thay đổi lựa chọn sắp xếp
       if (sortSelect) {
         sortSelect.addEventListener('change', function () {
           state.sortMode = sortSelect.selectedIndex;
@@ -610,6 +645,7 @@
         });
       }
 
+      // Xử lý phân trang: click vào nút trang
       if (paginationWrap) {
         paginationWrap.addEventListener('click', function (event) {
           var btn = event.target.closest('.page-btn[data-page]');
@@ -619,6 +655,7 @@
         });
       }
 
+      // Xử lý sự kiện trên lưới sản phẩm: Add-to-Cart, Buy-Now, và điều hướng chi tiết
       grid.addEventListener('click', function (event) {
         var actionButton = event.target.closest('button[data-action]');
         if (actionButton) {

@@ -1,23 +1,28 @@
+/* ===== Trang đánh giá sản phẩm người dùng ===== */
 (function () {
-  var REVIEW_PAGE_SIZE = 10;
-  var MAX_REVIEW_IMAGES = 5;
-  var MAX_REVIEW_IMAGE_SIZE = 5 * 1024 * 1024;
+  // Kích thước trang và giới hạn upload ảnh
+  var REVIEW_PAGE_SIZE = 10;           // Số sản phẩm hiển thị mỗi trang
+  var MAX_REVIEW_IMAGES = 5;           // Tối đa 5 ảnh mỗi đánh giá
+  var MAX_REVIEW_IMAGE_SIZE = 5 * 1024 * 1024; // Giới hạn 5MB mỗi ảnh
   var DEFAULT_IMAGE = "../../images/acer-refurbished-laptop-500x500.webp";
 
+  // Biến trạng thái toàn cục
   var state = {
-    token: "",
-    customerId: "",
-    products: [],
-    pendingProducts: [],
-    reviewsByProduct: {},
-    page: 1
+    token: "",            // Token xác thực
+    customerId: "",       // ID khách hàng
+    products: [],         // Danh sách sản phẩm đã mua
+    pendingProducts: [],  // Sản phẩm chưa được đánh giá
+    reviewsByProduct: {}, // Map các review đã có theo product_id
+    page: 1               // Trang hiện tại
   };
 
+  // Hiển thị giá trị, nếu rỗng trả về "chưa có"
   function displayValue(value) {
     var text = (value || "").toString().trim();
     return text ? text : "chưa có";
   }
 
+  // Thoát HTML để an toàn khi chèn nội dung vào DOM
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -27,6 +32,7 @@
       .replace(/'/g, "&#39;");
   }
 
+  // Định dạng ngày tháng thành dd/MM/yyyy
   function formatDate(dateValue) {
     if (!dateValue) {
       return "chưa có";
@@ -43,6 +49,8 @@
     return dd + "/" + mm + "/" + yyyy;
   }
 
+  /* ---- Xử lý đường dẫn ảnh ---- */
+  // Nếu là URL tuyệt đối hoặc data URI thì dùng nguyên, nếu là đường dẫn tương đối thì build qua API
   function resolveAssetUrl(url) {
     var text = String(url || "").trim();
     if (!text) {
@@ -60,6 +68,7 @@
     return text;
   }
 
+  // Cập nhật sidebar với tên và email từ profile
   function applySidebarProfile(profileInput) {
     var profile = profileInput || TamTai.getProfile();
     var heading = document.querySelector(".profile-head h2");
@@ -73,6 +82,8 @@
     }
   }
 
+  /* ---- Hiển thị trạng thái rỗng ---- */
+  // Khi không có sản phẩm nào để đánh giá
   function renderEmpty(message) {
     var list = document.getElementById("reviewList");
     var summary = document.getElementById("reviewSummary");
@@ -91,6 +102,8 @@
     list.innerHTML = '<p class="review-empty">' + escapeHtml(message || "chưa có dữ liệu") + "</p>";
   }
 
+  /* ---- Lấy context khách hàng từ API ---- */
+  // Đảm bảo customerId và token hợp lệ, đồng bộ profile + sidebar
   async function ensureCustomerContext() {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -133,6 +146,8 @@
     }
   }
 
+  /* ---- Lấy danh sách sản phẩm đã mua ---- */
+  // GET /orders, sau đó trích xuất danh sách sản phẩm từ các order items
   async function fetchPurchasedProducts() {
     if (!state.token) {
       return [];
@@ -183,6 +198,8 @@
     }
   }
 
+  /* ---- Lấy danh sách đánh giá đã gửi ---- */
+  // GET /reviews/customer/{customerId}, trả về map product_id -> review (lấy bản mới nhất)
   async function fetchMyReviews() {
     if (!state.customerId || !state.token) {
       return {};
@@ -236,12 +253,15 @@
     }
   }
 
+  // Lọc ra các sản phẩm chưa có đánh giá (cần đánh giá)
   function buildPendingReviewProducts(products, reviewsByProduct) {
     return (products || []).filter(function (product) {
       return !reviewsByProduct[product.product_id];
     });
   }
 
+  /* ---- Tạo HTML cho bộ chọn sao ---- */
+  // Tạo 5 nút sao, tô active nếu <= selectedRating
   function createStarsHtml(selectedRating) {
     var html = "";
     for (var i = 1; i <= 5; i += 1) {
@@ -251,6 +271,8 @@
     return html;
   }
 
+  /* ---- Tạo thẻ HTML cho một sản phẩm cần đánh giá ---- */
+  // Gồm: ảnh, tên sản phẩm, bộ chọn sao, textarea nhận xét, input file ảnh, nút gửi
   function createReviewCard(product) {
     var image = resolveAssetUrl(product.image_url || DEFAULT_IMAGE);
 
@@ -287,6 +309,7 @@
     ].join("");
   }
 
+  // Hiển thị tổng kết: "Hiển thị X - Y / Z sản phẩm chưa đánh giá"
   function renderSummary(totalItems, currentPage, pageSize) {
     var summary = document.getElementById("reviewSummary");
     if (!summary) {
@@ -303,6 +326,8 @@
     summary.textContent = "Hiển thị " + start + " - " + end + " / " + totalItems + " sản phẩm chưa đánh giá";
   }
 
+  /* ---- Tạo thanh phân trang ---- */
+  // Nút Trước, các số trang, nút Sau
   function renderPagination(totalItems, currentPage, pageSize) {
     var pagination = document.getElementById("reviewPagination");
     if (!pagination) {
@@ -325,6 +350,8 @@
     pagination.innerHTML = html.join("");
   }
 
+  /* ---- Render trang đánh giá hiện tại ---- */
+  // Cắt mảng pendingProducts theo trang, render từng card, gọi bindReviewItems
   function renderReviewPage() {
     var list = document.getElementById("reviewList");
     if (!list) {
@@ -354,6 +381,7 @@
     bindReviewItems();
   }
 
+  // Cập nhật giao diện sao và text hiển thị khi người dùng chọn sao
   function updateStarsVisual(item, rating) {
     var stars = item.querySelectorAll(".star-btn");
     var ratingText = item.querySelector(".rating-text");
@@ -368,6 +396,8 @@
     }
   }
 
+  /* ---- Kiểm tra tính hợp lệ của file ảnh ---- */
+  // Tối đa 5 file, mỗi file <= 5MB, phải là định dạng ảnh
   function validateImageFiles(files) {
     if (files.length > MAX_REVIEW_IMAGES) {
       return "Bạn chỉ có thể chọn tối đa " + MAX_REVIEW_IMAGES + " ảnh.";
@@ -386,6 +416,7 @@
     return "";
   }
 
+  // Hiển thị preview các ảnh đã chọn (dùng URL.createObjectURL)
   function renderSelectedImages(item, files) {
     var preview = item.querySelector(".review-image-preview");
     var count = item.querySelector(".image-count");
@@ -407,6 +438,8 @@
     count.textContent = "Đã chọn " + files.length + " ảnh.";
   }
 
+  /* ---- Gửi đánh giá lên API ---- */
+  // POST /reviews/ với FormData chứa product_id, customer_id, rating, comment, images
   async function submitReview(productId, rating, comment, files) {
     var formData = new FormData();
     formData.append("product_id", productId);
@@ -440,6 +473,8 @@
     return data;
   }
 
+  /* ---- Gán sự kiện cho các thẻ đánh giá ---- */
+  // Sự kiện click sao, change file ảnh, submit form
   function bindReviewItems() {
     var reviewItems = document.querySelectorAll(".review-item");
 
@@ -533,6 +568,7 @@
     });
   }
 
+  // Gán sự kiện click cho các nút phân trang
   function bindPagination() {
     var pagination = document.getElementById("reviewPagination");
     if (!pagination) {
@@ -555,6 +591,8 @@
     });
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Kiểm tra đăng nhập, tải sản phẩm đã mua, tải review đã gửi, lọc sản phẩm chưa đánh giá
   document.addEventListener("DOMContentLoaded", async function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
     TamTai.showAdminMenuLink(document);

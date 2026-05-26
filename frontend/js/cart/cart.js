@@ -1,4 +1,5 @@
 ﻿(function () {
+  // ====== Hằng số cấu hình ======
   var DEFAULT_IMAGE = (window.TamTai && TamTai.DEFAULT_PRODUCT_IMAGE) || "../../images/acer-refurbished-laptop-500x500.webp";
   var LABEL_PRODUCT = "S\u1ea3n ph\u1ea9m";
   var LABEL_EMPTY_CART = "Gi\u1ecf h\u00e0ng \u0111ang tr\u1ed1ng. H\u00e3y th\u00eam s\u1ea3n ph\u1ea9m m\u1edbi nh\u00e9.";
@@ -49,6 +50,7 @@
     return Math.round((price * 100) / (100 - discountPercent));
   }
 
+  // Tạo container #cartItemsContainer nếu chưa có
   function ensureContainer() {
     var cartPanel = document.querySelector(".cart-panel");
     if (!cartPanel) {
@@ -71,6 +73,7 @@
     return container;
   }
 
+  /* === Cập nhật bảng tóm tắt giỏ hàng (tạm tính, phí ship, tổng) === */
   function renderSummary(cart) {
     var summaryRows = document.querySelectorAll(".summary-panel .summary-row");
     var subtotal = cart.reduce(function (sum, item) {
@@ -96,6 +99,7 @@
     }
   }
 
+  /* === Render danh sách sản phẩm trong giỏ hàng === */
   function renderCartItems(cartInput) {
     var container = ensureContainer();
     if (!container) {
@@ -142,6 +146,7 @@
     renderSummary(cart);
   }
 
+  // Chuẩn hóa item giỏ hàng (dùng dữ liệu API nếu có để lấy giá mới nhất)
   function normalizeCartItem(item, apiProduct) {
     var currentId = String((item && (item.productId || item.id)) || "");
 
@@ -174,6 +179,7 @@
     };
   }
 
+  // So sánh hai item có giống nhau không (dùng để phát hiện thay đổi)
   function isSameItem(a, b) {
     return String(a.id || "") === String(b.id || "")
       && String(a.productId || "") === String(b.productId || "")
@@ -185,6 +191,7 @@
       && toNumber(a.qty, 1) === toNumber(b.qty, 1);
   }
 
+  /* === Đồng bộ giỏ hàng localStorage với API: cập nhật giá mới nhất từ server === */
   async function syncCartWithApi() {
     var cart = TamTai.getCart();
     if (!Array.isArray(cart) || !cart.length) {
@@ -262,6 +269,7 @@
     return merged;
   }
 
+  // Tạo HTML thẻ sản phẩm gợi ý
   function buildRelatedCard(product) {
     var id = String(product.product_id || "");
     var name = String(product.product_name || LABEL_PRODUCT);
@@ -280,6 +288,7 @@
     ].join("");
   }
 
+  // Sắp xếp sản phẩm gợi ý: theo đánh giá, lượt mua, tồn kho
   function sortRelatedProducts(a, b) {
     var bReviews = toNumber(b.total_reviews, 0);
     var aReviews = toNumber(a.total_reviews, 0);
@@ -296,6 +305,7 @@
     return toNumber(b.stock_quantity, 0) - toNumber(a.stock_quantity, 0);
   }
 
+  /* === Render danh sách sản phẩm gợi ý dưới giỏ hàng === */
   async function renderRelatedProducts(cartInput) {
     var grid = document.querySelector(".related-grid");
     if (!grid) {
@@ -341,6 +351,7 @@
     }
   }
 
+  // Xử lý thay đổi số lượng (+) / (-) hoặc xóa sản phẩm khỏi giỏ
   function updateItem(index, action) {
     var cart = TamTai.getCart();
     var item = cart[index];
@@ -361,13 +372,15 @@
     renderRelatedProducts(cart);
   }
 
+  /* === Khởi tạo trang giỏ hàng === */
   document.addEventListener("DOMContentLoaded", async function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
 
-    var latestCart = await syncCartWithApi();
-    renderCartItems(latestCart);
-    await renderRelatedProducts(latestCart);
+    var latestCart = await syncCartWithApi();  // Tải giỏ hàng + đồng bộ giá
+    renderCartItems(latestCart);                // Render danh sách sản phẩm
+    await renderRelatedProducts(latestCart);    // Render gợi ý sản phẩm
 
+    // Xử lý sự kiện click vào nút + / - / Xóa trong giỏ hàng
     var container = ensureContainer();
     if (container) {
       container.addEventListener("click", function (event) {
@@ -387,6 +400,7 @@
       });
     }
 
+    // Click vào sản phẩm gợi ý -> điều hướng đến trang chi tiết
     var relatedGrid = document.querySelector(".related-grid");
     if (relatedGrid) {
       relatedGrid.addEventListener("click", function (event) {
@@ -404,6 +418,7 @@
       });
     }
 
+    // Nút "Thanh toán": kiểm tra giỏ hàng trống trước khi chuyển trang
     var checkoutBtn = document.querySelector(".checkout-btn");
     if (checkoutBtn) {
       checkoutBtn.addEventListener("click", function (event) {

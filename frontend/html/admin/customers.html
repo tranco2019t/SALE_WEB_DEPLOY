@@ -14,6 +14,7 @@
 </head>
 <body>
   <div class="admin-shell">
+    <!-- ===== ADMIN TOPBAR ===== -->
     <header class="admin-topbar">
       <a class="brand-box" href="../core/landing.html" aria-label="Về trang chủ TAM TAI">
         <img src="../../images/modern-logo-with-gradient-squares.png" alt="TAM TAI Logo">
@@ -38,6 +39,7 @@
     </header>
 
     <div class="admin-layout">
+      <!-- ===== ADMIN SIDEBAR ===== -->
       <aside class="admin-sidebar">
         <div>
           <p class="sidebar-title">Quản trị</p>
@@ -58,6 +60,7 @@
         </div>
       </aside>
 
+      <!-- ===== ADMIN MAIN - Quản lý khách hàng ===== -->
       <main class="admin-main">
         <section class="page-header">
           <div>
@@ -79,6 +82,7 @@
           </div>
         </section>
 
+        <!-- Stats Tiles -->
         <section class="stats-strip" aria-label="Thống kê nhanh">
           <article class="stat-tile">
             <div class="stat-tile-head">
@@ -134,7 +138,9 @@
 
         <div id="pageMessage" class="page-message" aria-live="polite"></div>
 
+        <!-- Customers Layout - Bố cục quản lý khách hàng: bảng danh sách + form chỉnh sửa -->
         <section class="customers-layout">
+          <!-- Customers Table - Bảng danh sách khách hàng với sắp xếp và phân trang -->
           <article class="page-panel">
             <div class="panel-head">
               <div>
@@ -169,6 +175,7 @@
             </div>
           </article>
 
+          <!-- Customer Edit Form - Form chỉnh sửa thông tin khách hàng -->
           <aside class="editor-card">
             <div class="editor-card-head">
               <div>
@@ -217,6 +224,7 @@
           </aside>
         </section>
 
+        <!-- Admin Footer -->
         <footer class="admin-footer">
           <span>&copy; 2025 TAM TAI. All rights reserved.</span>
           <span>Phiên bản 1.0.0</span>
@@ -239,7 +247,7 @@
     </div>
   </div>
 
-  <!-- Generic modal used to host forms for add/edit actions -->
+  <!-- Generic Modal - Modal dùng chung để hiển thị form thêm/sửa -->
   <div id="entityFormModal" class="modal-shell" hidden>
     <button type="button" class="modal-backdrop" data-close-modal aria-label="Đóng"></button>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityFormModalTitle">

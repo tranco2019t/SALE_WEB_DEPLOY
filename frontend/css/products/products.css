@@ -1,3 +1,4 @@
+/* ===== Reset & Body ===== */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f3f6f4 0%, #e8ece8 55%, #e2e6e1 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -106,6 +108,7 @@ body {
   opacity: 1;
 }
 
+/* ===== Page Wrap & Breadcrumb ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
@@ -126,10 +129,12 @@ body {
   text-decoration: none;
 }
 
+/* ===== Hero Products ===== */
 .hero-products {
   background: linear-gradient(120deg, #edf9ea 0%, #deefda 52%, #d5e8d1 100%);
   border-radius: 16px;
   padding: 20px;
+  /* Layout 2 cột: text + hình ảnh sản phẩm */
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.85fr);
   gap: 16px;
@@ -196,6 +201,7 @@ body {
   background: #eef5ec;
 }
 
+/* ===== Hình ảnh hero với slider mini ===== */
 .hero-image {
   width: 100%;
   max-width: 330px;
@@ -274,6 +280,7 @@ body {
   background: #4ea552;
 }
 
+/* ===== Benefits / Lợi ích ===== */
 .benefits {
   margin-top: 14px;
   display: grid;
@@ -314,6 +321,7 @@ body {
   color: #607060;
 }
 
+/* ===== Quick Categories ===== */
 .quick-categories {
   margin-top: 14px;
   display: grid;
@@ -346,13 +354,16 @@ body {
   border-color: #b8d8b5;
 }
 
+/* ===== Products Area: Filter Panel + Grid ===== */
 .products-area {
   margin-top: 16px;
+  /* Grid 2 cột: filter trái, sản phẩm phải */
   display: grid;
   grid-template-columns: 250px 1fr;
   gap: 16px;
 }
 
+/* ===== Filter Panel ===== */
 .filter-panel {
   background: #f2f8f1;
   border: 1px solid #dde9db;
@@ -401,11 +412,13 @@ body {
   outline: none;
 }
 
+/* ===== Price Slider (khoảng giá) ===== */
 .price-slider-wrap {
   position: relative;
   height: 60px;
 }
 
+/* Track nền của slider */
 .price-slider-track {
   position: absolute;
   top: 14px;
@@ -417,6 +430,7 @@ body {
   pointer-events: none;
 }
 
+/* Phần fill màu xanh giữa 2 tay kéo */
 .price-slider-fill {
   position: absolute;
   top: 0;
@@ -425,6 +439,7 @@ body {
   border-radius: 4px;
 }
 
+/* Input range chồng lên track — pointer-events: none để track không bị chặn */
 .price-range {
   position: absolute;
   top: 4px;
@@ -439,6 +454,7 @@ body {
   pointer-events: none;
 }
 
+/* Tay kéo slider — pointer-events: auto để có thể kéo */
 .price-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -463,6 +479,7 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
+/* Hiển thị giá trị min/max bên dưới slider */
 .price-slider-values {
   position: absolute;
   bottom: 0;
@@ -475,6 +492,7 @@ body {
   font-weight: 600;
 }
 
+/* ===== Product Content ===== */
 .products-content {
   background: #f2f8f1;
   border: 1px solid #dde9db;
@@ -507,6 +525,7 @@ body {
   font-weight: 600;
 }
 
+/* ===== Product Grid ===== */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -547,6 +566,7 @@ body {
   font-weight: 700;
 }
 
+/* ===== Pagination ===== */
 .pagination-wrap {
   margin-top: 14px;
   display: flex;
@@ -584,6 +604,7 @@ body {
   cursor: not-allowed;
 }
 
+/* ===== CTA Section ===== */
 .cta-section {
   margin-top: 18px;
   border-radius: 14px;
@@ -614,6 +635,7 @@ body {
   color: #2f7a39;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -659,6 +681,7 @@ body {
   text-decoration: underline;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;
@@ -723,7 +746,7 @@ body {
   }
 }
 
-/* Dynamic product cards */
+/* ===== Dynamic / JS-driven product cards ===== */
 .empty-products {
   grid-column: 1 / -1;
   background: #f7fbf6;

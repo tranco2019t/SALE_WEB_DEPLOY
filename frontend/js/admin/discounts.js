@@ -1,3 +1,4 @@
+/* ===== Trang Quản lý Mã Giảm giá Admin ===== */
 (function () {
   var Admin = window.TamTaiAdmin;
   var state = {
@@ -13,6 +14,7 @@
     }
   };
 
+  // Lấy nhãn hiển thị sản phẩm áp dụng (tên SP, mã SP, hoặc "Tất cả sản phẩm")
   function getDiscountProductLabel(discount) {
     if (discount.product_name) {
       return discount.product_name;
@@ -23,6 +25,7 @@
     return "Tất cả sản phẩm";
   }
 
+  // Lấy nhãn khách hàng áp dụng (tên KH, email, mã KH, hoặc "Tất cả người dùng")
   function getDiscountCustomerLabel(discount) {
     if (discount.customer_name) {
       return discount.customer_name;
@@ -36,6 +39,8 @@
     return "Tất cả người dùng";
   }
 
+  /* ---- Render bảng mã giảm giá ---- */
+  // Hiển thị mã, %, sản phẩm, khách hàng, lượt dùng, trạng thái, actions
   function renderDiscounts() {
     var body = document.getElementById("discountsTableBody");
     var countNode = document.getElementById("discountsCount");
@@ -81,6 +86,7 @@
     Admin.renderSortButtons(document, state.sorting);
   }
 
+  // Điền danh sách sản phẩm và khách hàng vào dropdown form
   function populateTargets() {
     Admin.populateSelect(
       document.getElementById("discountProduct"),
@@ -101,6 +107,7 @@
     );
   }
 
+  /* ---- Reset & Điền form mã giảm giá ---- */
   function resetDiscountForm() {
     state.editingDiscountId = "";
     document.getElementById("discountForm").reset();
@@ -111,6 +118,7 @@
     document.getElementById("discountUsageLimit").value = 1;
   }
 
+  // Điền thông tin mã giảm giá vào form chỉnh sửa
   function fillDiscountForm(discountId) {
     var discount = state.discounts.find(function (item) {
       return item.discount_code_id === discountId;
@@ -136,17 +144,22 @@
     document.getElementById("discountCode").scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
+  /* ---- Làm mới thống kê & tải mã giảm giá ---- */
   async function refreshStats() {
     var dashboard = await Admin.fetchDashboard();
     Admin.renderStats(dashboard && dashboard.stats);
   }
 
+  // Gọi API lấy mã giảm giá theo từ khóa
   async function loadDiscounts() {
     state.discounts = await Admin.fetchDiscountCodes(document.getElementById("adminGlobalSearch").value);
     state.pagination.discounts = 1;
     renderDiscounts();
   }
 
+  /* ---- Lưu (thêm/cập nhật) mã giảm giá ---- */
+  // Nếu có discountId thì PATCH, nếu không thì POST
+  // Tự động gửi thông báo cho khách hàng khi tạo/cập nhật
   async function saveDiscount(event, messageNode) {
     event.preventDefault();
 
@@ -184,6 +197,8 @@
     Admin.showMessage(messageNode, successMessage, "success");
   }
 
+  /* ---- Bật/tắt trạng thái mã giảm giá ---- */
+  // Đổi is_active, gọi PATCH API
   async function toggleDiscount(discountId, messageNode) {
     var discount = state.discounts.find(function (item) {
       return item.discount_code_id === discountId;
@@ -202,6 +217,8 @@
     Admin.showMessage(messageNode, "Đã đổi trạng thái mã giảm giá.", "success");
   }
 
+  /* ---- Xóa mã giảm giá ---- */
+  // DELETE /admin/discount-codes/{id} sau khi xác nhận
   async function deleteDiscount(discountId, messageNode) {
     if (!window.confirm("Bạn chắc chắn muốn xóa mã giảm giá này?")) {
       return;
@@ -215,6 +232,8 @@
     Admin.showMessage(messageNode, "Đã xóa mã giảm giá.", "success");
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Xác thực admin, tìm kiếm, sắp xếp, phân trang, load discounts + products + customers
   document.addEventListener("DOMContentLoaded", async function () {
     var shell = Admin.initShell({
       navKey: "discounts",

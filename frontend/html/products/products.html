@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -32,13 +33,16 @@
     </div>
   </header>
 
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
+    <!-- Breadcrumb - Đường dẫn điều hướng: Trang chủ / Danh mục Sản phẩm -->
     <section class="breadcrumb-row">
       <a href="../core/landing.html">Trang chủ</a>
       <span>/</span>
       <strong>Danh mục Sản phẩm</strong>
     </section>
 
+    <!-- Hero Banner - Banner giới thiệu danh mục sản phẩm kèm ảnh slider -->
     <section class="hero-products">
       <div class="hero-copy">
         <p class="hero-kicker">Khám phá các sản phẩm chất lượng</p>
@@ -63,6 +67,7 @@
       </div>
     </section>
 
+    <!-- Benefits Strip - Thanh lợi ích: giao hàng nhanh, bảo hành dài hạn, đánh giá cao -->
     <section class="benefits">
       <article class="benefit-card">
         <i class="fa-solid fa-truck-fast"></i>
@@ -87,6 +92,7 @@
       </article>
     </section>
 
+    <!-- Quick Categories - Thanh danh mục nhanh: Điện thoại, Laptop, Tai nghe, Đồng hồ, Bàn phím, Chuột -->
     <section class="quick-categories">
       <a href="#" class="quick-item active">
         <i class="fa-solid fa-mobile-screen"></i>
@@ -114,7 +120,9 @@
       </a>
     </section>
 
+    <!-- Products Area - Khu vực sản phẩm: bộ lọc (trái) + lưới sản phẩm (phải) -->
     <section class="products-area" id="products-list">
+            <!-- Filter Panel - Bảng điều khiển lọc theo danh mục, khoảng giá và sắp xếp -->
             <aside class="filter-panel">
         <div class="filter-block">
           <h2>Danh mục</h2>
@@ -150,6 +158,7 @@
           <h2>SẢN PHẨM</h2>
         </div>
 
+        <!-- Product Grid - Lưới hiển thị danh sách sản phẩm với ảnh, tên và giá -->
         <div class="product-grid">
           <article class="product-card">
             <div class="product-image">
@@ -200,10 +209,12 @@
           </article>
         </div>
 
+        <!-- Pagination - Phân trang sản phẩm -->
         <div class="pagination-wrap" id="productsPagination"></div>
       </section>
     </section>
 
+    <!-- CTA Section - Kêu gọi đăng ký tài khoản nhận ưu đãi -->
     <section class="cta-section" data-guest-only="true">
       <h2>Nhận ngay ưu đãi 10%</h2>
       <p>Đăng ký tài khoản để nhận mã giảm giá và ưu đãi mới sớm nhất.</p>
@@ -211,6 +222,7 @@
     </section>
   </main>
 
+  <!-- ===== FOOTER - Chân trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>

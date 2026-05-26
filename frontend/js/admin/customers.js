@@ -1,3 +1,4 @@
+/* ===== Trang Quản lý Khách hàng Admin ===== */
 (function () {
   var Admin = window.TamTaiAdmin;
   var state = {
@@ -10,6 +11,8 @@
     }
   };
 
+  /* ---- Render bảng khách hàng ---- */
+  // Hiển thị mã, tên, email, số đơn, tổng chi tiêu, trạng thái, các nút actions
   function renderCustomers() {
     var body = document.getElementById("customersTableBody");
     var countNode = document.getElementById("customersCount");
@@ -57,6 +60,7 @@
     Admin.renderSortButtons(document, state.sorting);
   }
 
+  /* ---- Reset & Điền form khách hàng ---- */
   function resetCustomerForm() {
     document.getElementById("customerForm").reset();
     document.getElementById("customerFormId").value = "";
@@ -64,6 +68,7 @@
     document.getElementById("customerStatus").value = "1";
   }
 
+  // Điền thông tin khách hàng vào form chỉnh sửa
   function fillCustomerForm(customerId) {
     var customer = state.customers.find(function (item) {
       return item.customer_id === customerId;
@@ -83,6 +88,7 @@
     document.getElementById("customerName").scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
+  /* ---- Modal chi tiết khách hàng ---- */
   function closeModal() {
     var modal = document.getElementById("customerDetailModal");
     if (!modal) {
@@ -92,6 +98,7 @@
     document.body.classList.remove("admin-modal-open");
   }
 
+  // Render nội dung modal chi tiết khách hàng (mã, trạng thái, email, sđt, đơn hàng, chi tiêu...)
   function renderCustomerModal(customer) {
     var title = document.getElementById("customerDetailTitle");
     var body = document.getElementById("customerDetailBody");
@@ -117,6 +124,7 @@
     ].join("");
   }
 
+  // Mở modal và gọi API lấy chi tiết khách hàng
   async function openCustomerModal(customerId, messageNode) {
     var modal = document.getElementById("customerDetailModal");
     var title = document.getElementById("customerDetailTitle");
@@ -139,17 +147,21 @@
     }
   }
 
+  /* ---- Làm mới thống kê & tải khách hàng ---- */
   async function refreshStats() {
     var dashboard = await Admin.fetchDashboard();
     Admin.renderStats(dashboard && dashboard.stats);
   }
 
+  // Gọi API lấy khách hàng theo từ khóa
   async function loadCustomers() {
     state.customers = await Admin.fetchCustomers(document.getElementById("adminGlobalSearch").value);
     state.pagination.customers = 1;
     renderCustomers();
   }
 
+  /* ---- Lưu thông tin khách hàng ---- */
+  // PATCH /admin/customers/{id} với các trường được chỉnh sửa
   async function saveCustomer(event, messageNode) {
     event.preventDefault();
 
@@ -175,6 +187,8 @@
     Admin.showMessage(messageNode, "Đã cập nhật người dùng.", "success");
   }
 
+  /* ---- Bật/tắt trạng thái khách hàng ---- */
+  // Đổi is_active giữa true/false, gọi PATCH API
   async function toggleCustomer(customerId, messageNode) {
     var customer = state.customers.find(function (item) {
       return item.customer_id === customerId;
@@ -194,6 +208,9 @@
     Admin.showMessage(messageNode, "Đã cập nhật trạng thái tài khoản.", "success");
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Xác thực admin, tìm kiếm, sắp xếp, phân trang, load dữ liệu
+  // Thiết lập modal chi tiết, form chỉnh sửa inline, nút toggle/lock
   document.addEventListener("DOMContentLoaded", async function () {
     var shell = Admin.initShell({
       navKey: "customers",

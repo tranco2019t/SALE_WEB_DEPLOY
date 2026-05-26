@@ -1,4 +1,5 @@
 (function () {
+  // ====== Dữ liệu mặc định và cấu hình ======
   var ordersData = window.TamTaiOrdersData || {
     orders: [],
     statusMeta: {
@@ -13,8 +14,8 @@
   };
 
   var DEFAULT_IMAGE = "../../images/acer-refurbished-laptop-500x500.webp";
-  var overviewEl = document.getElementById("orderOverview");
-  var itemsEl = document.getElementById("orderItems");
+  var overviewEl = document.getElementById("orderOverview");  // Khu vực hiển thị thông tin chung
+  var itemsEl = document.getElementById("orderItems");         // Khu vực hiển thị danh sách sản phẩm
 
   function normalizeOrderId(orderId) {
     return String(orderId || "")
@@ -32,6 +33,7 @@
       .replace(/'/g, "&#39;");
   }
 
+  // Trả về giá trị hoặc "chưa có" nếu rỗng
   function displayValue(value) {
     var text = String(value || "").trim();
     return text ? text : "chưa có";
@@ -48,6 +50,7 @@
     return null;
   }
 
+  // Định dạng tiền tệ
   function formatMoney(value) {
     if (typeof value !== "number" || !Number.isFinite(value)) {
       return "chưa có";
@@ -96,6 +99,7 @@
     return { key: "pending", label: rawStatus, className: "pending" };
   }
 
+  // Map một sản phẩm trong đơn hàng từ API
   function mapBackendItem(item, fallbackStatus) {
     var status = mapStatus(item.status || fallbackStatus);
     var qty = Number(item.quantity);
@@ -118,6 +122,7 @@
     };
   }
 
+  // Map toàn bộ đơn hàng từ API sang cấu trúc frontend
   function mapBackendOrder(raw) {
     var status = mapStatus(raw.status);
     var items = [];
@@ -146,11 +151,13 @@
     };
   }
 
+  // Lấy mã đơn hàng từ tham số URL ?id=
   function getOrderIdFromUrl() {
     var params = new URLSearchParams(window.location.search);
     return normalizeOrderId(params.get("id"));
   }
 
+  /* === Gọi API lấy chi tiết đơn hàng === */
   async function loadOrderFromBackend(orderId) {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -175,6 +182,7 @@
     }
   }
 
+  /* === Render các thẻ thông tin chung của đơn hàng (mã đơn, ngày, trạng thái, tổng tiền, địa chỉ, ...) === */
   function renderOverview(order) {
     if (!overviewEl) {
       return;
@@ -201,6 +209,7 @@
     }).join("");
   }
 
+  /* === Render danh sách sản phẩm trong đơn hàng === */
   function renderItems(items) {
     if (!itemsEl) {
       return;
@@ -238,6 +247,7 @@
     }).join("");
   }
 
+  // Hiển thị thông báo khi không tìm thấy đơn hàng
   function renderNotFound(orderId) {
     if (overviewEl) {
       overviewEl.innerHTML = [
@@ -256,27 +266,29 @@
     }
   }
 
+  /* === Khởi tạo trang chi tiết đơn hàng === */
   document.addEventListener("DOMContentLoaded", async function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
     TamTai.showAdminMenuLink(document);
 
-    var orderId = getOrderIdFromUrl();
+    var orderId = getOrderIdFromUrl();        // Lấy mã đơn từ URL
     var isLoggedInUser = Boolean(localStorage.getItem("access_token")) && TamTai.getRole() === "user";
     if (!orderId) {
-      renderNotFound("");
+      renderNotFound("");    // Không có mã đơn -> thông báo lỗi
       return;
     }
 
     var order = null;
+    // Chỉ gọi API nếu người dùng đã đăng nhập
     if (isLoggedInUser) {
       order = await loadOrderFromBackend(orderId);
     }
     if (!order) {
-      renderNotFound(orderId);
+      renderNotFound(orderId);  // Không tìm thấy -> thông báo
       return;
     }
 
-    renderOverview(order);
-    renderItems(order.items);
+    renderOverview(order);      // Render thông tin chung
+    renderItems(order.items);   // Render danh sách sản phẩm
   });
 })();

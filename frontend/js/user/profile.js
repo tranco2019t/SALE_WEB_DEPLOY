@@ -1,9 +1,13 @@
+/* ===== Trang hồ sơ người dùng ===== */
+// IIFE: bao bọc toàn bộ logic để tránh xung đột biến toàn cục
 (function () {
+  // Hàm hiển thị giá trị, nếu rỗng thì trả về "chưa có"
   function displayValue(value) {
     var text = (value || "").toString().trim();
     return text ? text : "chưa có";
   }
 
+  // Hàm chuẩn hóa giá trị nhập từ form chỉnh sửa, loại bỏ text mặc định
   function normalizeEditValue(value) {
     var text = (value || "").toString().trim();
     if (!text) {
@@ -16,6 +20,7 @@
     return text;
   }
 
+  // Định dạng ngày tháng thành dd/MM/yyyy
   function formatDate(dateValue) {
     if (!dateValue) {
       return "chưa có";
@@ -30,6 +35,7 @@
     return dd + "/" + mm + "/" + yyyy;
   }
 
+  // Chuyển đổi giá trị thành số tiền (number)
   function parseMoney(value) {
     if (typeof value === "number") {
       return Number.isFinite(value) ? value : null;
@@ -41,6 +47,7 @@
     return null;
   }
 
+  // Định dạng số tiền theo ngôn ngữ vi-VN, thêm ký tự "đ" ở cuối
   function formatMoney(value) {
     if (typeof value !== "number" || !Number.isFinite(value)) {
       return "chưa có";
@@ -48,6 +55,8 @@
     return Number(value).toLocaleString("vi-VN") + "đ";
   }
 
+  /* ---- Tính tổng tiền đơn hàng ---- */
+  // Ưu tiên lấy total_amount/total, nếu không có thì cộng dồn từ items
   function resolveOrderTotal(order) {
     var direct = parseMoney(order && (order.total_amount || order.total));
     if (direct !== null) {
@@ -74,6 +83,8 @@
     }, 0);
   }
 
+  /* ---- Ánh xạ trạng thái đơn hàng ---- */
+  // Chuyển raw status từ API thành nhãn tiếng Việt + class CSS
   function mapOrderStatus(rawStatus) {
     var normalized = (rawStatus || "").toString().trim().toLowerCase();
     if (!normalized) {
@@ -95,6 +106,8 @@
     return { label: rawStatus, className: "pending" };
   }
 
+  /* ---- Hiển thị thông tin hồ sơ lên giao diện ---- */
+  // Cập nhật tên, email ở sidebar header và 3 input của form
   function applyProfileData(profileInput) {
     var profile = profileInput || TamTai.getProfile();
     var fullName = displayValue(profile.fullName);
@@ -122,6 +135,8 @@
     }
   }
 
+  /* ---- Hiển thị bảng đơn hàng gần đây ---- */
+  // Tối đa 4 đơn, mỗi đơn gồm mã/ngày/tổng tiền/trạng thái
   function renderOrdersTable(orders) {
     var table = document.querySelector(".orders-table");
     if (!table) {
@@ -159,6 +174,9 @@
     });
   }
 
+  /* ---- Đồng bộ hồ sơ từ API backend ---- */
+  // GET /customers/me để lấy thông tin, lưu localStorage, gọi applyProfileData
+  // Sau đó lấy danh sách đơn hàng để render
   async function syncProfileFromBackend() {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -215,6 +233,8 @@
     }
   }
 
+  /* ---- Lưu thông tin hồ sơ lên backend ---- */
+  // PUT /customers/{id} với payload customer_name, customer_email, phone_number
   async function saveProfileToBackend(profile) {
     var token = localStorage.getItem("access_token");
     var customerId = localStorage.getItem("tamtai_customer_id");
@@ -244,6 +264,7 @@
     }
   }
 
+  /* ---- Khởi tạo trang ---- */
   document.addEventListener("DOMContentLoaded", function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
     TamTai.showAdminMenuLink(document);

@@ -1,4 +1,5 @@
 (function () {
+  // ====== Khởi tạo hằng số và state thanh toán ======
   var DEFAULT_IMAGE = (window.TamTai && TamTai.DEFAULT_PRODUCT_IMAGE) || "../../images/acer-refurbished-laptop-500x500.webp";
   var checkoutState = {
     customerId: "",
@@ -28,6 +29,7 @@
       .replace(/[\u0300-\u036f]/g, "");
   }
 
+  // Lấy phí vận chuyển từ radio đã chọn
   function getShippingFee() {
     var checked = document.querySelector('input[name="shipping"]:checked');
     if (!checked) {
@@ -43,6 +45,7 @@
     return amountEl ? TamTai.parseCurrency(amountEl.textContent) : 0;
   }
 
+  // Lấy tên phương thức vận chuyển đã chọn
   function getShippingMethodLabel() {
     var checked = document.querySelector('input[name="shipping"]:checked');
     if (!checked) {
@@ -54,6 +57,7 @@
     return text ? String(text.textContent || "").trim() : "";
   }
 
+  // Lấy tên phương thức thanh toán đã chọn
   function getPaymentMethodLabel() {
     var checked = document.querySelector('input[name="payment"]:checked');
     if (!checked) {
@@ -65,6 +69,7 @@
     return text ? String(text.textContent || "").trim() : "";
   }
 
+  // Tạo container #checkoutSummaryItems nếu chưa có
   function ensureSummaryContainer() {
     var orderSummary = document.querySelector(".order-summary");
     if (!orderSummary) {
@@ -110,6 +115,7 @@
     return raw;
   }
 
+  /* === Render danh sách sản phẩm và cập nhật tổng tiền (tạm tính, ship, giảm giá) === */
   function renderSummaryItems() {
     var cart = TamTai.getCart();
     var listWrap = ensureSummaryContainer();
@@ -164,6 +170,7 @@
     return { subtotal: subtotal, total: total };
   }
 
+  // Lấy các phần tử form thanh toán
   function getCheckoutElements() {
     return {
       form: document.getElementById("checkoutShippingForm"),
@@ -179,6 +186,7 @@
     };
   }
 
+  // Thu thập giá trị các trường trong form
   function getCheckoutFields() {
     var elements = getCheckoutElements();
 
@@ -192,6 +200,7 @@
     };
   }
 
+  /* === Kiểm tra hợp lệ các trường bắt buộc (họ tên, sđt, email, thành phố, địa chỉ, phương thức thanh toán) === */
   function validateCheckoutFields(fields) {
     if (!fields.fullName || !fields.phone || !fields.email || !fields.city || !fields.detailAddress) {
       return { ok: false, message: "Vui lòng điền đầy đủ thông tin giao hàng." };
@@ -209,6 +218,7 @@
     return { ok: true };
   }
 
+  // Tạo chuỗi địa chỉ giao hàng từ các trường (dùng để lưu vào order)
   function composeShippingAddress(fields) {
     var parts = [
       "Nguoi nhan: " + fields.fullName,
@@ -230,6 +240,7 @@
     return parts.join(" | ");
   }
 
+  // Gán giá trị cho input, force = true ghi đè kể cả khi đã có giá trị
   function setInputValue(input, value, force) {
     if (!input) {
       return;
@@ -242,10 +253,12 @@
     input.value = value || "";
   }
 
+  // Lấy thông tin hồ sơ người dùng
   function getProfileSnapshot() {
     return checkoutState.profile || TamTai.getProfile() || {};
   }
 
+  // Điền thông tin hồ sơ (họ tên, sđt, email) vào form
   function fillProfileFields(profile, force) {
     var elements = getCheckoutElements();
     var source = profile || {};
@@ -255,6 +268,7 @@
     setInputValue(elements.email, source.email || source.customer_email || "", force);
   }
 
+  // Định dạng địa chỉ đã lưu thành chuỗi hiển thị
   function formatSavedAddressLine(address) {
     var parts = [
       address && address.street,
@@ -268,6 +282,7 @@
     return parts.join(", ");
   }
 
+  // Tạo chuỗi địa chỉ ngắn từ đối tượng address (dùng điền vào ô địa chỉ chi tiết)
   function buildCheckoutAddressValue(address) {
     if (!address) {
       return "";
@@ -284,6 +299,7 @@
     return parts.join(", ");
   }
 
+  // Đánh dấu địa chỉ đã lưu đang được chọn
   function setActiveSavedAddress(addressId) {
     checkoutState.selectedAddressId = String(addressId || "").trim();
 
@@ -298,6 +314,7 @@
     });
   }
 
+  // Áp dụng địa chỉ đã lưu vào form (điền các trường tương ứng)
   function applySavedAddress(addressId) {
     var id = String(addressId || "").trim();
     if (!id) {
@@ -320,6 +337,7 @@
     setActiveSavedAddress(id);
   }
 
+  /* === Hiển thị gợi ý thành phố (datalist) từ danh sách địa chỉ đã lưu === */
   function renderCitySuggestions(addresses) {
     var citySuggestions = document.getElementById("checkoutCitySuggestions");
     if (!citySuggestions) {
@@ -349,6 +367,7 @@
     }).join("");
   }
 
+  /* === Render danh sách địa chỉ đã lưu để người dùng chọn nhanh === */
   function renderSavedAddresses(addresses) {
     var elements = getCheckoutElements();
     if (!elements.savedAddressesSection || !elements.savedAddressesList) {
@@ -382,6 +401,7 @@
     }).join("");
   }
 
+  /* === Xác định customerId từ localStorage -> profile -> API /customers/me === */
   async function resolveCurrentCustomerId(token) {
     if (checkoutState.customerId) {
       return checkoutState.customerId;
@@ -427,6 +447,7 @@
     return customerId;
   }
 
+  /* === Tải thông tin người dùng và danh sách địa chỉ từ API === */
   async function hydrateCheckoutAddressBook() {
     fillProfileFields(TamTai.getProfile(), false);
 
@@ -484,6 +505,7 @@
     }
   }
 
+  // Chọn phương thức thanh toán từ danh sách API dựa vào nhãn người dùng chọn
   function pickPaymentMethod(methods, selectedLabel) {
     if (!Array.isArray(methods) || !methods.length) {
       return null;
@@ -538,6 +560,7 @@
     return methods[0];
   }
 
+  // Chuyển giỏ hàng thành danh sách items gửi lên API đặt hàng
   function buildOrderItemsFromCart(cart) {
     return cart.map(function (item) {
       var productId = String(item.productId || item.id || "").trim();
@@ -550,6 +573,7 @@
     });
   }
 
+  /* === Quy trình submit đơn hàng: kiểm tra đăng nhập -> validate form -> resolve customer -> lấy payment method -> POST /orders/ -> clear cart -> redirect === */
   async function submitCheckout(confirmBtn) {
     var token = localStorage.getItem("access_token");
     if (!token || TamTai.getRole() !== "user") {
@@ -626,6 +650,7 @@
     }
   }
 
+  // Gán sự kiện click cho danh sách địa chỉ đã lưu
   function bindSavedAddressSelection() {
     var savedAddressesList = document.getElementById("savedAddressesList");
     if (!savedAddressesList) {
@@ -642,25 +667,29 @@
     });
   }
 
+  /* === Khởi tạo trang thanh toán === */
   document.addEventListener("DOMContentLoaded", function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
 
     var elements = getCheckoutElements();
+    // Ngăn form reload trang khi submit
     if (elements.form) {
       elements.form.addEventListener("submit", function (event) {
         event.preventDefault();
       });
     }
 
-    renderSummaryItems();
-    bindSavedAddressSelection();
+    renderSummaryItems();          // Render tóm tắt đơn hàng
+    bindSavedAddressSelection();    // Gán sự kiện cho địa chỉ đã lưu
 
-    hydrateCheckoutAddressBook().catch(function () {});
+    hydrateCheckoutAddressBook().catch(function () {});  // Tải thông tin và địa chỉ người dùng
 
+    // Cập nhật lại tổng tiền khi thay đổi phương thức vận chuyển
     document.querySelectorAll('input[name="shipping"]').forEach(function (radio) {
       radio.addEventListener("change", renderSummaryItems);
     });
 
+    // === Xử lý mã giảm giá: gọi API validate → cập nhật discountAmount ===
     var applyBtn = document.getElementById("applyDiscountBtn");
     var discountInput = document.getElementById("discountCodeInput");
     var discountMsg = document.getElementById("discountMessage");
@@ -726,6 +755,7 @@
       });
     }
 
+    // Xử lý nút "Xác nhận thanh toán" -> gọi submitCheckout
     var confirmBtn = document.querySelector(".confirm-btn");
     if (confirmBtn) {
       confirmBtn.addEventListener("click", function () {

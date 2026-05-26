@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="http://127.0.0.1:8000/chatbot-assets/chatbot-widget.css?v=20260522c">
 </head>
 <body>
+  <!-- ===== HEADER - Thanh điều hướng chính ===== -->
   <header class="site-header">
     <div class="top-strip"></div>
     <div class="main-header">
@@ -32,6 +33,7 @@
     </div>
   </header>
 
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="page-wrap">
     <div class="orders-shell">
       <div class="orders-head">
@@ -39,6 +41,7 @@
         <a href="../user/profile.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại trang tài khoản</a>
       </div>
 
+      <!-- Status Filter Tabs - Tab lọc đơn hàng theo trạng thái: Tất cả, Chờ xác nhận, Đang giao, Đã giao, Đã hủy -->
       <div class="orders-filters" id="ordersFilters">
         <button class="active" data-status="all">Tất cả</button>
         <button data-status="pending">Chờ xác nhận</button>
@@ -47,8 +50,10 @@
         <button data-status="cancelled">Đã hủy</button>
       </div>
 
+      <!-- Search bar - Thanh tìm kiếm theo mã đơn hàng (nằm trong header) -->
       <p class="orders-summary" id="ordersSummary">Hiển thị 0 - 0 / 0 đơn hàng</p>
 
+      <!-- Orders Table - Bảng danh sách đơn hàng: mã đơn, ngày đặt, sản phẩm, tổng tiền, trạng thái, thao tác -->
       <section class="orders-table">
         <div class="order-row order-head-row">
           <span>Mã đơn</span>
@@ -61,10 +66,12 @@
         <div id="ordersBody"></div>
       </section>
 
+      <!-- Pagination - Phân trang -->
       <div class="pagination" id="pagination"></div>
     </div>
   </main>
 
+  <!-- ===== FOOTER - Chân trang ===== -->
     <footer class="site-footer">
     <div class="footer-col">
       <h3>Về Website</h3>

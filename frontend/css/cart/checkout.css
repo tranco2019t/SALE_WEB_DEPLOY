@@ -1,3 +1,4 @@
+/* ===== Reset & Body ===== */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,7 @@ body {
   background: radial-gradient(circle at top, #f2f6f2 0%, #e7ece7 55%, #e0e5df 100%);
 }
 
+/* ===== Header ===== */
 .site-header {
   width: 100%;
   padding-top: 14px;
@@ -100,6 +102,7 @@ body {
   opacity: 1;
 }
 
+/* ===== Page Wrap & Breadcrumb ===== */
 .page-wrap {
   width: 96%;
   margin: 0 auto;
@@ -128,6 +131,8 @@ body {
   margin-bottom: 12px;
 }
 
+/* ===== Checkout Layout ===== */
+/* Grid 2 cột: form + order summary */
 .checkout-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.75fr) 360px;
@@ -150,6 +155,7 @@ body {
   margin-bottom: 10px;
 }
 
+/* ===== Saved Addresses (Address Selector) ===== */
 .saved-addresses {
   margin-bottom: 14px;
   padding: 12px;
@@ -238,6 +244,7 @@ body {
   margin-bottom: 4px;
 }
 
+/* ===== Shipping Form Layout ===== */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -281,6 +288,7 @@ body {
   opacity: 0;
 }
 
+/* ===== Payment Methods ===== */
 .method-block {
   margin-top: 8px;
   border-top: 1px solid #dbe7d9;
@@ -293,6 +301,7 @@ body {
   margin-bottom: 8px;
 }
 
+/* Mỗi phương thức thanh toán: radio + label + icon */
 .method-item {
   border: 1px solid #d7e4d6;
   background: #edf5ec;
@@ -376,6 +385,7 @@ body {
   color: #2f8f3c;
 }
 
+/* ===== Discount Section ===== */
 .discount-section {
   margin-top: 10px;
   padding-top: 10px;
@@ -432,6 +442,7 @@ body {
   color: #e74c3c;
 }
 
+/* ===== Confirm / Back Buttons ===== */
 .confirm-btn,
 .back-btn {
   width: 100%;
@@ -459,6 +470,7 @@ body {
   background: #fff;
 }
 
+/* ===== Footer ===== */
 .site-footer {
   width: 96%;
   margin: 0 auto 16px;
@@ -504,6 +516,7 @@ body {
   text-decoration: underline;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 1080px) {
   .main-header {
     height: auto;

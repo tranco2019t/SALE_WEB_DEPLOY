@@ -1,6 +1,8 @@
 (function () {
+  // ====== Dữ liệu mẫu tĩnh cho đơn hàng (fallback khi không có API) ======
   var defaultImage = "../../images/acer-refurbished-laptop-500x500.webp";
 
+  // Danh sách sản phẩm mẫu
   var catalog = {
     nitro5: {
       name: "Laptop Acer Nitro 5",
@@ -34,6 +36,7 @@
     }
   };
 
+  // Định nghĩa các trạng thái đơn hàng (key, nhãn, class CSS)
   var STATUS_META = {
     pending: { label: "Chờ xác nhận", className: "pending" },
     shipping: { label: "Đang giao", className: "shipping" },
@@ -41,6 +44,7 @@
     cancelled: { label: "Đã hủy", className: "cancelled" }
   };
 
+  // Tạo một item sản phẩm trong đơn hàng
   function item(key, quantity, status, unitPrice) {
     var product = catalog[key];
     return {
@@ -53,10 +57,12 @@
     };
   }
 
+  // Định dạng tiền tệ VNĐ
   function formatCurrency(value) {
     return Number(value).toLocaleString("vi-VN") + "đ";
   }
 
+  /* === Dữ liệu đơn hàng mẫu === */
   var orders = [
     {
       id: "RDR1001",
@@ -200,6 +206,7 @@
     }
   ];
 
+  // Tính tổng số lượng sản phẩm cho từng đơn
   orders.forEach(function (order) {
     var itemCount = 0;
     order.items.forEach(function (product) {

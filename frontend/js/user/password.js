@@ -1,9 +1,12 @@
+/* ===== Trang đổi mật khẩu người dùng ===== */
 (function () {
+  // Hiển thị giá trị, nếu rỗng trả về "chua co"
   function displayValue(value) {
     var text = (value || "").toString().trim();
     return text ? text : "chua co";
   }
 
+  // Cập nhật sidebar hiển thị tên và email người dùng
   function applySidebarProfile(profileInput) {
     var profile = profileInput || TamTai.getProfile();
     var heading = document.querySelector(".profile-head h2");
@@ -17,6 +20,8 @@
     }
   }
 
+  /* ---- Đồng bộ hồ sơ từ backend ---- */
+  // GET /customers/me để lấy thông tin và lưu vào localStorage
   async function syncProfileFromBackend() {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -53,6 +58,8 @@
     }
   }
 
+  /* ---- Gọi API đổi mật khẩu ---- */
+  // POST /customers/change-password với current_password và new_password
   async function changePasswordOnBackend(currentPassword, newPassword) {
     var token = localStorage.getItem("access_token");
     var role = TamTai.getRole();
@@ -78,6 +85,9 @@
     }
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Kiểm tra form: validate mật khẩu (tối thiểu 8 ký tự, có chữ hoa, thường, số)
+  // Nếu hợp lệ thì gọi API, thành công thì tự động logout
   document.addEventListener("DOMContentLoaded", function () {
     TamTai.setupSearchRedirect(".search-box input", "../products/products.html");
     TamTai.showAdminMenuLink(document);

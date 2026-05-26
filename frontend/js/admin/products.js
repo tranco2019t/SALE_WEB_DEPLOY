@@ -1,5 +1,7 @@
+/* ===== Trang Quản lý Sản phẩm Admin ===== */
 (function () {
   var Admin = window.TamTaiAdmin;
+  // Biến trạng thái: danh mục, sản phẩm, ID đang sửa, sắp xếp, phân trang
   var state = {
     categories: [],
     products: [],
@@ -12,6 +14,8 @@
     }
   };
 
+  /* ---- Render bảng sản phẩm ---- */
+  // Sắp xếp, phân trang, hiển thị từng dòng với thumbnail, tên, giá, tồn kho, actions
   function renderProducts() {
     var tableBody = document.getElementById("productsTableBody");
     var countNode = document.getElementById("productsCount");
@@ -64,6 +68,7 @@
     Admin.renderSortButtons(document, state.sorting);
   }
 
+  // Điền danh mục vào dropdown filter và dropdown form
   function populateCategoryOptions() {
     Admin.populateSelect(
       document.getElementById("productCategoryFilter"),
@@ -82,6 +87,7 @@
     );
   }
 
+  /* ---- Reset & Điền form sản phẩm ---- */
   function resetProductForm() {
     state.editingProductId = "";
     document.getElementById("productForm").reset();
@@ -93,6 +99,7 @@
     }
   }
 
+  // Điền thông tin sản phẩm vào form để chỉnh sửa
   function fillProductForm(productId) {
     var product = state.products.find(function (item) {
       return item.product_id === productId;
@@ -118,11 +125,13 @@
     document.getElementById("productName").scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
+  /* ---- Làm mới thống kê & tải sản phẩm ---- */
   async function refreshStats() {
     var dashboard = await Admin.fetchDashboard();
     Admin.renderStats(dashboard && dashboard.stats);
   }
 
+  // Gọi API lấy sản phẩm theo từ khóa và danh mục
   async function loadProducts() {
     state.products = await Admin.fetchProducts(
       document.getElementById("adminGlobalSearch").value,
@@ -132,6 +141,8 @@
     renderProducts();
   }
 
+  /* ---- Lưu (thêm/cập nhật) sản phẩm ---- */
+  // Nếu có editingId thì PUT, nếu không thì POST
   async function saveProduct(event, messageNode) {
     event.preventDefault();
     var editingId = document.getElementById("productFormId").value;
@@ -158,6 +169,8 @@
     Admin.showMessage(messageNode, editingId ? "Đã cập nhật sản phẩm." : "Đã thêm sản phẩm mới.", "success");
   }
 
+  /* ---- Xóa sản phẩm ---- */
+  // DELETE /admin/products/{id} sau khi xác nhận
   async function deleteProduct(productId, messageNode) {
     if (!window.confirm("Bạn chắc chắn muốn xóa sản phẩm này?")) {
       return;
@@ -168,6 +181,9 @@
     Admin.showMessage(messageNode, "Đã xóa sản phẩm.", "success");
   }
 
+  /* ---- Khởi tạo trang ---- */
+  // Xác thực admin, thiết lập tìm kiếm/sắp xếp/phân trang, load categories + products
+  // Hỗ trợ tham số URL ?edit=productId để mở form chỉnh sửa
   document.addEventListener("DOMContentLoaded", async function () {
     var shell = Admin.initShell({
       navKey: "products",
